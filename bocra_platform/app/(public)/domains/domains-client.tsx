@@ -29,7 +29,7 @@ const ZONES = [
   { zone: ".gov.bw",   desc: "Government bodies only",            open: false },
 ];
 
-// ── Mock availability
+// Mock availability
 
 const TAKEN_DOMAINS = new Set([
   "btc.co.bw", "mascom.co.bw", "orange.co.bw", "bofinet.co.bw",
@@ -116,7 +116,7 @@ const FAQS = [
   },
 ];
 
-// ── Availability checker ───────────────────────────────────────────────────
+// Availability checker 
 
 function AvailabilityChecker() {
   const [input, setInput] = useState("");
@@ -209,7 +209,7 @@ function AvailabilityChecker() {
   );
 }
 
-// ── WHOIS lookup ───────────────────────────────────────────────────────────
+// WHOIS lookup
 
 function WhoisLookup() {
   const [input, setInput] = useState("");
@@ -282,7 +282,7 @@ function WhoisLookup() {
   );
 }
 
-// ── FAQ accordion ──────────────────────────────────────────────────────────
+// FAQ accordion
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -304,7 +304,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-// ── Main client component ──────────────────────────────────────────────────
+// Main client component 
 
 export function DomainsClient() {
   return (

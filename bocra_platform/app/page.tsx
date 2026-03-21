@@ -119,10 +119,10 @@ const news = [
 ];
 
 const quickActions = [
-  { icon: ShieldCheck, label: "Verify a Licence", href: "/verify" },
-  { icon: FileWarning, label: "File Complaint", href: "/complaints" },
-  { icon: Globe, label: ".bw Domain", href: "/domains" },
-  { icon: BookOpen, label: "Publications", href: "/publications" },
+  { icon: ShieldCheck, label: "Verify a Licence",  href: "/verify",       accent: "text-bocra-gold" },
+  { icon: FileWarning, label: "File a Complaint",  href: "/complaints",   accent: "text-bocra-red" },
+  { icon: Globe,       label: ".bw Domain",        href: "/domains",      accent: "text-bocra-gold" },
+  { icon: BookOpen,    label: "Publications",       href: "/publications", accent: "text-bocra-gold" },
 ];
 
 const footerLinks = {
@@ -191,13 +191,13 @@ export default function HomePage() {
 
             {/* Quick actions */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
-              {quickActions.map(({ icon: Icon, label, href }) => (
+              {quickActions.map(({ icon: Icon, label, href, accent }) => (
                 <Link
                   key={href}
                   href={href}
                   className="flex flex-col items-center gap-2 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all text-center group"
                 >
-                  <Icon className="w-5 h-5 text-bocra-gold group-hover:scale-110 transition-transform" />
+                  <Icon className={`w-5 h-5 ${accent} group-hover:scale-110 transition-transform`} />
                   <span className="text-white/80 text-xs font-medium">{label}</span>
                 </Link>
               ))}
@@ -342,7 +342,9 @@ export default function HomePage() {
                   <Badge
                     variant="secondary"
                     className={`mb-3 text-xs ${
-                      highlight
+                      category === "Public Notice"
+                        ? "bg-bocra-red/10 text-bocra-red border-bocra-red/20"
+                        : highlight
                         ? "bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20"
                         : category === "Tender"
                         ? "bg-blue-50 text-blue-600 border-blue-100"
