@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
+import { AuthGuard } from "@/components/auth-guard";
 import {
   LayoutDashboard,
   FileText,
@@ -41,7 +42,9 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
             </Link>
           ))}
         </aside>
-        <main className="flex-1 lg:ml-60 p-6">{children}</main>
+        <main className="flex-1 lg:ml-60 p-6">
+          <AuthGuard>{children}</AuthGuard>
+        </main>
       </div>
     </>
   );

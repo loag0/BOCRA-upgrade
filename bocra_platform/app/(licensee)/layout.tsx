@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
+import { AuthGuard } from "@/components/auth-guard";
 import { FileText, FolderOpen, Globe, User } from "lucide-react";
 
 const portalLinks = [
@@ -30,7 +31,9 @@ export default function LicenseeLayout({ children }: { children: React.ReactNode
             </Link>
           ))}
         </aside>
-        <main className="flex-1 lg:ml-56 p-6">{children}</main>
+        <main className="flex-1 lg:ml-56 p-6">
+          <AuthGuard>{children}</AuthGuard>
+        </main>
       </div>
     </>
   );
