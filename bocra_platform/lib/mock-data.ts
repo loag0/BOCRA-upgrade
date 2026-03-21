@@ -1,0 +1,236 @@
+import type { Operator, Publication } from "@/types";
+
+export const mockOperators: Operator[] = [
+  {
+    id: "btc-001",
+    operatorName: "Botswana Telecommunications Corporation Limited",
+    shortName: "BTC",
+    licenceNumber: "BOC-2013-NFP-001",
+    category: "NFP",
+    categoryFull: "Network Facilities Provider",
+    subCategory: "NFP-N (National)",
+    status: "Active",
+    issuedAt: "2013-04-01",
+    expiresAt: "2026-03-31",
+    complianceStatus: "Compliant",
+    services: ["Fixed Line Telephony", "Mobile (beMOBILE)", "Broadband Internet"],
+    address: "BTC House, Plot 50671, Independence Avenue, Gaborone",
+    website: "www.btc.bw",
+  },
+  {
+    id: "mascom-001",
+    operatorName: "Mascom Wireless Botswana (Pty) Ltd",
+    shortName: "Mascom",
+    licenceNumber: "BOC-2013-NFP-002",
+    category: "NFP",
+    categoryFull: "Network Facilities Provider",
+    subCategory: "NFP-N (National)",
+    status: "Active",
+    issuedAt: "2013-04-01",
+    expiresAt: "2026-03-31",
+    complianceStatus: "Compliant",
+    services: ["Mobile Voice", "Mobile Data", "4G LTE", "USSD Services"],
+    address: "Plot 50374, Fairground Office Park, Gaborone",
+    website: "www.mascom.bw",
+  },
+  {
+    id: "orange-001",
+    operatorName: "Orange Botswana (Pty) Ltd",
+    shortName: "Orange",
+    licenceNumber: "BOC-2013-NFP-003",
+    category: "NFP",
+    categoryFull: "Network Facilities Provider",
+    subCategory: "NFP-N (National)",
+    status: "Active",
+    issuedAt: "2013-04-01",
+    expiresAt: "2026-03-31",
+    complianceStatus: "Compliant",
+    services: ["Mobile Voice", "Mobile Data", "4G LTE", "Fibre"],
+    address: "Orange House, Plot 50672, Independence Avenue, Gaborone",
+    website: "www.orange.co.bw",
+  },
+  {
+    id: "bofinet-001",
+    operatorName: "Botswana Fibre Networks (Pty) Ltd",
+    shortName: "BoFiNet",
+    licenceNumber: "BOC-2013-NFP-004",
+    category: "NFP",
+    categoryFull: "Network Facilities Provider",
+    subCategory: "NFP-N (National) — Wholesale",
+    status: "Active",
+    issuedAt: "2013-09-01",
+    expiresAt: "2026-08-31",
+    complianceStatus: "Compliant",
+    services: ["Wholesale Fibre", "International Bandwidth", "National Backbone"],
+    address: "Plot 54675, CBD, Gaborone",
+    website: "www.bofinet.co.bw",
+  },
+  {
+    id: "bwpost-001",
+    operatorName: "Botswana Postal Services",
+    shortName: "Botswana Post",
+    licenceNumber: "BOC-2013-POST-001",
+    category: "Postal",
+    categoryFull: "Postal Service Licence",
+    subCategory: "National Postal Operator",
+    status: "Active",
+    issuedAt: "2013-04-01",
+    expiresAt: "2026-03-31",
+    complianceStatus: "Compliant",
+    services: ["Letter Mail", "Parcels", "Express Mail Service", "Financial Services"],
+    address: "Khama Crescent, Gaborone",
+    website: "www.botspost.co.bw",
+  },
+  {
+    id: "yarona-001",
+    operatorName: "Yarona FM",
+    shortName: "Yarona FM",
+    licenceNumber: "BOC-2015-BRD-001",
+    category: "Broadcasting",
+    categoryFull: "Broadcasting Licence",
+    subCategory: "Commercial Radio — National",
+    status: "Active",
+    issuedAt: "2015-01-01",
+    expiresAt: "2027-12-31",
+    complianceStatus: "Compliant",
+    services: ["FM Radio Broadcasting", "Online Streaming"],
+    address: "Plot 16, Fairground, Gaborone",
+    website: "www.yaronafm.co.bw",
+  },
+  {
+    id: "duma-001",
+    operatorName: "Duma FM",
+    shortName: "Duma FM",
+    licenceNumber: "BOC-2015-BRD-002",
+    category: "Broadcasting",
+    categoryFull: "Broadcasting Licence",
+    subCategory: "Commercial Radio — National",
+    status: "Active",
+    issuedAt: "2015-01-01",
+    expiresAt: "2027-12-31",
+    complianceStatus: "Under Review",
+    services: ["FM Radio Broadcasting"],
+    address: "Gaborone, Botswana",
+    website: "www.dumafm.co.bw",
+  },
+  {
+    id: "ebotswana-001",
+    operatorName: "eBotswana TV",
+    shortName: "eBotswana",
+    licenceNumber: "BOC-2015-BRD-003",
+    category: "Broadcasting",
+    categoryFull: "Broadcasting Licence",
+    subCategory: "Commercial Television — National",
+    status: "Active",
+    issuedAt: "2015-06-01",
+    expiresAt: "2027-05-31",
+    complianceStatus: "Compliant",
+    services: ["Free-to-Air Television", "Online Streaming"],
+    address: "Plot 54675, Gaborone",
+    website: "www.ebotswana.co.bw",
+  },
+];
+
+export const mockPublications: Publication[] = [
+  {
+    id: "pub-001",
+    title: "BOCRA Annual Report 2024",
+    type: "annual_report",
+    fileUrl: "/publications/bocra-annual-report-2024.pdf",
+    publishedAt: "2025-03-01",
+    description: "BOCRA's comprehensive annual report covering regulatory activities and financial performance for 2024.",
+  },
+  {
+    id: "pub-002",
+    title: "QoS Monitoring Report — Q4 2025",
+    type: "qos_report",
+    fileUrl: "/publications/qos-q4-2025.pdf",
+    publishedAt: "2026-01-15",
+    description: "Quality of Service monitoring results for mobile and fixed broadband operators, Q4 2025.",
+  },
+  {
+    id: "pub-003",
+    title: "Communications Regulatory Authority Act, 2012",
+    type: "legislation",
+    fileUrl: "/publications/cra-act-2012.pdf",
+    publishedAt: "2013-04-01",
+    description: "The primary legislation governing BOCRA's mandate and regulatory powers.",
+  },
+  {
+    id: "pub-004",
+    title: "Botswana Data Protection Act, 2024",
+    type: "legislation",
+    fileUrl: "/publications/bdpa-2024.pdf",
+    publishedAt: "2024-10-29",
+    description: "Data protection legislation replacing the 2018 Act. In effect from 29 October 2024.",
+  },
+  {
+    id: "pub-005",
+    title: "Draft National Spectrum Policy 2026 — Public Consultation",
+    type: "consultation",
+    fileUrl: "/publications/draft-spectrum-policy-2026.pdf",
+    publishedAt: "2026-03-01",
+    description: "BOCRA invites public comment on the revised National Frequency Allocation Plan.",
+  },
+  {
+    id: "pub-006",
+    title: "ICT Licensing Framework — Converged Framework 2015",
+    type: "legislation",
+    fileUrl: "/publications/ict-licensing-framework-2015.pdf",
+    publishedAt: "2015-09-01",
+    description: "The converged NFP/SAP licensing framework implemented September 2015.",
+  },
+  {
+    id: "pub-007",
+    title: "BOCRA Strategic Plan 2024–2029",
+    type: "annual_report",
+    fileUrl: "/publications/strategic-plan-2024-2029.pdf",
+    publishedAt: "2024-06-01",
+    description: "BOCRA's five-year strategic plan focused on digital transformation.",
+  },
+  {
+    id: "pub-008",
+    title: "QoS Guidelines for Mobile Broadband Services",
+    type: "qos_report",
+    fileUrl: "/publications/qos-guidelines-mobile-broadband.pdf",
+    publishedAt: "2026-03-10",
+    description: "Updated Quality of Service guidelines for mobile broadband. Operators must comply by 1 June 2026.",
+  },
+  {
+    id: "pub-009",
+    title: "Tender: BOCRA Website Redevelopment",
+    type: "tender",
+    fileUrl: "/publications/tender-website-redevelopment-2026.pdf",
+    publishedAt: "2026-03-05",
+    description: "Design, development, deployment and maintenance of the BOCRA website.",
+  },
+  {
+    id: "pub-010",
+    title: "Consumer Protection Guidelines 2023",
+    type: "notice",
+    fileUrl: "/publications/consumer-protection-guidelines-2023.pdf",
+    publishedAt: "2023-07-01",
+    description: "Guidelines for consumer protection in the communications sector.",
+  },
+];
+
+export function findOperator(query: string): Operator | undefined {
+  const q = query.toLowerCase().trim();
+  return mockOperators.find(
+    (op) =>
+      op.operatorName.toLowerCase().includes(q) ||
+      op.shortName.toLowerCase().includes(q) ||
+      op.licenceNumber.toLowerCase() === q
+  );
+}
+
+export function searchOperators(query: string): Operator[] {
+  if (query.length < 2) return [];
+  const q = query.toLowerCase().trim();
+  return mockOperators.filter(
+    (op) =>
+      op.operatorName.toLowerCase().includes(q) ||
+      op.shortName.toLowerCase().includes(q) ||
+      op.licenceNumber.toLowerCase().includes(q)
+  );
+}
