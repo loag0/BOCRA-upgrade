@@ -3,12 +3,13 @@
 - Original PRD: docs/PRD.pdf
 - Read the prd before touching any feature - it has everything you could possibly need
 - Reference site: https://www.bocra.org.bw — the live BOCRA website. Visit it for branding, content, and feature context before working on any public-facing pages.
+- **Rule:** Before developing any page, visit the corresponding page on the live BOCRA site for content, structure, and design reference.
 
 ## Auth Architecture
 - **Provider:** Firebase Auth (email+password and Google OAuth for citizens; email+password only for staff)
 - **State:** `lib/auth-context.tsx` — `AuthProvider` wraps the entire app in `layout.tsx`, exposes `useAuth()` hook (`user`, `loading`)
 - **Route protection:**
-  - `components/auth-guard.tsx` — redirects unauthenticated users to `/login?redirect=<path>` using `router.replace()`. Used in citizen/licensee/staff layouts wrapping `{children}`.
+  - `components/auth-guard.tsx` — redirects unauthenticated users to `/login?redirect=<path>` using `router.replace()`. Used in citizen/license/staff layouts wrapping `{children}`.
   - `components/guest-guard.tsx` — redirects already-authenticated users away from auth pages using `router.replace()`. Wraps the return of login/register/forgot-password pages.
 - **Security rule:** Always use `router.replace()` (never `router.push()`) for auth-triggered redirects so the browser history doesn't allow back-navigation to wrong auth states.
 - **Post-logout:** `signOut()` + `router.replace("/")` — user cannot navigate back to authenticated pages.
@@ -21,7 +22,7 @@
 | `(public)` | `/verify`, `/complaints`, `/domains`, `/publications` | No |
 | `(auth)` | `/login`, `/register`, `/forgot-password` | Guests only (GuestGuard) |
 | `(citizen)` | `/profile` | Yes (any logged-in user) |
-| `(licensee)` | `/portal/licences`, `/portal/apply` | Yes (any logged-in user, role upgrade later) |
+| `(license)` | `/portal/licences`, `/portal/apply` | Yes (any logged-in user, role upgrade later) |
 | `(staff)` | `/admin` | Yes (staff/admin role later) |
 
 ## Architecture Overrides (supersede PRD where they conflict)

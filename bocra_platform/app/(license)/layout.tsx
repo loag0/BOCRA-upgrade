@@ -10,7 +10,7 @@ const portalLinks = [
   { href: "/profile", label: "Profile", icon: User },
 ];
 
-export default function LicenseeLayout({ children }: { children: React.ReactNode }) {
+export default function LicenseLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
