@@ -194,7 +194,7 @@ export default function RegisterPage() {
                 id="consent"
                 type="checkbox"
                 {...register("consent")}
-                className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy cursor-pointer flex-shrink-0"
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy cursor-pointer shrink-0"
               />
               <label
                 htmlFor="consent"
@@ -269,7 +269,7 @@ export default function RegisterPage() {
 function GoogleIcon() {
   return (
     <svg
-      className="w-4 h-4 mr-2 flex-shrink-0"
+      className="w-4 h-4 mr-2 shrink-0"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

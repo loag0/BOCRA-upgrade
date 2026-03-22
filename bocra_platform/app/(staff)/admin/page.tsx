@@ -3,8 +3,6 @@ import {
   MessageSquare,
   Users,
   AlertTriangle,
-  Clock,
-  CheckCircle2,
   TrendingUp,
   TrendingDown,
   ArrowRight,
@@ -16,7 +14,7 @@ import Link from "next/link";
 
 export const metadata = { title: "Admin Dashboard — BOCRA Staff Portal" };
 
-// ── Mock data ──────────────────────────────────────────────────────────────
+// Mock data
 
 const stats = [
   {
@@ -112,7 +110,7 @@ const expiringLicences: {
   { operator: "Delta Connect ISP", licenceNo: "BOC-2024-SAP-018", category: "SAP — Internet", expiresAt: "2026-04-15", daysLeft: 25 },
 ];
 
-// ── Status badges ──────────────────────────────────────────────────────────
+// Status badges
 
 const APP_STATUS: Record<AppStatus, { label: string; className: string }> = {
   submitted:    { label: "Submitted",     className: "bg-blue-50 text-bocra-blue" },
@@ -137,7 +135,7 @@ function StatusBadge({ label, className }: { label: string; className: string })
   );
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+// Helpers
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-BW", { day: "numeric", month: "short", year: "numeric" });
@@ -163,7 +161,7 @@ function DaysLeftBadge({ days }: { days: number }) {
   );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────
+// Page
 
 export default function AdminPage() {
   const today = new Date().toLocaleDateString("en-BW", {
@@ -264,7 +262,7 @@ export default function AdminPage() {
                       <p className="text-sm font-medium text-bocra-navy mt-0.5 truncate">{app.org}</p>
                       <p className="text-xs text-gray-400 mt-0.5">{app.type}</p>
                     </div>
-                    <div className="flex-shrink-0 text-right">
+                    <div className="shrink-0 text-right">
                       <p className="text-xs text-gray-400">{formatDate(app.submitted)}</p>
                       <p className="text-xs text-gray-500 mt-0.5">{app.assignedTo}</p>
                     </div>
@@ -395,7 +393,7 @@ export default function AdminPage() {
                     <p className="text-sm font-medium text-bocra-navy mt-0.5">{c.complainant} — {c.operator}</p>
                     <p className="text-xs text-gray-400 mt-0.5">{c.category}</p>
                   </div>
-                  <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
                     <StatusBadge label={cs.label} className={cs.className} />
                     <DaysOpenBadge days={c.daysOpen} />
                   </div>
@@ -428,7 +426,7 @@ export default function AdminPage() {
             href={href}
             className="bg-white rounded-xl border border-gray-100 px-4 py-4 hover:shadow-md transition-shadow group flex items-center gap-3"
           >
-            <div className="w-8 h-8 rounded-lg bg-bocra-navy/5 group-hover:bg-bocra-navy/10 flex items-center justify-center flex-shrink-0 transition-colors">
+            <div className="w-8 h-8 rounded-lg bg-bocra-navy/5 group-hover:bg-bocra-navy/10 flex items-center justify-center shrink-0 transition-colors">
               <Icon className="w-4 h-4 text-bocra-navy" />
             </div>
             <div className="min-w-0">

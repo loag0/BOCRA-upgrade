@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
-import { AuthGuard } from "@/components/auth-guard";
+import { RoleGuard } from "@/components/role-guard";
 import {
   LayoutDashboard,
   FileText,
@@ -23,7 +23,7 @@ const adminLinks = [
 
 export default function StaffLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <RoleGuard>
       <Navbar />
       <div className="min-h-screen bg-bocra-surface pt-16 flex">
         {/* Sidebar */}
@@ -43,9 +43,9 @@ export default function StaffLayout({ children }: { children: React.ReactNode })
           ))}
         </aside>
         <main className="flex-1 lg:ml-60 p-6">
-          <AuthGuard>{children}</AuthGuard>
+          {children}
         </main>
       </div>
-    </>
+    </RoleGuard>
   );
 }

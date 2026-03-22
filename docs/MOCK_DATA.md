@@ -135,6 +135,24 @@ The 2000ms `setTimeout` in `complaints/page.tsx` is clipboard feedback — keep 
 
 ---
 
+## Spring Boot integration notes
+
+### Auth token pattern
+Every authenticated fetch from the frontend sends the Firebase ID token:
+```ts
+const token = await user.getIdToken();
+fetch("/api/...", { headers: { Authorization: `Bearer ${token}` } });
+```
+Spring Boot validates it with Firebase Admin SDK on every request.
+
+### Response shapes
+All types Spring Boot must match are in `types/index.ts`: `Operator`, `Complaint`, `Publication`, `LicenceApplication`, `UserRole`.
+
+### Supabase
+`lib/supabase.ts` is set up and ready. Use for application data (complaints, licence applications, publications, user records). **Not used for roles** — roles come from Spring Boot `/auth/me`.
+
+---
+
 ## Priority order for replacing mocks
 
 When the Spring Boot backend is ready, replace in this order (matches PRD MoSCoW):
