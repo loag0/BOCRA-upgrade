@@ -6,3 +6,5 @@ docs/*
 !.vscode/settings.json
 !.vscode/extensions.json
 !.vscode/launch.json
+
+bash.*

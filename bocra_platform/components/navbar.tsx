@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
@@ -63,16 +63,45 @@ export function Navbar() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const navRef = useRef<HTMLDivElement>(null);
 
   // Only use the transparent-on-top treatment on the homepage hero.
   // All other pages get a solid dark navbar immediately.
   const isHome = pathname === "/";
+
+  const toggleDropdown = useCallback((label: string) => {
+    setOpenDropdown((prev) => (prev === label ? null : label));
+  }, []);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!openDropdown) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    }
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpenDropdown(null);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [openDropdown]);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setOpenDropdown(null);
+  }, [pathname]);
 
   async function handleSignOut() {
     await signOut();
@@ -113,17 +142,19 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+        <div ref={navRef} className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
           {navItems.map((item) => (
-            <div
-              key={item.label}
-              className="relative"
-              onMouseEnter={() => item.children && setOpenDropdown(item.label)}
-              onMouseLeave={() => setOpenDropdown(null)}
-            >
+            <div key={item.label} className="relative">
               {item.children ? (
                 <>
-                  <button className="flex items-center gap-1 text-white/80 hover:text-white text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-white/10 whitespace-nowrap">
+                  <button
+                    onClick={() => toggleDropdown(item.label)}
+                    aria-expanded={openDropdown === item.label}
+                    aria-haspopup="true"
+                    className={`flex items-center gap-1 text-white/80 hover:text-white text-sm font-medium transition-colors px-3 py-2 rounded-lg hover:bg-white/10 whitespace-nowrap ${
+                      openDropdown === item.label ? "bg-white/10 text-white" : ""
+                    }`}
+                  >
                     {item.label}
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${
