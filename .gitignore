@@ -1,4 +1,5 @@
-docs/
+docs/*
+!docs/MOCK_DATA.md
 .claude/settings.local.json
 
 .vscode/*
