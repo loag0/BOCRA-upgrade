@@ -162,7 +162,7 @@ export default function PublicationsPage() {
             <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
               Publications Library
             </h1>
-            <p className="text-white/60 mb-8 max-w-xl mx-auto">
+            <p className="text-white/70 mb-8 max-w-xl mx-auto">
               Annual reports, QoS monitoring data, legislation, consultation papers,
               tenders and official BOCRA notices — all in one place.
             </p>

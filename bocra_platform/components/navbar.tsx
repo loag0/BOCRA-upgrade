@@ -75,6 +75,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
+    handler(); // Check initial scroll position on mount/reload
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
@@ -130,7 +131,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          <div className="rounded-lg px-2 py-1 shadow-sm">
+          <div className="rounded-lg px-2 shadow-sm">
             <Image
               src="/bocra-logo.png"
               alt="BOCRA"
@@ -216,7 +217,7 @@ export function Navbar() {
                   onClick={handleSignOut}
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "sm" }),
-                    "text-white/60 hover:text-white hover:bg-white/10 gap-1.5"
+                    "text-white/70 hover:text-white hover:bg-white/10 gap-1.5"
                   )}
                 >
                   <LogOut className="w-4 h-4" />
@@ -303,7 +304,7 @@ export function Navbar() {
                                 key={child.href}
                                 href={child.href}
                                 onClick={() => setMobileExpanded(null)}
-                                className="block py-2 text-sm text-white/60 hover:text-white transition-colors"
+                                className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
                               >
                                 {child.label}
                               </Link>
@@ -347,7 +348,7 @@ export function Navbar() {
                         onClick={handleSignOut}
                         className={cn(
                           buttonVariants({ variant: "ghost" }),
-                          "text-white/60 hover:text-white hover:bg-white/10 w-full justify-start gap-2"
+                          "text-white/70 hover:text-white hover:bg-white/10 w-full justify-start gap-2"
                         )}
                       >
                         <LogOut className="w-4 h-4" />

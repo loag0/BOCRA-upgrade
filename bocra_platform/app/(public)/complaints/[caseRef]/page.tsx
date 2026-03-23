@@ -524,7 +524,7 @@ export default function ComplaintTrackerPage() {
           {/* Contact / help */}
           <div className="bg-bocra-navy rounded-2xl p-6 text-white mb-6">
             <h2 className="font-semibold mb-1">Need to follow up?</h2>
-            <p className="text-white/60 text-sm mb-5">
+            <p className="text-white/70 text-sm mb-5">
               Contact BOCRA quoting your case reference{" "}
               <span className="font-mono text-bocra-gold">{record.caseRef}</span>.
             </p>

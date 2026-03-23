@@ -635,7 +635,7 @@ export default function ComplaintsPage() {
             <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
               File a Complaint
             </h1>
-            <p className="text-white/60 text-sm leading-relaxed">
+            <p className="text-white/70 text-sm leading-relaxed">
               BOCRA investigates complaints against licensed operators under the
               Communications Regulatory Authority Act 2012.
             </p>

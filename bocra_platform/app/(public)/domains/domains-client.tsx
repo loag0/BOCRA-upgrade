@@ -320,7 +320,7 @@ export function DomainsClient() {
           <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
             .bw Domain Registry
           </h1>
-          <p className="text-white/60 mb-2 max-w-xl mx-auto">
+          <p className="text-white/70 mb-2 max-w-xl mx-auto">
             Botswana&apos;s country code top-level domain — administered by BOCRA on
             behalf of the nation. Over 8,800 domains registered.
           </p>
@@ -447,7 +447,7 @@ export function DomainsClient() {
         {/* Governance footer */}
         <div className="bg-bocra-navy rounded-2xl p-6 text-white">
           <h3 className="font-semibold mb-1">Governance &amp; Policy</h3>
-          <p className="text-white/60 text-sm mb-4">
+          <p className="text-white/70 text-sm mb-4">
             BOCRA administers the .bw ccTLD under Section 38(1) of the Communications
             Regulatory Authority Act, 2012, as mandated by the Ministry of Transport
             and Communications. Policy is guided by the .bw Technical Advisory Committee (TAC).
@@ -459,7 +459,7 @@ export function DomainsClient() {
                 href="https://nic.net.bw"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-white/60 hover:text-bocra-gold transition-colors underline underline-offset-2"
+                className="text-xs text-white/70 hover:text-bocra-gold transition-colors underline underline-offset-2"
               >
                 {doc}
               </a>

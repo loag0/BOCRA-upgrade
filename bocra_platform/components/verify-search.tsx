@@ -48,7 +48,7 @@ function OperatorCard({ operator }: { operator: Operator }) {
           <h2 className="font-heading text-lg font-bold text-white leading-snug">
             {operator.operatorName}
           </h2>
-          <p className="text-white/60 text-sm mt-0.5">{operator.categoryFull}</p>
+          <p className="text-white/70 text-sm mt-0.5">{operator.categoryFull}</p>
         </div>
         <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-3 py-1.5 flex-shrink-0">
           <StatusIcon className={`w-4 h-4 ${status.iconColor}`} />
