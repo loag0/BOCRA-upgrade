@@ -100,6 +100,7 @@ export function Navbar() {
 
   // Close dropdown on route change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpenDropdown(null);
   }, [pathname]);
 
@@ -128,14 +129,14 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0">
-          <div className="bg-white rounded-lg px-2 py-1 shadow-sm">
+        <Link href="/" className="shrink-0">
+          <div className="rounded-lg px-2 py-1 shadow-sm">
             <Image
               src="/bocra-logo.png"
               alt="BOCRA"
-              width={90}
-              height={56}
-              className="h-9 w-auto"
+              width={200}
+              height={67}
+              className="h-32 w-auto"
               priority
             />
           </div>
@@ -190,16 +191,21 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Desktop auth — hidden while Firebase initialises to prevent flash */}
-        <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
-          {!loading && (
-            user ? (
+        {/* Desktop auth */}
+        <div className="hidden lg:flex items-center gap-2 shrink-0">
+          {loading ? (
+            /* Skeleton placeholder to prevent layout shift */
+            <div className="flex items-center gap-2 animate-pulse">
+              <div className="h-8 w-14 bg-white/10 rounded-lg" />
+              <div className="h-8 w-20 bg-white/10 rounded-lg" />
+            </div>
+          ) : user ? (
               <>
                 <Link
                   href="/profile"
                   className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors group"
                 >
-                  <div className="w-7 h-7 rounded-full bg-bocra-gold flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-bocra-gold flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {initial}
                   </div>
                   <span className="text-white/80 group-hover:text-white text-sm font-medium max-w-[110px] truncate transition-colors">
@@ -239,7 +245,7 @@ export function Navbar() {
                 </Link>
               </>
             )
-          )}
+          }
         </div>
 
         {/* Mobile hamburger */}
@@ -318,7 +324,12 @@ export function Navbar() {
               </div>
 
               {/* Mobile auth */}
-              {!loading && (
+              {loading ? (
+                <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-2 animate-pulse">
+                  <div className="h-10 bg-white/10 rounded-lg" />
+                  <div className="h-10 bg-white/10 rounded-lg" />
+                </div>
+              ) : (
                 <div className="mt-6 pt-6 border-t border-white/10 flex flex-col gap-2">
                   {user ? (
                     <>

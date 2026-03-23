@@ -85,3 +85,32 @@ export interface LicenceApplication {
   submittedAt?: string;
   documents: string[];
 }
+
+export type NewsCategory =
+  | "public_notice"
+  | "announcement"
+  | "tender"
+  | "consultation"
+  | "event"
+  | "press_release";
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  category: NewsCategory;
+  excerpt: string;
+  publishedAt: string;
+  slug: string;
+}
+
+export interface Speech {
+  id: string;
+  title: string;
+  speaker: string;
+  speakerRole: string;
+  event: string;
+  venue: string;
+  date: string;
+  excerpt: string;
+  slug: string;
+}
