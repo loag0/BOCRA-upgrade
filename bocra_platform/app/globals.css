@@ -7,7 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", monospace;
   --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -46,13 +47,13 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  /* BOCRA brand — official palette */
-  --color-bocra-navy: #0A1628;        /* dark background, hero, navbar — design token, not an official brand colour */
-  --color-bocra-blue: #0073ae;        /* official primary blue */
-  --color-bocra-green: #008265;       /* official green */
-  --color-bocra-red: #c60751;         /* official red */
-  --color-bocra-gold: #ffd204;        /* official yellow */
-  --color-bocra-surface: #F8F6F1;     /* off-white page background */
+  /* BOCRA brand - official palette */
+  --color-bocra-navy: #0a1628; /* dark background, hero, navbar - design token, not an official brand colour */
+  --color-bocra-blue: #0073ae; /* official primary blue */
+  --color-bocra-green: #008265; /* official green */
+  --color-bocra-red: #c60751; /* official red */
+  --color-bocra-gold: #ffd204; /* official yellow */
+  --color-bocra-surface: #f8f6f1; /* off-white page background */
 }
 
 :root {

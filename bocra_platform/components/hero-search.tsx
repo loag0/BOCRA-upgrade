@@ -28,7 +28,9 @@ export function HeroSearch() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const base = routeMap[category] ?? "/search";
-    router.push(query.trim() ? `${base}?q=${encodeURIComponent(query.trim())}` : base);
+    router.push(
+      query.trim() ? `${base}?q=${encodeURIComponent(query.trim())}` : base,
+    );
   };
 
   return (
@@ -55,7 +57,7 @@ export function HeroSearch() {
       </div>
       <button
         type="submit"
-        className="px-6 py-3.5 bg-bocra-gold hover:bg-bocra-gold/90 text-white font-semibold rounded-r-xl transition-colors flex items-center gap-2 flex-shrink-0"
+        className="px-6 py-3.5 bg-bocra-gold hover:bg-bocra-gold/90 text-white font-semibold rounded-r-xl transition-colors flex items-center gap-2 shrink-0"
       >
         <Search className="w-4 h-4" />
         <span className="hidden sm:inline">Search</span>

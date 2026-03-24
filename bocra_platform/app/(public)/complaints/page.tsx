@@ -26,46 +26,81 @@ import { mockOperators } from "@/lib/mock-data";
 
 // ─── Operator contact data ────────────────────────────────────────────────────
 
-const operatorContacts: Record<string, { phone: string; email: string; hours: string }> = {
-  BTC:           { phone: "+267 395 3000", email: "customercare@btc.bw",          hours: "Mon–Fri 08:00–17:00" },
-  Mascom:        { phone: "+267 397 5555", email: "customercare@mascom.bw",        hours: "Mon–Fri 08:00–17:00" },
-  Orange:        { phone: "+267 395 0111", email: "customerservice@orange.co.bw",  hours: "Mon–Fri 08:00–17:00" },
-  BoFiNet:       { phone: "+267 318 2000", email: "info@bofinet.co.bw",            hours: "Mon–Fri 08:00–17:00" },
-  "Botswana Post": { phone: "+267 368 5000", email: "info@botspost.co.bw",         hours: "Mon–Fri 08:00–17:00" },
-  "Yarona FM":   { phone: "+267 390 9000", email: "info@yaronafm.co.bw",           hours: "Mon–Fri 08:00–17:00" },
-  "Duma FM":     { phone: "+267 318 1777", email: "info@dumafm.co.bw",             hours: "Mon–Fri 08:00–17:00" },
-  eBotswana:     { phone: "+267 318 2500", email: "info@ebotswana.co.bw",          hours: "Mon–Fri 08:00–17:00" },
+const operatorContacts: Record<
+  string,
+  { phone: string; email: string; hours: string }
+> = {
+  BTC: {
+    phone: "+267 395 3000",
+    email: "customercare@btc.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  Mascom: {
+    phone: "+267 397 5555",
+    email: "customercare@mascom.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  Orange: {
+    phone: "+267 395 0111",
+    email: "customerservice@orange.co.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  BoFiNet: {
+    phone: "+267 318 2000",
+    email: "info@bofinet.co.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  "Botswana Post": {
+    phone: "+267 368 5000",
+    email: "info@botspost.co.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  "Yarona FM": {
+    phone: "+267 390 9000",
+    email: "info@yaronafm.co.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  "Duma FM": {
+    phone: "+267 318 1777",
+    email: "info@dumafm.co.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
+  eBotswana: {
+    phone: "+267 318 2500",
+    email: "info@ebotswana.co.bw",
+    hours: "Mon–Fri 08:00–17:00",
+  },
 };
 
 const categories = [
-  { value: "poor_network",   label: "Poor network quality" },
-  { value: "billing",        label: "Billing dispute" },
-  { value: "spam",           label: "Unsolicited messages (spam)" },
-  { value: "unlicensed",     label: "Unlicensed operator" },
-  { value: "unfair_terms",   label: "Unfair terms & conditions" },
-  { value: "type_approval",  label: "Type approval violation" },
-  { value: "other",          label: "Other" },
+  { value: "poor_network", label: "Poor network quality" },
+  { value: "billing", label: "Billing dispute" },
+  { value: "spam", label: "Unsolicited messages (spam)" },
+  { value: "unlicensed", label: "Unlicensed operator" },
+  { value: "unfair_terms", label: "Unfair terms & conditions" },
+  { value: "type_approval", label: "Type approval violation" },
+  { value: "other", label: "Other" },
 ];
 
 const outcomes = [
-  { value: "refund",               label: "Refund" },
-  { value: "service_restoration",  label: "Service restoration" },
-  { value: "regulatory_action",    label: "Regulatory action against operator" },
-  { value: "information",          label: "Information only" },
+  { value: "refund", label: "Refund" },
+  { value: "service_restoration", label: "Service restoration" },
+  { value: "regulatory_action", label: "Regulatory action against operator" },
+  { value: "information", label: "Information only" },
 ];
 
 // ─── Zod schema ───────────────────────────────────────────────────────────────
 
 const schema = z.object({
-  fullName:         z.string().min(2,  "Full name is required"),
-  email:            z.string().email( "Enter a valid email address"),
-  phone:            z.string().optional(),
-  operator:         z.string().min(1,  "Select an operator"),
-  category:         z.string().min(1,  "Select a complaint category"),
-  description:      z.string().min(50, "Description must be at least 50 characters"),
-  dateOccurred:     z.string().min(1,  "Date is required"),
+  fullName: z.string().min(2, "Full name is required"),
+  email: z.string().email("Enter a valid email address"),
+  phone: z.string().optional(),
+  operator: z.string().min(1, "Select an operator"),
+  category: z.string().min(1, "Select a complaint category"),
+  description: z.string().min(50, "Description must be at least 50 characters"),
+  dateOccurred: z.string().min(1, "Date is required"),
   preferredOutcome: z.string().optional(),
-  consent:          z.boolean().refine((v) => v, "Consent is required to proceed"),
+  consent: z.boolean().refine((v) => v, "Consent is required to proceed"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -84,12 +119,12 @@ function StepIndicator({ current }: { current: 1 | 2 | 3 }) {
         <div key={s.n} className="flex items-center">
           <div className="flex items-center gap-2">
             <div
-              className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+              className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                 current > s.n
                   ? "bg-bocra-green text-white"
                   : current === s.n
-                  ? "bg-bocra-navy text-white"
-                  : "bg-gray-100 text-gray-400"
+                    ? "bg-bocra-navy text-white"
+                    : "bg-gray-100 text-gray-400"
               }`}
             >
               {current > s.n ? <Check className="w-3.5 h-3.5" /> : s.n}
@@ -103,7 +138,9 @@ function StepIndicator({ current }: { current: 1 | 2 | 3 }) {
             </span>
           </div>
           {i < steps.length - 1 && (
-            <div className={`w-8 sm:w-16 h-px mx-2 ${current > s.n ? "bg-bocra-green" : "bg-gray-200"}`} />
+            <div
+              className={`w-8 sm:w-16 h-px mx-2 ${current > s.n ? "bg-bocra-green" : "bg-gray-200"}`}
+            />
           )}
         </div>
       ))}
@@ -113,32 +150,30 @@ function StepIndicator({ current }: { current: 1 | 2 | 3 }) {
 
 // ─── Step 1: Operator contact gate ───────────────────────────────────────────
 
-function Step1({
-  onContinue,
-}: {
-  onContinue: (operatorName: string) => void;
-}) {
+function Step1({ onContinue }: { onContinue: (operatorName: string) => void }) {
   const [selectedShortName, setSelectedShortName] = useState("");
   const [confirmed, setConfirmed] = useState(false);
 
   const operator = mockOperators.find((o) => o.shortName === selectedShortName);
-  const contact = selectedShortName ? operatorContacts[selectedShortName] : null;
+  const contact = selectedShortName
+    ? operatorContacts[selectedShortName]
+    : null;
 
   return (
     <div className="space-y-6">
       {/* Explainer */}
       <div className="bg-bocra-blue/5 border border-bocra-blue/15 rounded-xl p-5">
         <div className="flex gap-3">
-          <AlertCircle className="w-5 h-5 text-bocra-blue flex-shrink-0 mt-0.5" />
+          <AlertCircle className="w-5 h-5 text-bocra-blue shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-semibold text-bocra-navy mb-1">
               You must contact your operator first
             </p>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Under the CRA Act 2012, BOCRA can only investigate a complaint after
-              the consumer has first raised the issue directly with their operator
-              and not received a satisfactory resolution. BOCRA will not process
-              complaints that bypass this step.
+              Under the CRA Act 2012, BOCRA can only investigate a complaint
+              after the consumer has first raised the issue directly with their
+              operator and not received a satisfactory resolution. BOCRA will
+              not process complaints that bypass this step.
             </p>
           </div>
         </div>
@@ -170,20 +205,26 @@ function Step1({
       {operator && contact && (
         <div className="border border-gray-200 rounded-xl overflow-hidden">
           <div className="bg-bocra-navy px-5 py-3">
-            <p className="text-white font-semibold text-sm">{operator.operatorName}</p>
-            <p className="text-white/50 text-xs mt-0.5">{operator.categoryFull}</p>
+            <p className="text-white font-semibold text-sm">
+              {operator.operatorName}
+            </p>
+            <p className="text-white/50 text-xs mt-0.5">
+              {operator.categoryFull}
+            </p>
           </div>
           <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white">
             <div className="flex items-start gap-3">
-              <Phone className="w-4 h-4 text-bocra-blue mt-0.5 flex-shrink-0" />
+              <Phone className="w-4 h-4 text-bocra-blue mt-0.5 shrink-0" />
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">Phone</p>
-                <p className="text-sm font-medium text-bocra-navy">{contact.phone}</p>
+                <p className="text-sm font-medium text-bocra-navy">
+                  {contact.phone}
+                </p>
                 <p className="text-xs text-gray-400 mt-0.5">{contact.hours}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Mail className="w-4 h-4 text-bocra-blue mt-0.5 flex-shrink-0" />
+              <Mail className="w-4 h-4 text-bocra-blue mt-0.5 shrink-0" />
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">Email</p>
                 <a
@@ -195,7 +236,7 @@ function Step1({
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Globe className="w-4 h-4 text-bocra-blue mt-0.5 flex-shrink-0" />
+              <Globe className="w-4 h-4 text-bocra-blue mt-0.5 shrink-0" />
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">Website</p>
                 <a
@@ -215,15 +256,15 @@ function Step1({
                 type="checkbox"
                 checked={confirmed}
                 onChange={(e) => setConfirmed(e.target.checked)}
-                className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy flex-shrink-0"
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy shrink-0"
               />
               <span className="text-sm text-gray-600 leading-relaxed">
                 I have already contacted{" "}
                 <span className="font-semibold text-bocra-navy">
                   {operator.shortName}
                 </span>{" "}
-                and I am not satisfied with their response or they have not responded
-                within a reasonable time.
+                and I am not satisfied with their response or they have not
+                responded within a reasonable time.
               </span>
             </label>
           </div>
@@ -290,7 +331,6 @@ function Step2({
 
   return (
     <form onSubmit={handleSubmit(processForm)} className="space-y-5">
-
       {/* Personal details */}
       <div>
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
@@ -329,7 +369,11 @@ function Step2({
               Phone number{" "}
               <span className="text-gray-400 font-normal">(optional)</span>
             </Label>
-            <Input type="tel" placeholder="+267 7X XXX XXX" {...register("phone")} />
+            <Input
+              type="tel"
+              placeholder="+267 7X XXX XXX"
+              {...register("phone")}
+            />
           </div>
         </div>
       </div>
@@ -359,7 +403,9 @@ function Step2({
                 ))}
               </select>
               {errors.operator && (
-                <p className="text-xs text-red-500">{errors.operator.message}</p>
+                <p className="text-xs text-red-500">
+                  {errors.operator.message}
+                </p>
               )}
             </div>
             <div className="space-y-1.5">
@@ -378,7 +424,9 @@ function Step2({
                 ))}
               </select>
               {errors.category && (
-                <p className="text-xs text-red-500">{errors.category.message}</p>
+                <p className="text-xs text-red-500">
+                  {errors.category.message}
+                </p>
               )}
             </div>
           </div>
@@ -404,7 +452,9 @@ function Step2({
               className="resize-none"
             />
             {errors.description && (
-              <p className="text-xs text-red-500">{errors.description.message}</p>
+              <p className="text-xs text-red-500">
+                {errors.description.message}
+              </p>
             )}
           </div>
 
@@ -420,7 +470,9 @@ function Step2({
                 aria-invalid={!!errors.dateOccurred}
               />
               {errors.dateOccurred && (
-                <p className="text-xs text-red-500">{errors.dateOccurred.message}</p>
+                <p className="text-xs text-red-500">
+                  {errors.dateOccurred.message}
+                </p>
               )}
             </div>
             <div className="space-y-1.5">
@@ -464,7 +516,8 @@ function Step2({
             Click to upload or drag files here
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            PDF, JPG, PNG · max 10 MB per file · correspondence, bills, screenshots
+            PDF, JPG, PNG · max 10 MB per file · correspondence, bills,
+            screenshots
           </p>
         </label>
         {fileSizeError && (
@@ -477,11 +530,13 @@ function Step2({
                 key={f.name}
                 className="flex items-center justify-between bg-bocra-surface border border-gray-100 rounded-lg px-3 py-2 text-sm"
               >
-                <span className="text-bocra-navy truncate max-w-[300px]">{f.name}</span>
+                <span className="text-bocra-navy truncate max-w-[300px]">
+                  {f.name}
+                </span>
                 <button
                   type="button"
                   onClick={() => removeFile(f.name)}
-                  className="text-gray-400 hover:text-red-500 transition-colors ml-3 text-xs flex-shrink-0"
+                  className="text-gray-400 hover:text-red-500 transition-colors ml-3 text-xs shrink-0"
                 >
                   Remove
                 </button>
@@ -500,17 +555,22 @@ function Step2({
             id="consent"
             type="checkbox"
             {...register("consent")}
-            className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy flex-shrink-0 cursor-pointer"
+            className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy shrink-0 cursor-pointer"
           />
-          <label htmlFor="consent" className="text-sm text-gray-600 leading-relaxed cursor-pointer">
-            I consent to BOCRA sharing my contact details with the service provider
-            for the purpose of resolving this complaint, in accordance with the
-            Communications Regulatory Authority Act 2012 and the Botswana Data
-            Protection Act 2024.
+          <label
+            htmlFor="consent"
+            className="text-sm text-gray-600 leading-relaxed cursor-pointer"
+          >
+            I consent to BOCRA sharing my contact details with the service
+            provider for the purpose of resolving this complaint, in accordance
+            with the Communications Regulatory Authority Act 2012 and the
+            Botswana Data Protection Act 2024.
           </label>
         </div>
         {errors.consent && (
-          <p className="text-xs text-red-500 pl-7">{String(errors.consent.message)}</p>
+          <p className="text-xs text-red-500 pl-7">
+            {String(errors.consent.message)}
+          </p>
         )}
       </div>
 
@@ -585,7 +645,9 @@ function Step3({ caseRef }: { caseRef: string }) {
       </div>
 
       <div className="bg-bocra-blue/5 border border-bocra-blue/15 rounded-xl p-4 text-left mb-8 max-w-md mx-auto">
-        <p className="text-sm font-semibold text-bocra-navy mb-1">What happens next?</p>
+        <p className="text-sm font-semibold text-bocra-navy mb-1">
+          What happens next?
+        </p>
         <ol className="text-sm text-gray-600 space-y-1 list-decimal list-inside leading-relaxed">
           <li>BOCRA reviews your complaint within 48 hours</li>
           <li>If sufficient evidence exists, an investigation is opened</li>
@@ -656,9 +718,12 @@ export default function ComplaintsPage() {
           {/* Legal note */}
           {step < 3 && (
             <p className="text-center text-xs text-gray-400 mt-6 leading-relaxed">
-              BOCRA will only investigate complaints where sufficient evidence of a
-              breach of the CRA Act 2012 or licence conditions exists.{" "}
-              <a href="/about/complaints-process" className="underline hover:text-gray-600">
+              BOCRA will only investigate complaints where sufficient evidence
+              of a breach of the CRA Act 2012 or licence conditions exists.{" "}
+              <a
+                href="/about/complaints-process"
+                className="underline hover:text-gray-600"
+              >
                 Learn about the complaints process.
               </a>
             </p>

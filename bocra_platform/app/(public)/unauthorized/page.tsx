@@ -4,7 +4,7 @@ import { ShieldOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Access Denied — BOCRA",
+  title: "Access Denied - BOCRA",
 };
 
 export default function UnauthorizedPage() {

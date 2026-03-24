@@ -55,7 +55,13 @@ const STATUS_ORDER: StatusKey[] = [
   "resolved",
 ];
 
-const OPERATORS = ["BTC", "Mascom", "Orange Botswana", "BoFiNet", "Botswana Post"];
+const OPERATORS = [
+  "BTC",
+  "Mascom",
+  "Orange Botswana",
+  "BoFiNet",
+  "Botswana Post",
+];
 const CATEGORIES = [
   "Poor network coverage / signal quality",
   "Billing and overcharging dispute",
@@ -151,8 +157,7 @@ function buildMockRecord(caseRef: string): ComplaintRecord | null {
       "Your complaint is being reviewed. An officer will be assigned within 2 working days.",
     acknowledged:
       "The assigned officer is reviewing your complaint before formally notifying the operator.",
-    investigating:
-      `BOCRA is waiting for ${operator}'s formal response. This typically takes 7–10 working days.`,
+    investigating: `BOCRA is waiting for ${operator}'s formal response. This typically takes 7–10 working days.`,
     awaiting_operator:
       "BOCRA is reviewing the operator's response and preparing a determination.",
     resolved:
@@ -264,7 +269,11 @@ function LookupOtherCase() {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        const ref = (e.currentTarget.elements.namedItem("ref") as HTMLInputElement).value.trim().toUpperCase();
+        const ref = (
+          e.currentTarget.elements.namedItem("ref") as HTMLInputElement
+        ).value
+          .trim()
+          .toUpperCase();
         if (ref) window.location.href = `/complaints/${ref}`;
       }}
       className="flex gap-2"
@@ -316,7 +325,8 @@ function NotFound({ caseRef }: { caseRef: string }) {
             </p>
             <p className="text-gray-500 text-sm mb-8">
               Please check the reference number and try again. Case references
-              are in the format <span className="font-mono">CMP-YYYY-XXXXXX</span>.
+              are in the format{" "}
+              <span className="font-mono">CMP-YYYY-XXXXXX</span>.
             </p>
             <div className="max-w-sm mx-auto">
               <LookupOtherCase />
@@ -332,7 +342,8 @@ function NotFound({ caseRef }: { caseRef: string }) {
 
 export default function ComplaintTrackerPage() {
   const params = useParams();
-  const caseRef = typeof params.caseRef === "string" ? params.caseRef.toUpperCase() : "";
+  const caseRef =
+    typeof params.caseRef === "string" ? params.caseRef.toUpperCase() : "";
 
   const record = buildMockRecord(caseRef);
 
@@ -340,7 +351,8 @@ export default function ComplaintTrackerPage() {
 
   const meta = STATUS_META[record.currentStatus];
   const currentStageIndex = STATUS_ORDER.indexOf(record.currentStatus);
-  const isResolved = record.currentStatus === "resolved" || record.currentStatus === "closed";
+  const isResolved =
+    record.currentStatus === "resolved" || record.currentStatus === "closed";
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("en-BW", {
@@ -354,7 +366,6 @@ export default function ComplaintTrackerPage() {
       <Navbar />
       <main className="min-h-screen bg-bocra-surface pt-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-
           {/* Back link */}
           <Link
             href="/complaints"
@@ -393,7 +404,9 @@ export default function ComplaintTrackerPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-5 gap-x-4">
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">Operator</p>
-                <p className="text-sm font-semibold text-bocra-navy">{record.operator}</p>
+                <p className="text-sm font-semibold text-bocra-navy">
+                  {record.operator}
+                </p>
               </div>
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">Submitted</p>
@@ -403,17 +416,23 @@ export default function ComplaintTrackerPage() {
               </div>
               <div>
                 <p className="text-xs text-gray-400 mb-0.5">Assigned to</p>
-                <p className="text-sm font-semibold text-bocra-navy">{record.assignedOfficer}</p>
+                <p className="text-sm font-semibold text-bocra-navy">
+                  {record.assignedOfficer}
+                </p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">Target resolution</p>
+                <p className="text-xs text-gray-400 mb-0.5">
+                  Target resolution
+                </p>
                 <p className="text-sm font-semibold text-bocra-navy">
                   {formatDate(record.targetResolutionDate)}
                 </p>
               </div>
               <div className="col-span-2 sm:col-span-4">
                 <p className="text-xs text-gray-400 mb-0.5">Category</p>
-                <p className="text-sm font-semibold text-bocra-navy">{record.category}</p>
+                <p className="text-sm font-semibold text-bocra-navy">
+                  {record.category}
+                </p>
               </div>
             </div>
           </div>
@@ -427,9 +446,9 @@ export default function ComplaintTrackerPage() {
             }`}
           >
             {isResolved ? (
-              <CheckCircle2 className="w-5 h-5 text-bocra-green mt-0.5 flex-shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-bocra-green mt-0.5 shrink-0" />
             ) : (
-              <RefreshCw className="w-5 h-5 text-bocra-blue mt-0.5 flex-shrink-0" />
+              <RefreshCw className="w-5 h-5 text-bocra-blue mt-0.5 shrink-0" />
             )}
             <div>
               <p
@@ -460,7 +479,7 @@ export default function ComplaintTrackerPage() {
 
                   return (
                     <div key={i} className="relative flex gap-5 pb-8 last:pb-0">
-                      <div className="relative z-10 flex-shrink-0">
+                      <div className="relative z-10 shrink-0">
                         <TimelineDot
                           status={event.status}
                           isCurrent={isCurrent}
@@ -494,29 +513,33 @@ export default function ComplaintTrackerPage() {
                 })}
 
                 {/* Future stages (greyed out) */}
-                {STATUS_ORDER.slice(currentStageIndex + 1).map((futureStatus) => {
-                  const futureMeta = STATUS_META[futureStatus];
-                  return (
-                    <div
-                      key={futureStatus}
-                      className="relative flex gap-5 pb-8 last:pb-0 opacity-35"
-                    >
-                      <div className="relative z-10 flex-shrink-0">
-                        <TimelineDot
-                          status={futureStatus}
-                          isCurrent={false}
-                          isPast={false}
-                        />
+                {STATUS_ORDER.slice(currentStageIndex + 1).map(
+                  (futureStatus) => {
+                    const futureMeta = STATUS_META[futureStatus];
+                    return (
+                      <div
+                        key={futureStatus}
+                        className="relative flex gap-5 pb-8 last:pb-0 opacity-35"
+                      >
+                        <div className="relative z-10 shrink-0">
+                          <TimelineDot
+                            status={futureStatus}
+                            isCurrent={false}
+                            isPast={false}
+                          />
+                        </div>
+                        <div className="pt-1 pb-1">
+                          <p className="text-sm font-semibold text-gray-400">
+                            {futureMeta.label}
+                          </p>
+                          <p className="text-xs text-gray-300 mt-0.5">
+                            Pending
+                          </p>
+                        </div>
                       </div>
-                      <div className="pt-1 pb-1">
-                        <p className="text-sm font-semibold text-gray-400">
-                          {futureMeta.label}
-                        </p>
-                        <p className="text-xs text-gray-300 mt-0.5">Pending</p>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  },
+                )}
               </div>
             </div>
           </div>
@@ -526,18 +549,23 @@ export default function ComplaintTrackerPage() {
             <h2 className="font-semibold mb-1">Need to follow up?</h2>
             <p className="text-white/70 text-sm mb-5">
               Contact BOCRA quoting your case reference{" "}
-              <span className="font-mono text-bocra-gold">{record.caseRef}</span>.
+              <span className="font-mono text-bocra-gold">
+                {record.caseRef}
+              </span>
+              .
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               <a
                 href="tel:+2673957755"
                 className="flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3 transition-colors group"
               >
-                <div className="w-8 h-8 rounded-full bg-bocra-blue/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-bocra-blue/20 flex items-center justify-center shrink-0">
                   <Phone className="w-4 h-4 text-bocra-gold" />
                 </div>
                 <div>
-                  <p className="text-xs text-white/50 mb-0.5">Consumer Affairs</p>
+                  <p className="text-xs text-white/50 mb-0.5">
+                    Consumer Affairs
+                  </p>
                   <p className="text-sm font-medium group-hover:text-bocra-gold transition-colors">
                     +267 395 7755
                   </p>
@@ -547,7 +575,7 @@ export default function ComplaintTrackerPage() {
                 href="mailto:complaints@bocra.org.bw"
                 className="flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl px-4 py-3 transition-colors group"
               >
-                <div className="w-8 h-8 rounded-full bg-bocra-blue/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-bocra-blue/20 flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4 text-bocra-gold" />
                 </div>
                 <div>
@@ -567,7 +595,6 @@ export default function ComplaintTrackerPage() {
             </h2>
             <LookupOtherCase />
           </div>
-
         </div>
       </main>
     </>

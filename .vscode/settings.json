@@ -7,7 +7,7 @@
   "less.validate": false,
 
   // Tell the Tailwind IntelliSense extension where to find the CSS entry point.
-  // Required for v4 (CSS-first config) — no tailwind.config.ts needed.
+  // Required for v4 (CSS-first config) - no tailwind.config.ts needed.
   "tailwindCSS.experimental.configFile": "bocra_platform/app/globals.css",
 
   // Recognise Tailwind directives in CSS files so IntelliSense triggers.

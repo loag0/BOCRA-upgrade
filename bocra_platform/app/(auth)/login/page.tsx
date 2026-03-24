@@ -71,121 +71,131 @@ export default function LoginPage() {
 
   return (
     <GuestGuard redirectTo={redirect}>
-    <div className="w-full max-w-sm">
-      <div className="bg-white rounded-2xl shadow-xl p-8">
-        <h1 className="font-heading text-2xl font-bold text-bocra-navy mb-1">
-          Welcome back
-        </h1>
-        <p className="text-gray-500 text-sm mb-6">
-          Sign in to your BOCRA account
-        </p>
+      <div className="w-full max-w-sm">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h1 className="font-heading text-2xl font-bold text-bocra-navy mb-1">
+            Welcome back
+          </h1>
+          <p className="text-gray-500 text-sm mb-6">
+            Sign in to your BOCRA account
+          </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-gray-700 text-sm font-medium">
-              Email address
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              autoComplete="email"
-              {...register("email")}
-              aria-invalid={!!errors.email}
-            />
-            {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
-            )}
-          </div>
-
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
-                Password
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="email"
+                className="text-gray-700 text-sm font-medium"
+              >
+                Email address
               </Label>
-              <Link
-                href="/forgot-password"
-                className="text-xs text-bocra-blue hover:text-bocra-gold transition-colors"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <div className="relative">
               <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                autoComplete="current-password"
-                {...register("password")}
-                aria-invalid={!!errors.password}
-                className="pr-10"
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                {...register("email")}
+                aria-invalid={!!errors.email}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                tabIndex={-1}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
-              </button>
+              {errors.email && (
+                <p className="text-xs text-red-500">{errors.email.message}</p>
+              )}
             </div>
-            {errors.password && (
-              <p className="text-xs text-red-500">{errors.password.message}</p>
-            )}
+
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <Label
+                  htmlFor="password"
+                  className="text-gray-700 text-sm font-medium"
+                >
+                  Password
+                </Label>
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-bocra-blue hover:text-bocra-gold transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  {...register("password")}
+                  aria-invalid={!!errors.password}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  tabIndex={-1}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p className="text-xs text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-10 bg-bocra-navy hover:bg-bocra-blue text-white font-semibold rounded-lg transition-colors mt-2"
+            >
+              {isSubmitting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Sign in"
+              )}
+            </Button>
+          </form>
+
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400 font-medium">
+              or continue with
+            </span>
+            <div className="flex-1 h-px bg-gray-200" />
           </div>
 
           <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full h-10 bg-bocra-navy hover:bg-bocra-blue text-white font-semibold rounded-lg transition-colors mt-2"
+            type="button"
+            variant="outline"
+            onClick={handleGoogle}
+            disabled={googleLoading}
+            className="w-full h-10 border-gray-200 hover:border-gray-300 hover:bg-gray-50 font-medium text-gray-700 rounded-lg transition-colors"
           >
-            {isSubmitting ? (
+            {googleLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              "Sign in"
+              <>
+                <GoogleIcon />
+                Sign in with Google
+              </>
             )}
           </Button>
-        </form>
 
-        <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-xs text-gray-400 font-medium">or continue with</span>
-          <div className="flex-1 h-px bg-gray-200" />
+          <p className="text-center text-sm text-gray-500 mt-6">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              className="text-bocra-blue font-medium hover:text-bocra-gold transition-colors"
+            >
+              Create one
+            </Link>
+          </p>
         </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleGoogle}
-          disabled={googleLoading}
-          className="w-full h-10 border-gray-200 hover:border-gray-300 hover:bg-gray-50 font-medium text-gray-700 rounded-lg transition-colors"
-        >
-          {googleLoading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <>
-              <GoogleIcon />
-              Sign in with Google
-            </>
-          )}
-        </Button>
-
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="text-bocra-blue font-medium hover:text-bocra-gold transition-colors"
-          >
-            Create one
-          </Link>
-        </p>
       </div>
-    </div>
     </GuestGuard>
   );
 }
@@ -193,7 +203,7 @@ export default function LoginPage() {
 function GoogleIcon() {
   return (
     <svg
-      className="w-4 h-4 mr-2 flex-shrink-0"
+      className="w-4 h-4 mr-2 shrink-0"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

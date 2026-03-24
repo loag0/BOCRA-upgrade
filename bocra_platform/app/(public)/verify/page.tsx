@@ -2,8 +2,9 @@ import { Navbar } from "@/components/navbar";
 import { VerifySearch } from "@/components/verify-search";
 
 export const metadata = {
-  title: "Verify Licence — BOCRA",
-  description: "Verify any BOCRA-licensed operator's licence status, category, and compliance.",
+  title: "Verify Licence - BOCRA",
+  description:
+    "Verify any BOCRA-licensed operator's licence status, category, and compliance.",
 };
 
 export default function VerifyPage() {

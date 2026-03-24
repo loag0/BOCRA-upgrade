@@ -12,14 +12,15 @@ import { useAuth } from "@/lib/auth-context";
  *
  * Role is set by Spring Boot after token verification.
  * Until that's wired up, `role` is always null and /admin is inaccessible
- * to everyone — which is the correct pre-launch behaviour.
+ * to everyone - which is the correct pre-launch behaviour.
  */
 export function RoleGuard({ children }: { children: React.ReactNode }) {
   const { user, role, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
-  const isAuthorized = !loading && user !== null && (role === "staff" || role === "admin");
+  const isAuthorized =
+    !loading && user !== null && (role === "staff" || role === "admin");
 
   useEffect(() => {
     if (loading) return;

@@ -18,7 +18,7 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "BOCRA — Botswana Communications Regulatory Authority",
+  title: "Welcome! | BOCRA",
   description:
     "The unified digital platform for BOCRA regulatory services. Verify licences, file complaints, register .bw domains, and access publications.",
 };
@@ -40,9 +40,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <AuthProvider>
-          <main id="main-content">
-            {children}
-          </main>
+          <main id="main-content">{children}</main>
         </AuthProvider>
         <Toaster />
       </body>

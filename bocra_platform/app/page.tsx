@@ -168,8 +168,7 @@ export default function HomePage() {
 
             <AnimatedSection animation="fade-up" delay={150}>
               <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.05] tracking-tight mb-6">
-                Regulate.{" "}
-                <span className="text-bocra-gold">Connect.</span>
+                Regulate. <span className="text-bocra-gold">Connect.</span>
                 <br />
                 Protect Botswana.
               </h1>
@@ -177,9 +176,9 @@ export default function HomePage() {
 
             <AnimatedSection animation="fade-up" delay={300}>
               <p className="text-white/70 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl">
-                The unified digital platform for all BOCRA regulatory services --
-                licence verification, complaint management, .bw domain registry,
-                and more.
+                The unified digital platform for all BOCRA regulatory services
+                -- licence verification, complaint management, .bw domain
+                registry, and more.
               </p>
             </AnimatedSection>
 
@@ -190,13 +189,21 @@ export default function HomePage() {
             {/* Quick actions */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
               {quickActions.map(({ icon: Icon, label, href, accent }, i) => (
-                <AnimatedSection key={href} animation="fade-up" delay={550 + i * 100}>
+                <AnimatedSection
+                  key={href}
+                  animation="fade-up"
+                  delay={550 + i * 100}
+                >
                   <Link
                     href={href}
                     className="flex flex-col items-center gap-2 p-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all text-center group"
                   >
-                    <Icon className={`w-5 h-5 ${accent} group-hover:scale-110 transition-transform`} />
-                    <span className="text-white/80 text-xs font-medium">{label}</span>
+                    <Icon
+                      className={`w-5 h-5 ${accent} group-hover:scale-110 transition-transform`}
+                    />
+                    <span className="text-white/80 text-xs font-medium">
+                      {label}
+                    </span>
                   </Link>
                 </AnimatedSection>
               ))}
@@ -273,8 +280,12 @@ export default function HomePage() {
                       >
                         <Icon className="w-5 h-5" />
                       </div>
-                      <h3 className="font-semibold text-bocra-navy mb-1.5">{title}</h3>
-                      <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                      <h3 className="font-semibold text-bocra-navy mb-1.5">
+                        {title}
+                      </h3>
+                      <p className="text-gray-500 text-sm leading-relaxed">
+                        {desc}
+                      </p>
                       <div className="flex items-center gap-1 mt-4 text-bocra-gold text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                         Learn more <ArrowRight className="w-3.5 h-3.5" />
                       </div>
@@ -318,11 +329,15 @@ export default function HomePage() {
                       {name.slice(0, 2).toUpperCase()}
                     </span>
                   </div>
-                  <div className="font-semibold text-bocra-navy text-xs">{name}</div>
+                  <div className="font-semibold text-bocra-navy text-xs">
+                    {name}
+                  </div>
                   <div className="text-[10px] text-gray-400 mt-0.5">{type}</div>
                   <div className="flex items-center justify-center gap-1 mt-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="text-[10px] text-green-600 font-medium">Active</span>
+                    <span className="text-[10px] text-green-600 font-medium">
+                      Active
+                    </span>
                   </div>
                 </div>
               </AnimatedSection>
@@ -387,10 +402,10 @@ export default function HomePage() {
                         category === "Public Notice"
                           ? "bg-bocra-red/10 text-bocra-red border-bocra-red/20"
                           : highlight
-                          ? "bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20"
-                          : category === "Tender"
-                          ? "bg-blue-50 text-blue-600 border-blue-100"
-                          : "bg-gray-100 text-gray-600 border-transparent"
+                            ? "bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20"
+                            : category === "Tender"
+                              ? "bg-blue-50 text-blue-600 border-blue-100"
+                              : "bg-gray-100 text-gray-600 border-transparent"
                       }`}
                     >
                       {category}
@@ -432,8 +447,9 @@ export default function HomePage() {
                 Draft National Spectrum Policy 2026
               </h3>
               <p className="text-white/80 text-sm mt-2 max-w-lg">
-                We believe in inclusive policymaking. Have your say on the revised
-                National Frequency Allocation Plan. Public comment period open until 30 April 2026.
+                We believe in inclusive policymaking. Have your say on the
+                revised National Frequency Allocation Plan. Public comment
+                period open until 30 April 2026.
               </p>
             </div>
             <Link
@@ -469,15 +485,14 @@ export default function HomePage() {
             <AnimatedSection animation="fade-left" className="lg:col-span-2">
               <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm h-[400px]">
                 <iframe
-                  title="BOCRA Office Location"
-                  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=BOCRA,Plot+50671+Independence+Avenue,Gaborone,Botswana&zoom=17"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.3326960246245!2d25.91678387536435!3d-24.654996378063966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ebb5ba1128f935d%3A0xa164d400c9b368f5!2sBOCRA%20-%20Botswana%20Communication%20Regulatory%20Authority!5e1!3m2!1sen!2sbw!4v1774310861088!5m2!1sen!2sbw"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                />
+                ></iframe>
               </div>
             </AnimatedSection>
 

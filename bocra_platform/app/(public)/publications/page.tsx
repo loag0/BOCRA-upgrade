@@ -34,39 +34,80 @@ type PubType =
 // Map URL ?type= values → internal type keys
 const URL_TO_TYPE: Record<string, PubType> = {
   "annual-report": "annual_report",
-  "qos":           "qos_report",
-  "legislation":   "legislation",
-  "consultation":  "consultation",
-  "tender":        "tender",
-  "notice":        "notice",
-  "speech":        "speech",
+  qos: "qos_report",
+  legislation: "legislation",
+  consultation: "consultation",
+  tender: "tender",
+  notice: "notice",
+  speech: "speech",
 };
 
 const TYPE_META: Record<
   PubType,
   { label: string; icon: React.ElementType; color: string; bg: string }
 > = {
-  all:          { label: "All",             icon: BookOpen,     color: "text-bocra-navy",  bg: "bg-bocra-navy/10" },
-  annual_report:{ label: "Annual Reports",  icon: BarChart2,    color: "text-bocra-blue",  bg: "bg-bocra-blue/10" },
-  qos_report:   { label: "QoS Reports",     icon: FileCheck,    color: "text-bocra-green", bg: "bg-green-50" },
-  legislation:  { label: "Legislation",     icon: Scale,        color: "text-purple-700",  bg: "bg-purple-50" },
-  consultation: { label: "Consultations",   icon: MessageSquare,color: "text-amber-700",   bg: "bg-amber-50" },
-  tender:       { label: "Tenders",         icon: FileText,     color: "text-bocra-red",   bg: "bg-red-50" },
-  notice:       { label: "Notices",         icon: Megaphone,    color: "text-gray-600",    bg: "bg-gray-100" },
-  speech:       { label: "Speeches",        icon: Newspaper,    color: "text-indigo-600",  bg: "bg-indigo-50" },
+  all: {
+    label: "All",
+    icon: BookOpen,
+    color: "text-bocra-navy",
+    bg: "bg-bocra-navy/10",
+  },
+  annual_report: {
+    label: "Annual Reports",
+    icon: BarChart2,
+    color: "text-bocra-blue",
+    bg: "bg-bocra-blue/10",
+  },
+  qos_report: {
+    label: "QoS Reports",
+    icon: FileCheck,
+    color: "text-bocra-green",
+    bg: "bg-green-50",
+  },
+  legislation: {
+    label: "Legislation",
+    icon: Scale,
+    color: "text-purple-700",
+    bg: "bg-purple-50",
+  },
+  consultation: {
+    label: "Consultations",
+    icon: MessageSquare,
+    color: "text-amber-700",
+    bg: "bg-amber-50",
+  },
+  tender: {
+    label: "Tenders",
+    icon: FileText,
+    color: "text-bocra-red",
+    bg: "bg-red-50",
+  },
+  notice: {
+    label: "Notices",
+    icon: Megaphone,
+    color: "text-gray-600",
+    bg: "bg-gray-100",
+  },
+  speech: {
+    label: "Speeches",
+    icon: Newspaper,
+    color: "text-indigo-600",
+    bg: "bg-indigo-50",
+  },
 };
 
 const FILTER_TABS: PubType[] = [
-  "all", "annual_report", "qos_report", "legislation", "consultation", "tender",
+  "all",
+  "annual_report",
+  "qos_report",
+  "legislation",
+  "consultation",
+  "tender",
 ];
 
 // ── Publication card ───────────────────────────────────────────────────────
 
-function PubCard({
-  pub,
-}: {
-  pub: (typeof mockPublications)[number];
-}) {
+function PubCard({ pub }: { pub: (typeof mockPublications)[number] }) {
   const type = pub.type as PubType;
   const meta = TYPE_META[type] ?? TYPE_META.notice;
   const Icon = meta.icon;
@@ -81,7 +122,7 @@ function PubCard({
     <div className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md transition-shadow flex gap-4 group">
       {/* Icon */}
       <div
-        className={`w-11 h-11 rounded-xl ${meta.bg} flex items-center justify-center flex-shrink-0 mt-0.5`}
+        className={`w-11 h-11 rounded-xl ${meta.bg} flex items-center justify-center shrink-0 mt-0.5`}
       >
         <Icon className={`w-5 h-5 ${meta.color}`} />
       </div>
@@ -114,7 +155,7 @@ function PubCard({
             href={pub.fileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 flex items-center gap-1.5 h-8 px-3 border border-gray-200 hover:border-bocra-blue hover:bg-bocra-blue hover:text-white text-bocra-navy rounded-lg text-xs font-medium transition-all"
+            className="shrink-0 flex items-center gap-1.5 h-8 px-3 border border-gray-200 hover:border-bocra-blue hover:bg-bocra-blue hover:text-white text-bocra-navy rounded-lg text-xs font-medium transition-all"
           >
             <Download className="w-3.5 h-3.5" />
             PDF
@@ -143,11 +184,12 @@ export default function PublicationsPage() {
       list = list.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
-          p.description?.toLowerCase().includes(q)
+          p.description?.toLowerCase().includes(q),
       );
     }
     return list.sort(
-      (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
     );
   }, [activeType, query]);
 
@@ -155,7 +197,6 @@ export default function PublicationsPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-bocra-surface">
-
         {/* Hero */}
         <div className="bg-bocra-navy pt-24 pb-14">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -163,8 +204,8 @@ export default function PublicationsPage() {
               Publications Library
             </h1>
             <p className="text-white/70 mb-8 max-w-xl mx-auto">
-              Annual reports, QoS monitoring data, legislation, consultation papers,
-              tenders and official BOCRA notices — all in one place.
+              Annual reports, QoS monitoring data, legislation, consultation
+              papers, tenders and official BOCRA notices - all in one place.
             </p>
 
             {/* Search */}
@@ -182,7 +223,6 @@ export default function PublicationsPage() {
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-
           {/* Filter tabs */}
           <div className="flex gap-2 flex-wrap mb-8">
             {FILTER_TABS.map((type) => {
@@ -215,12 +255,17 @@ export default function PublicationsPage() {
           {filtered.length === 0 ? (
             <div className="text-center py-20">
               <FileText className="w-10 h-10 text-gray-200 mx-auto mb-3" />
-              <p className="text-bocra-navy font-semibold">No publications found</p>
+              <p className="text-bocra-navy font-semibold">
+                No publications found
+              </p>
               <p className="text-gray-400 text-sm mt-1">
                 Try a different search term or category.
               </p>
               <button
-                onClick={() => { setQuery(""); setActiveType("all"); }}
+                onClick={() => {
+                  setQuery("");
+                  setActiveType("all");
+                }}
                 className="mt-4 text-sm text-bocra-blue hover:text-bocra-navy transition-colors"
               >
                 Clear filters
@@ -237,8 +282,8 @@ export default function PublicationsPage() {
           {/* Footer note */}
           <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-gray-400">
             <p>
-              {filtered.length} document{filtered.length !== 1 ? "s" : ""} shown ·
-              For older publications contact{" "}
+              {filtered.length} document{filtered.length !== 1 ? "s" : ""} shown
+              · For older publications contact{" "}
               <a
                 href="mailto:info@bocra.org.bw"
                 className="text-bocra-blue hover:text-bocra-navy transition-colors"

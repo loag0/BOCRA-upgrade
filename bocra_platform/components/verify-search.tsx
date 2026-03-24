@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Search, CheckCircle2, XCircle, AlertCircle, ExternalLink } from "lucide-react";
+import {
+  Search,
+  CheckCircle2,
+  XCircle,
+  AlertCircle,
+  ExternalLink,
+} from "lucide-react";
 import { searchOperators } from "@/lib/mock-data";
 import type { Operator } from "@/types";
 import { Badge } from "@/components/ui/badge";
@@ -44,32 +50,48 @@ function OperatorCard({ operator }: { operator: Operator }) {
       {/* Header */}
       <div className="bg-bocra-navy px-6 py-5 flex items-start justify-between gap-4">
         <div>
-          <p className="text-white/50 text-xs font-mono mb-1">{operator.licenceNumber}</p>
+          <p className="text-white/50 text-xs font-mono mb-1">
+            {operator.licenceNumber}
+          </p>
           <h2 className="font-heading text-lg font-bold text-white leading-snug">
             {operator.operatorName}
           </h2>
-          <p className="text-white/70 text-sm mt-0.5">{operator.categoryFull}</p>
+          <p className="text-white/70 text-sm mt-0.5">
+            {operator.categoryFull}
+          </p>
         </div>
-        <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-3 py-1.5 flex-shrink-0">
+        <div className="flex items-center gap-1.5 bg-white/10 rounded-lg px-3 py-1.5 shrink-0">
           <StatusIcon className={`w-4 h-4 ${status.iconColor}`} />
-          <span className="text-white text-sm font-medium">{operator.status}</span>
+          <span className="text-white text-sm font-medium">
+            {operator.status}
+          </span>
         </div>
       </div>
 
       {/* Details */}
       <div className="px-6 py-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Category</p>
-          <p className="text-bocra-navy font-medium text-sm">{operator.subCategory}</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+            Category
+          </p>
+          <p className="text-bocra-navy font-medium text-sm">
+            {operator.subCategory}
+          </p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Compliance</p>
-          <Badge className={`text-xs ${complianceConfig[operator.complianceStatus]}`}>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+            Compliance
+          </p>
+          <Badge
+            className={`text-xs ${complianceConfig[operator.complianceStatus]}`}
+          >
             {operator.complianceStatus}
           </Badge>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Licence Issued</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+            Licence Issued
+          </p>
           <p className="text-bocra-navy font-medium text-sm">
             {new Date(operator.issuedAt).toLocaleDateString("en-BW", {
               day: "numeric",
@@ -79,7 +101,9 @@ function OperatorCard({ operator }: { operator: Operator }) {
           </p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Valid Until</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+            Valid Until
+          </p>
           <p className="text-bocra-navy font-medium text-sm">
             {new Date(operator.expiresAt).toLocaleDateString("en-BW", {
               day: "numeric",
@@ -104,11 +128,15 @@ function OperatorCard({ operator }: { operator: Operator }) {
           </div>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Address</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+            Address
+          </p>
           <p className="text-bocra-navy text-sm">{operator.address}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Website</p>
+          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+            Website
+          </p>
           <a
             href={`https://${operator.website}`}
             target="_blank"
@@ -122,7 +150,8 @@ function OperatorCard({ operator }: { operator: Operator }) {
       </div>
 
       <div className="px-6 py-3 bg-bocra-surface border-t border-gray-100 text-xs text-gray-400">
-        Verified against BOCRA licence registry · {new Date().toLocaleDateString("en-BW")}
+        Verified against BOCRA licence registry ·{" "}
+        {new Date().toLocaleDateString("en-BW")}
       </div>
     </div>
   );
@@ -153,7 +182,7 @@ export function VerifySearch() {
         />
         <button
           type="submit"
-          className="px-6 py-3.5 bg-bocra-gold hover:bg-bocra-gold/90 text-white font-semibold rounded-r-xl transition-colors flex items-center gap-2 flex-shrink-0"
+          className="px-6 py-3.5 bg-bocra-gold hover:bg-bocra-gold/90 text-white font-semibold rounded-r-xl transition-colors flex items-center gap-2 shrink-0"
         >
           <Search className="w-4 h-4" />
           Verify
@@ -166,10 +195,12 @@ export function VerifySearch() {
           {results.length === 0 ? (
             <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
               <XCircle className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-              <p className="text-bocra-navy font-semibold mb-1">No licence found</p>
+              <p className="text-bocra-navy font-semibold mb-1">
+                No licence found
+              </p>
               <p className="text-gray-500 text-sm">
-                No BOCRA-licensed operator matches &quot;{submitted}&quot;. Check the
-                spelling or try the full operator name.
+                No BOCRA-licensed operator matches &quot;{submitted}&quot;.
+                Check the spelling or try the full operator name.
               </p>
             </div>
           ) : (

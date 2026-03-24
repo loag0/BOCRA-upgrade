@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
       setSent(true);
     } catch (err: unknown) {
       const code = (err as { code?: string }).code ?? "";
-      // Don't reveal whether email exists — silently succeed for user-not-found
+      // Don't reveal whether email exists - silently succeed for user-not-found
       if (code === "auth/user-not-found") {
         setSentEmail(data.email);
         setSent(true);
@@ -85,7 +85,10 @@ export default function ForgotPasswordPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-gray-700 text-sm font-medium">
+            <Label
+              htmlFor="email"
+              className="text-gray-700 text-sm font-medium"
+            >
               Email address
             </Label>
             <Input

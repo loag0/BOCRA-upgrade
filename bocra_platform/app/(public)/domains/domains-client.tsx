@@ -19,22 +19,29 @@ import {
 // Domain zones
 
 const ZONES = [
-  { zone: ".co.bw",    desc: "Commercial entities",               open: true },
-  { zone: ".org.bw",   desc: "Non-profit organisations",          open: true },
-  { zone: ".net.bw",   desc: "Network infrastructure providers",  open: true },
-  { zone: ".me.bw",    desc: "Individuals / personal sites",      open: true },
-  { zone: ".shop.bw",  desc: "E-commerce & retail",               open: true },
-  { zone: ".agric.bw", desc: "Agricultural sector",               open: true },
-  { zone: ".ac.bw",    desc: "Academic institutions",             open: false },
-  { zone: ".gov.bw",   desc: "Government bodies only",            open: false },
+  { zone: ".co.bw", desc: "Commercial entities", open: true },
+  { zone: ".org.bw", desc: "Non-profit organisations", open: true },
+  { zone: ".net.bw", desc: "Network infrastructure providers", open: true },
+  { zone: ".me.bw", desc: "Individuals / personal sites", open: true },
+  { zone: ".shop.bw", desc: "E-commerce & retail", open: true },
+  { zone: ".agric.bw", desc: "Agricultural sector", open: true },
+  { zone: ".ac.bw", desc: "Academic institutions", open: false },
+  { zone: ".gov.bw", desc: "Government bodies only", open: false },
 ];
 
 // Mock availability
 
 const TAKEN_DOMAINS = new Set([
-  "btc.co.bw", "mascom.co.bw", "orange.co.bw", "bofinet.co.bw",
-  "bocra.org.bw", "gov.co.bw", "abc.co.bw", "test.co.bw",
-  "botswana.co.bw", "gaborone.co.bw",
+  "btc.co.bw",
+  "mascom.co.bw",
+  "orange.co.bw",
+  "bofinet.co.bw",
+  "bocra.org.bw",
+  "gov.co.bw",
+  "abc.co.bw",
+  "test.co.bw",
+  "botswana.co.bw",
+  "gaborone.co.bw",
 ]);
 
 type AvailabilityResult = {
@@ -44,7 +51,10 @@ type AvailabilityResult = {
 };
 
 function checkAvailability(input: string): AvailabilityResult {
-  const domain = input.toLowerCase().trim().replace(/^https?:\/\//, "");
+  const domain = input
+    .toLowerCase()
+    .trim()
+    .replace(/^https?:\/\//, "");
   const available = !TAKEN_DOMAINS.has(domain);
 
   if (!available) {
@@ -61,10 +71,17 @@ function checkAvailability(input: string): AvailabilityResult {
 
 // WHOIS mock
 
-const WHOIS_DATA: Record<string, {
-  registrant: string; org: string; email: string;
-  registered: string; expires: string; nameservers: string[];
-}> = {
+const WHOIS_DATA: Record<
+  string,
+  {
+    registrant: string;
+    org: string;
+    email: string;
+    registered: string;
+    expires: string;
+    nameservers: string[];
+  }
+> = {
   "btc.co.bw": {
     registrant: "Botswana Telecommunications Corporation Limited",
     org: "BTC",
@@ -116,7 +133,7 @@ const FAQS = [
   },
 ];
 
-// Availability checker 
+// Availability checker
 
 function AvailabilityChecker() {
   const [input, setInput] = useState("");
@@ -146,7 +163,7 @@ function AvailabilityChecker() {
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-3.5 bg-bocra-gold hover:bg-bocra-gold/90 disabled:opacity-60 text-bocra-navy font-semibold rounded-r-xl transition-colors flex items-center gap-2 flex-shrink-0"
+          className="px-6 py-3.5 bg-bocra-gold hover:bg-bocra-gold/90 disabled:opacity-60 text-bocra-navy font-semibold rounded-r-xl transition-colors flex items-center gap-2 shrink-0"
         >
           {loading ? (
             <span className="w-4 h-4 border-2 border-bocra-navy/30 border-t-bocra-navy rounded-full animate-spin" />
@@ -162,11 +179,15 @@ function AvailabilityChecker() {
           {result.available ? (
             <div className="bg-green-50 border border-green-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1">
-                <CheckCircle2 className="w-5 h-5 text-bocra-green flex-shrink-0" />
-                <span className="font-semibold text-bocra-green">Available!</span>
+                <CheckCircle2 className="w-5 h-5 text-bocra-green shrink-0" />
+                <span className="font-semibold text-bocra-green">
+                  Available!
+                </span>
               </div>
               <p className="text-sm text-gray-600 mb-3">
-                <span className="font-mono font-semibold text-bocra-navy">{result.domain}</span>{" "}
+                <span className="font-mono font-semibold text-bocra-navy">
+                  {result.domain}
+                </span>{" "}
                 is available for registration.
               </p>
               <a
@@ -181,11 +202,15 @@ function AvailabilityChecker() {
           ) : (
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1">
-                <XCircle className="w-5 h-5 text-bocra-red flex-shrink-0" />
-                <span className="font-semibold text-bocra-navy">Already registered</span>
+                <XCircle className="w-5 h-5 text-bocra-red shrink-0" />
+                <span className="font-semibold text-bocra-navy">
+                  Already registered
+                </span>
               </div>
               <p className="text-sm text-gray-500 mb-3">
-                <span className="font-mono font-semibold text-bocra-navy">{result.domain}</span>{" "}
+                <span className="font-mono font-semibold text-bocra-navy">
+                  {result.domain}
+                </span>{" "}
                 is taken. Try one of these alternatives:
               </p>
               {result.suggestions && result.suggestions.length > 0 && (
@@ -193,7 +218,10 @@ function AvailabilityChecker() {
                   {result.suggestions.map((s) => (
                     <button
                       key={s}
-                      onClick={() => { setInput(s); setResult(checkAvailability(s)); }}
+                      onClick={() => {
+                        setInput(s);
+                        setResult(checkAvailability(s));
+                      }}
                       className="font-mono text-xs border border-gray-200 hover:border-bocra-blue hover:text-bocra-blue px-3 py-1.5 rounded-lg text-bocra-navy transition-colors"
                     >
                       {s}
@@ -213,7 +241,9 @@ function AvailabilityChecker() {
 
 function WhoisLookup() {
   const [input, setInput] = useState("");
-  const [result, setResult] = useState<typeof WHOIS_DATA[string] | null | "not_found">(null);
+  const [result, setResult] = useState<
+    (typeof WHOIS_DATA)[string] | null | "not_found"
+  >(null);
   const [loading, setLoading] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -227,7 +257,11 @@ function WhoisLookup() {
   };
 
   const fmt = (iso: string) =>
-    new Date(iso).toLocaleDateString("en-BW", { day: "numeric", month: "long", year: "numeric" });
+    new Date(iso).toLocaleDateString("en-BW", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
 
   return (
     <div>
@@ -257,16 +291,42 @@ function WhoisLookup() {
 
       {result && result !== "not_found" && (
         <div className="mt-4 bg-bocra-navy/5 border border-bocra-navy/10 rounded-xl p-4 font-mono text-xs space-y-1.5 max-w-md">
-          <p><span className="text-gray-400 w-28 inline-block">Domain:</span> <span className="text-bocra-navy font-semibold">{input.toLowerCase().trim()}</span></p>
-          <p><span className="text-gray-400 w-28 inline-block">Registrant:</span> <span className="text-bocra-navy">{result.registrant}</span></p>
-          <p><span className="text-gray-400 w-28 inline-block">Organisation:</span> <span className="text-bocra-navy">{result.org}</span></p>
-          <p><span className="text-gray-400 w-28 inline-block">Email:</span> <span className="text-bocra-navy">{result.email}</span></p>
-          <p><span className="text-gray-400 w-28 inline-block">Registered:</span> <span className="text-bocra-navy">{fmt(result.registered)}</span></p>
-          <p><span className="text-gray-400 w-28 inline-block">Expires:</span> <span className="text-bocra-navy">{fmt(result.expires)}</span></p>
+          <p>
+            <span className="text-gray-400 w-28 inline-block">Domain:</span>{" "}
+            <span className="text-bocra-navy font-semibold">
+              {input.toLowerCase().trim()}
+            </span>
+          </p>
+          <p>
+            <span className="text-gray-400 w-28 inline-block">Registrant:</span>{" "}
+            <span className="text-bocra-navy">{result.registrant}</span>
+          </p>
+          <p>
+            <span className="text-gray-400 w-28 inline-block">
+              Organisation:
+            </span>{" "}
+            <span className="text-bocra-navy">{result.org}</span>
+          </p>
+          <p>
+            <span className="text-gray-400 w-28 inline-block">Email:</span>{" "}
+            <span className="text-bocra-navy">{result.email}</span>
+          </p>
+          <p>
+            <span className="text-gray-400 w-28 inline-block">Registered:</span>{" "}
+            <span className="text-bocra-navy">{fmt(result.registered)}</span>
+          </p>
+          <p>
+            <span className="text-gray-400 w-28 inline-block">Expires:</span>{" "}
+            <span className="text-bocra-navy">{fmt(result.expires)}</span>
+          </p>
           <div className="pt-1">
-            <span className="text-gray-400 inline-block mb-1">Name servers:</span>
+            <span className="text-gray-400 inline-block mb-1">
+              Name servers:
+            </span>
             {result.nameservers.map((ns) => (
-              <p key={ns} className="pl-28 text-bocra-navy">{ns}</p>
+              <p key={ns} className="pl-28 text-bocra-navy">
+                {ns}
+              </p>
             ))}
           </div>
         </div>
@@ -295,21 +355,24 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         <span className="text-sm font-medium text-bocra-navy group-hover:text-bocra-blue transition-colors">
           {q}
         </span>
-        {open
-          ? <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          : <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />}
+        {open ? (
+          <ChevronUp className="w-4 h-4 text-gray-400 shrink-0" />
+        ) : (
+          <ChevronDown className="w-4 h-4 text-gray-400 shrink-0" />
+        )}
       </button>
-      {open && <p className="text-sm text-gray-500 leading-relaxed pb-4">{a}</p>}
+      {open && (
+        <p className="text-sm text-gray-500 leading-relaxed pb-4">{a}</p>
+      )}
     </div>
   );
 }
 
-// Main client component 
+// Main client component
 
 export function DomainsClient() {
   return (
     <main className="min-h-screen bg-bocra-surface">
-
       {/* Hero */}
       <div className="bg-bocra-navy pt-24 pb-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -321,8 +384,8 @@ export function DomainsClient() {
             .bw Domain Registry
           </h1>
           <p className="text-white/70 mb-2 max-w-xl mx-auto">
-            Botswana&apos;s country code top-level domain — administered by BOCRA on
-            behalf of the nation. Over 8,800 domains registered.
+            Botswana&apos;s country code top-level domain - administered by
+            BOCRA on behalf of the nation. Over 8,800 domains registered.
           </p>
           <p className="text-white/40 text-xs mb-10">
             Registration is handled by BOCRA-accredited registrars.{" "}
@@ -340,41 +403,57 @@ export function DomainsClient() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-12">
-
         {/* Stats strip */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { icon: Globe,  value: "8,800+", label: "Registered domains" },
-            { icon: Shield, value: "8",      label: "Available zones" },
-            { icon: Users,  value: "47+",    label: "Accredited registrars" },
-            { icon: Clock,  value: "24–48h", label: "Registration turnaround" },
-          ].slice(0, 3).map(({ icon: Icon, value, label }) => (
-            <div key={label} className="bg-white rounded-xl border border-gray-100 p-5 text-center">
-              <Icon className="w-5 h-5 text-bocra-blue mx-auto mb-2" />
-              <p className="text-2xl font-bold text-bocra-navy">{value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{label}</p>
-            </div>
-          ))}
+            { icon: Globe, value: "8,800+", label: "Registered domains" },
+            { icon: Shield, value: "8", label: "Available zones" },
+            { icon: Users, value: "47+", label: "Accredited registrars" },
+            { icon: Clock, value: "24–48h", label: "Registration turnaround" },
+          ]
+            .slice(0, 3)
+            .map(({ icon: Icon, value, label }) => (
+              <div
+                key={label}
+                className="bg-white rounded-xl border border-gray-100 p-5 text-center"
+              >
+                <Icon className="w-5 h-5 text-bocra-blue mx-auto mb-2" />
+                <p className="text-2xl font-bold text-bocra-navy">{value}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+              </div>
+            ))}
         </div>
 
         {/* Available zones */}
         <div>
-          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">Available Zones</h2>
-          <p className="text-sm text-gray-500 mb-5">Eight .bw domain zones, each serving a different sector.</p>
+          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">
+            Available Zones
+          </h2>
+          <p className="text-sm text-gray-500 mb-5">
+            Eight .bw domain zones, each serving a different sector.
+          </p>
           <div className="grid sm:grid-cols-2 gap-3">
             {ZONES.map(({ zone, desc, open }) => (
               <div
                 key={zone}
                 className={`flex items-center gap-4 bg-white rounded-xl border px-5 py-4 border-gray-100 ${!open ? "opacity-60" : ""}`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${open ? "bg-bocra-blue/10" : "bg-gray-100"}`}>
-                  <Globe className={`w-4 h-4 ${open ? "text-bocra-blue" : "text-gray-400"}`} />
+                <div
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${open ? "bg-bocra-blue/10" : "bg-gray-100"}`}
+                >
+                  <Globe
+                    className={`w-4 h-4 ${open ? "text-bocra-blue" : "text-gray-400"}`}
+                  />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-mono font-semibold text-bocra-navy text-sm">{zone}</p>
+                  <p className="font-mono font-semibold text-bocra-navy text-sm">
+                    {zone}
+                  </p>
                   <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
                 </div>
-                <span className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0 ${open ? "bg-green-50 text-bocra-green" : "bg-gray-100 text-gray-400"}`}>
+                <span
+                  className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${open ? "bg-green-50 text-bocra-green" : "bg-gray-100 text-gray-400"}`}
+                >
                   {open ? "Open" : "Restricted"}
                 </span>
               </div>
@@ -384,20 +463,46 @@ export function DomainsClient() {
 
         {/* Registration steps */}
         <div>
-          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">How to Register</h2>
+          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">
+            How to Register
+          </h2>
           <p className="text-sm text-gray-500 mb-5">
-            .bw domains are registered through BOCRA-accredited registrars — not directly through this portal.
+            .bw domains are registered through BOCRA-accredited registrars - not
+            directly through this portal.
           </p>
           <div className="grid sm:grid-cols-4 gap-4">
             {[
-              { step: "1", title: "Check availability",  desc: "Use the search above to confirm your chosen domain is available." },
-              { step: "2", title: "Choose a registrar",  desc: "Contact any BOCRA-accredited registrar. Full list at nic.net.bw." },
-              { step: "3", title: "Submit documents",    desc: "Provide proof of identity and any sector-specific eligibility documents." },
-              { step: "4", title: "Domain activated",    desc: "Your registrar submits to the registry. Domain active within 24–48 hours." },
+              {
+                step: "1",
+                title: "Check availability",
+                desc: "Use the search above to confirm your chosen domain is available.",
+              },
+              {
+                step: "2",
+                title: "Choose a registrar",
+                desc: "Contact any BOCRA-accredited registrar. Full list at nic.net.bw.",
+              },
+              {
+                step: "3",
+                title: "Submit documents",
+                desc: "Provide proof of identity and any sector-specific eligibility documents.",
+              },
+              {
+                step: "4",
+                title: "Domain activated",
+                desc: "Your registrar submits to the registry. Domain active within 24–48 hours.",
+              },
             ].map(({ step, title, desc }) => (
-              <div key={step} className="bg-white rounded-xl border border-gray-100 p-5">
-                <div className="w-7 h-7 rounded-full bg-bocra-navy text-white text-xs font-bold flex items-center justify-center mb-3">{step}</div>
-                <p className="text-sm font-semibold text-bocra-navy mb-1">{title}</p>
+              <div
+                key={step}
+                className="bg-white rounded-xl border border-gray-100 p-5"
+              >
+                <div className="w-7 h-7 rounded-full bg-bocra-navy text-white text-xs font-bold flex items-center justify-center mb-3">
+                  {step}
+                </div>
+                <p className="text-sm font-semibold text-bocra-navy mb-1">
+                  {title}
+                </p>
                 <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
               </div>
             ))}
@@ -426,21 +531,31 @@ export function DomainsClient() {
         <div className="bg-white rounded-2xl border border-gray-100 p-6">
           <div className="flex items-center gap-2 mb-1">
             <Info className="w-4 h-4 text-bocra-blue" />
-            <h2 className="font-heading text-xl font-bold text-bocra-navy">WHOIS Lookup</h2>
+            <h2 className="font-heading text-xl font-bold text-bocra-navy">
+              WHOIS Lookup
+            </h2>
           </div>
           <p className="text-sm text-gray-500 mb-5">
             Look up the registered owner of any .bw domain. Try{" "}
-            <span className="font-mono text-bocra-blue text-xs">btc.co.bw</span> or{" "}
-            <span className="font-mono text-xs text-gray-500">bocra.org.bw</span>.
+            <span className="font-mono text-bocra-blue text-xs">btc.co.bw</span>{" "}
+            or{" "}
+            <span className="font-mono text-xs text-gray-500">
+              bocra.org.bw
+            </span>
+            .
           </p>
           <WhoisLookup />
         </div>
 
         {/* FAQ */}
         <div>
-          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-5">Frequently Asked Questions</h2>
+          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-5">
+            Frequently Asked Questions
+          </h2>
           <div className="bg-white rounded-2xl border border-gray-100 px-6">
-            {FAQS.map((faq) => <FaqItem key={faq.q} q={faq.q} a={faq.a} />)}
+            {FAQS.map((faq) => (
+              <FaqItem key={faq.q} q={faq.q} a={faq.a} />
+            ))}
           </div>
         </div>
 
@@ -448,12 +563,18 @@ export function DomainsClient() {
         <div className="bg-bocra-navy rounded-2xl p-6 text-white">
           <h3 className="font-semibold mb-1">Governance &amp; Policy</h3>
           <p className="text-white/70 text-sm mb-4">
-            BOCRA administers the .bw ccTLD under Section 38(1) of the Communications
-            Regulatory Authority Act, 2012, as mandated by the Ministry of Transport
-            and Communications. Policy is guided by the .bw Technical Advisory Committee (TAC).
+            BOCRA administers the .bw ccTLD under Section 38(1) of the
+            Communications Regulatory Authority Act, 2012, as mandated by the
+            Ministry of Transport and Communications. Policy is guided by the
+            .bw Technical Advisory Committee (TAC).
           </p>
           <div className="flex flex-wrap gap-3">
-            {["Dispute Resolution Policy", "Acceptable Use Policy", "WHOIS Policy", "Registrar Accreditation"].map((doc) => (
+            {[
+              "Dispute Resolution Policy",
+              "Acceptable Use Policy",
+              "WHOIS Policy",
+              "Registrar Accreditation",
+            ].map((doc) => (
               <a
                 key={doc}
                 href="https://nic.net.bw"
@@ -466,7 +587,6 @@ export function DomainsClient() {
             ))}
           </div>
         </div>
-
       </div>
     </main>
   );

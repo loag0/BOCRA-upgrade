@@ -5,10 +5,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-/** Server-side only — never import on the client */
+/** Server-side only - never import on the client */
 export function createServiceClient() {
-  return createClient(
-    supabaseUrl,
-    process.env.SUPABASE_SERVICE_ROLE_KEY ?? ""
-  );
+  return createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY ?? "");
 }
