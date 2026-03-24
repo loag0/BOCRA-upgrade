@@ -8,3 +8,8 @@ docs/*
 !.vscode/launch.json
 
 bash.*
+
+backend/target/
+backend/.idea/
+backend/*.iml
+backend/.mvn/
