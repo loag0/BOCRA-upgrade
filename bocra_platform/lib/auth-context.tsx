@@ -12,7 +12,6 @@ const IDLE_TIMEOUT_MS = 30 * 60 * 1000;
 
 interface AuthContextValue {
   user: User | null;
-  /** Set by Spring Boot after token verification. Null until that's wired up. */
   role: UserRole | null;
   loading: boolean;
 }
@@ -32,7 +31,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const handleIdleLogout = useCallback(async () => {
     if (auth.currentUser) {
       await signOut();
-      // Redirect handled by auth guards -- user will be sent to login
     }
   }, []);
 
@@ -42,7 +40,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     timeoutRef.current = setTimeout(handleIdleLogout, IDLE_TIMEOUT_MS);
   }, [handleIdleLogout]);
 
-  // Listen for user activity to reset the idle timer
   useEffect(() => {
     if (!user) return;
 
@@ -50,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const handler = () => resetIdleTimer();
 
     events.forEach((e) => window.addEventListener(e, handler, { passive: true }));
-    resetIdleTimer(); // Start the timer on login
+    resetIdleTimer();
 
     return () => {
       events.forEach((e) => window.removeEventListener(e, handler));
@@ -59,11 +56,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user, resetIdleTimer]);
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (u) => {
+    return onAuthStateChanged(auth, async (u) => {
       setUser(u);
-      // Role comes from Spring Boot -- placeholder null until integrated.
-      // When ready: call Spring Boot /auth/me or similar, get role, setRole(role).
-      setRole(null);
+      if (u) {
+        try {
+          const token = await u.getIdToken();
+          const res = await fetch("http://localhost:8080/api/auth/me", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          setRole(data.role ?? null);
+        } catch {
+          setRole(null);
+        }
+      } else {
+        setRole(null);
+      }
       setLoading(false);
     });
   }, []);
