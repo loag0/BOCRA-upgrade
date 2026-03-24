@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { ShieldOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -33,6 +34,7 @@ export default function UnauthorizedPage() {
           </Button>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

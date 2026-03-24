@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -112,7 +113,15 @@ export function MandatePage({
   legislationDetail,
   children,
 }: MandatePageProps) {
-  const Icon = resolveIcon(icon);
+  const Icon = useMemo(() => resolveIcon(icon), [icon]);
+  const resolvedResponsibilities = useMemo(
+    () =>
+      responsibilities.map((r) => ({
+        ...r,
+        ResolvedIcon: resolveIcon(r.icon),
+      })),
+    [responsibilities],
+  );
 
   return (
     <>
@@ -232,22 +241,19 @@ export function MandatePage({
               </div>
             </AnimatedSection>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {responsibilities.map(({ icon: rIconName, title: rTitle, description: rDesc, color }, i) => {
-                const RIcon = resolveIcon(rIconName);
-                return (
+              {resolvedResponsibilities.map(({ ResolvedIcon, title: rTitle, description: rDesc, color }, i) => (
                   <AnimatedSection key={rTitle} animation="fade-up" delay={i * 100}>
                     <Card className="border-gray-100 bg-white shadow-sm h-full">
                       <CardContent className="p-6">
                         <div className={`w-10 h-10 rounded-lg ${color ?? "bg-bocra-navy/10 text-bocra-navy"} flex items-center justify-center mb-4`}>
-                          <RIcon className="w-5 h-5" />
+                          <ResolvedIcon className="w-5 h-5" />
                         </div>
                         <h3 className="font-semibold text-bocra-navy mb-2">{rTitle}</h3>
                         <p className="text-sm text-gray-500 leading-relaxed">{rDesc}</p>
                       </CardContent>
                     </Card>
                   </AnimatedSection>
-                );
-              })}
+              ))}
             </div>
           </div>
         </section>

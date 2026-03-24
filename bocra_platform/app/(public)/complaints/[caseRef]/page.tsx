@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -597,6 +598,7 @@ export default function ComplaintTrackerPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

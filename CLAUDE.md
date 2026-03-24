@@ -101,6 +101,7 @@ Every file touched must be evaluated against these criteria. When making tradeof
 
 - Every page needs the BOCRA brand feel: navy hero strip at top, bocra-surface body, consistent card styling
 - Add real images/illustrations - not just icons. Use Next.js `Image` component with proper sizing
+- **Photos must represent Botswana.** Use images of Black/African people, Botswana landscapes (Gaborone skyline), and African professional settings. Never use stock photos featuring non-African people - this is a Botswana government website and every image must reflect that cultural context. When sourcing new images, search specifically for "african professionals", "botswana", "gaborone", or "african [context]" on Unsplash.
 - Add page-load animations (fade-in, slide-up) using `tw-animate-css` (already installed)
 - Operators section should show actual logos, not initials
 - No dead/placeholder links (`href="#"`) - either link to a real page or remove the link

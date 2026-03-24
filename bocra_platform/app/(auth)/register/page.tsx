@@ -37,8 +37,14 @@ function getAuthError(code: string): string {
     "auth/invalid-email": "Enter a valid email address.",
     "auth/popup-closed-by-user": "Google sign-in was cancelled.",
     "auth/network-request-failed": "Network error. Check your connection.",
+    "auth/configuration-not-found": "Firebase project is not configured correctly. Check your environment variables.",
+    "auth/api-key-not-valid": "Firebase API key is invalid. Check NEXT_PUBLIC_FIREBASE_API_KEY.",
+    "auth/invalid-api-key": "Firebase API key is invalid. Check NEXT_PUBLIC_FIREBASE_API_KEY.",
+    "auth/operation-not-allowed": "Email/password sign-up is not enabled. Enable it in Firebase Console > Authentication > Sign-in method.",
+    "auth/admin-restricted-operation": "This operation is restricted. Enable Email/Password in Firebase Console > Authentication > Sign-in method.",
+    "auth/too-many-requests": "Too many attempts. Please try again later.",
   };
-  return map[code] ?? "Something went wrong. Please try again.";
+  return map[code] ?? `Something went wrong (${code || "unknown"}). Please try again.`;
 }
 
 export default function RegisterPage() {
@@ -60,6 +66,7 @@ export default function RegisterPage() {
       toast.success("Account created! Welcome to BOCRA.");
       router.push("/");
     } catch (err: unknown) {
+      console.error("Registration error:", err);
       const code = (err as { code?: string }).code ?? "";
       toast.error(getAuthError(code));
     }
@@ -72,6 +79,7 @@ export default function RegisterPage() {
       toast.success("Signed in with Google. Welcome to BOCRA.");
       router.push("/");
     } catch (err: unknown) {
+      console.error("Google sign-in error:", err);
       const code = (err as { code?: string }).code ?? "";
       toast.error(getAuthError(code));
     } finally {

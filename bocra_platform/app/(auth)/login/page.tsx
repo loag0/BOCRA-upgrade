@@ -29,8 +29,13 @@ function getAuthError(code: string): string {
     "auth/too-many-requests": "Too many attempts. Please try again later.",
     "auth/popup-closed-by-user": "Google sign-in was cancelled.",
     "auth/network-request-failed": "Network error. Check your connection.",
+    "auth/configuration-not-found": "Firebase project is not configured correctly. Check your environment variables.",
+    "auth/api-key-not-valid": "Firebase API key is invalid. Check NEXT_PUBLIC_FIREBASE_API_KEY.",
+    "auth/invalid-api-key": "Firebase API key is invalid. Check NEXT_PUBLIC_FIREBASE_API_KEY.",
+    "auth/operation-not-allowed": "Email/password sign-in is not enabled. Enable it in Firebase Console > Authentication > Sign-in method.",
+    "auth/admin-restricted-operation": "This operation is restricted. Enable Email/Password in Firebase Console > Authentication > Sign-in method.",
   };
-  return map[code] ?? "Something went wrong. Please try again.";
+  return map[code] ?? `Something went wrong (${code || "unknown"}). Please try again.`;
 }
 
 export default function LoginPage() {
@@ -51,6 +56,7 @@ export default function LoginPage() {
       await signInWithEmail(data.email, data.password);
       router.replace(redirect);
     } catch (err: unknown) {
+      console.error("Login error:", err);
       const code = (err as { code?: string }).code ?? "";
       toast.error(getAuthError(code));
     }
@@ -62,6 +68,7 @@ export default function LoginPage() {
       await signInWithGoogle();
       router.replace(redirect);
     } catch (err: unknown) {
+      console.error("Google sign-in error:", err);
       const code = (err as { code?: string }).code ?? "";
       toast.error(getAuthError(code));
     } finally {

@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { DomainsClient } from "./domains-client";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export default function DomainsPage() {
     <>
       <Navbar />
       <DomainsClient />
+      <Footer />
     </>
   );
 }

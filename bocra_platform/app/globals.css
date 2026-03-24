@@ -136,3 +136,28 @@
     @apply font-sans;
   }
 }
+
+/* BOCRA branded loading dots */
+.loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-dots .dot {
+  width: 14px;
+  height: 14px;
+  margin: 0 4px;
+  border-radius: 50%;
+  animation: bob 1s infinite alternate;
+}
+
+.loading-dots .dot:nth-child(1) { background-color: #007bc2; animation-delay: 0s; }
+.loading-dots .dot:nth-child(2) { background-color: #008751; animation-delay: 0.2s; }
+.loading-dots .dot:nth-child(3) { background-color: #d11242; animation-delay: 0.4s; }
+.loading-dots .dot:nth-child(4) { background-color: #f9d900; animation-delay: 0.6s; }
+
+@keyframes bob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}

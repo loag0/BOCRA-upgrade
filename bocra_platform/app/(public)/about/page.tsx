@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Phone,
   Radio,
@@ -230,14 +231,15 @@ export default function AboutPage() {
       <Navbar />
       <main className="min-h-screen bg-bocra-surface">
         {/* Hero strip */}
-        <section className="bg-bocra-navy pt-24 pb-16 relative overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, white 40px, white 41px),
-                repeating-linear-gradient(90deg, transparent, transparent 40px, white 40px, white 41px)`,
-            }}
+        <section className="relative bg-bocra-navy pt-24 pb-16 overflow-hidden">
+          <Image
+            src="/images/hero-cityscape.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-20"
+            priority
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav aria-label="Breadcrumb" className="mb-6">
