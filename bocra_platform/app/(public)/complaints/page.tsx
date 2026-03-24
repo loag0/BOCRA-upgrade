@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import Image from "next/image";
+import Link from "next/link";
 import {
   CheckCircle2,
   ChevronRight,
@@ -17,11 +19,13 @@ import {
   Loader2,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { AnimatedSection } from "@/components/animated-section";
 import { mockOperators } from "@/lib/mock-data";
 
 // ─── Operator contact data ────────────────────────────────────────────────────
@@ -689,47 +693,91 @@ export default function ComplaintsPage() {
       <Navbar />
       <main className="min-h-screen bg-bocra-surface">
         {/* Hero strip */}
-        <div className="bg-bocra-navy pt-24 pb-12">
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-            <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
-              Consumer Protection
-            </Badge>
-            <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
-              File a Complaint
-            </h1>
-            <p className="text-white/70 text-sm leading-relaxed">
-              BOCRA investigates complaints against licensed operators under the
-              Communications Regulatory Authority Act 2012.
-            </p>
+        <section className="bg-bocra-navy pt-24 pb-16 relative overflow-hidden">
+          <Image
+            src="/images/community-meeting.jpg"
+            alt=""
+            fill
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-bocra-navy/85" />
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, white 40px, white 41px),
+                repeating-linear-gradient(90deg, transparent, transparent 40px, white 40px, white 41px)`,
+            }}
+          />
+          <div className="relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center">
+            <AnimatedSection animation="fade-up" delay={0}>
+              <nav aria-label="Breadcrumb" className="mb-6 flex justify-center">
+                <ol className="flex items-center gap-1.5 text-sm text-white/40">
+                  <li>
+                    <Link href="/" className="hover:text-white/70 transition-colors">
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </li>
+                  <li className="text-white/70 font-medium">File a Complaint</li>
+                </ol>
+              </nav>
+            </AnimatedSection>
+
+            <AnimatedSection animation="fade-up" delay={100}>
+              <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
+                Consumer Protection
+              </Badge>
+            </AnimatedSection>
+
+            <AnimatedSection animation="fade-up" delay={200}>
+              <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3">
+                File a Complaint
+              </h1>
+            </AnimatedSection>
+
+            <AnimatedSection animation="fade-up" delay={300}>
+              <p className="text-white/70 text-sm leading-relaxed max-w-lg mx-auto">
+                BOCRA investigates complaints against licensed operators under the
+                Communications Regulatory Authority Act 2012. Your complaint helps
+                us protect all consumers in Botswana.
+              </p>
+            </AnimatedSection>
           </div>
-        </div>
+        </section>
 
         {/* Form card */}
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
-            {step < 3 && <StepIndicator current={step} />}
-            {step === 1 && <Step1 onContinue={handleStep1} />}
-            {step === 2 && (
-              <Step2 prefilledOperator={operatorName} onSubmit={handleStep2} />
-            )}
-            {step === 3 && <Step3 caseRef={caseRef} />}
-          </div>
+          <AnimatedSection animation="fade-up">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+              {step < 3 && <StepIndicator current={step} />}
+              {step === 1 && <Step1 onContinue={handleStep1} />}
+              {step === 2 && (
+                <Step2 prefilledOperator={operatorName} onSubmit={handleStep2} />
+              )}
+              {step === 3 && <Step3 caseRef={caseRef} />}
+            </div>
+          </AnimatedSection>
 
           {/* Legal note */}
           {step < 3 && (
-            <p className="text-center text-xs text-gray-400 mt-6 leading-relaxed">
-              BOCRA will only investigate complaints where sufficient evidence
-              of a breach of the CRA Act 2012 or licence conditions exists.{" "}
-              <a
-                href="/about/complaints-process"
-                className="underline hover:text-gray-600"
-              >
-                Learn about the complaints process.
-              </a>
-            </p>
+            <AnimatedSection animation="fade-in" delay={200}>
+              <p className="text-center text-xs text-gray-400 mt-6 leading-relaxed">
+                BOCRA will only investigate complaints where sufficient evidence
+                of a breach of the CRA Act 2012 or licence conditions exists.{" "}
+                <Link
+                  href="/about"
+                  className="underline hover:text-gray-600"
+                >
+                  Learn about the complaints process.
+                </Link>
+              </p>
+            </AnimatedSection>
           )}
         </div>
       </main>
+      <Footer />
     </>
   );
 }

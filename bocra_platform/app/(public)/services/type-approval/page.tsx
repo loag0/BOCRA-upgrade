@@ -1,11 +1,3 @@
-import {
-  CheckSquare,
-  FileText,
-  Shield,
-  Search,
-  Cpu,
-  AlertTriangle,
-} from "lucide-react";
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
@@ -20,7 +12,7 @@ export default function TypeApprovalPage() {
       title="Type Approval"
       subtitle="Equipment Regulation"
       description="All radio and telecommunications equipment used in Botswana must be BOCRA type-approved before it can be connected, used, or sold. Equipment must comply with ITU Region 1 standards."
-      icon={CheckSquare}
+      icon="CheckSquare"
       iconColor="bg-rose-500/20 text-rose-400"
       overview={[
         "Under Section 84 of the CRA Act, BOCRA operates a mandatory type approval regime for all radio and telecommunications equipment. No device may be connected to a network, used, or sold in Botswana without BOCRA type approval certification.",
@@ -38,37 +30,37 @@ export default function TypeApprovalPage() {
       legislationDetail="Section 84 governs type approval of radio and telecommunications equipment."
       responsibilities={[
         {
-          icon: FileText,
+          icon: "FileText",
           title: "Approval Process",
           description: "Reviews and processes type approval applications from importers, manufacturers, and distributors for all radio and telecom equipment.",
           color: "bg-rose-500/10 text-rose-500",
         },
         {
-          icon: Cpu,
+          icon: "Cpu",
           title: "Technical Testing",
           description: "Verifies equipment compliance with ITU Region 1 standards and BOCRA's Telecommunications Technical Specifications.",
           color: "bg-blue-500/10 text-blue-500",
         },
         {
-          icon: Search,
+          icon: "Search",
           title: "Approved Device Registry",
           description: "Maintains and publishes the registry of type-approved devices that are authorised for use and sale in Botswana.",
           color: "bg-green-500/10 text-green-500",
         },
         {
-          icon: Shield,
+          icon: "Shield",
           title: "Interference Prevention",
           description: "Ensures devices operate within assigned frequency bands and do not cause harmful interference to other services.",
           color: "bg-purple-500/10 text-purple-500",
         },
         {
-          icon: AlertTriangle,
+          icon: "AlertTriangle",
           title: "Enforcement",
           description: "Investigates and takes action against non-compliant equipment, including import restrictions and market withdrawal orders.",
           color: "bg-orange-500/10 text-orange-500",
         },
         {
-          icon: CheckSquare,
+          icon: "CheckSquare",
           title: "Certification",
           description: "Issues type approval certificates that authorise equipment for connection, use, and sale within Botswana.",
           color: "bg-cyan-500/10 text-cyan-500",

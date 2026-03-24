@@ -2,7 +2,11 @@
 
 import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+import { AnimatedSection } from "@/components/animated-section";
 import { mockPublications } from "@/lib/mock-data";
 import {
   Search,
@@ -17,6 +21,7 @@ import {
   Megaphone,
   Newspaper,
   Calendar,
+  ChevronRight,
 } from "lucide-react";
 
 // ── Type metadata ──────────────────────────────────────────────────────────
@@ -198,110 +203,146 @@ export default function PublicationsPage() {
       <Navbar />
       <main className="min-h-screen bg-bocra-surface">
         {/* Hero */}
-        <div className="bg-bocra-navy pt-24 pb-14">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
-              Publications Library
-            </h1>
-            <p className="text-white/70 mb-8 max-w-xl mx-auto">
-              Annual reports, QoS monitoring data, legislation, consultation
-              papers, tenders and official BOCRA notices - all in one place.
-            </p>
+        <div className="relative bg-bocra-navy pt-24 pb-14 overflow-hidden">
+          <Image
+            src="/images/documents-library.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-20"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            {/* Breadcrumbs */}
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex items-center justify-center gap-1.5 text-sm text-white/40">
+                <li>
+                  <Link href="/" className="hover:text-white/70 transition-colors">
+                    Home
+                  </Link>
+                </li>
+                <li><ChevronRight className="w-3.5 h-3.5" /></li>
+                <li className="text-white/70 font-medium">Publications</li>
+              </ol>
+            </nav>
+
+            <AnimatedSection animation="fade-up">
+              <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
+                Publications Library
+              </h1>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={100}>
+              <p className="text-white/70 mb-8 max-w-xl mx-auto">
+                Annual reports, QoS monitoring data, legislation, consultation
+                papers, tenders and official BOCRA notices - all in one place.
+              </p>
+            </AnimatedSection>
 
             {/* Search */}
-            <div className="relative max-w-lg mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search publications…"
-                className="w-full pl-10 pr-4 py-3.5 bg-white rounded-xl text-bocra-navy placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-bocra-gold/50 text-sm"
-              />
-            </div>
+            <AnimatedSection animation="fade-up" delay={200}>
+              <div className="relative max-w-lg mx-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search publications..."
+                  className="w-full pl-10 pr-4 py-3.5 bg-white rounded-xl text-bocra-navy placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-bocra-gold/50 text-sm"
+                />
+              </div>
+            </AnimatedSection>
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
           {/* Filter tabs */}
-          <div className="flex gap-2 flex-wrap mb-8">
-            {FILTER_TABS.map((type) => {
-              const meta = TYPE_META[type];
-              const Icon = meta.icon;
-              const isActive = activeType === type;
-              return (
-                <button
-                  key={type}
-                  onClick={() => setActiveType(type)}
-                  className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-sm font-medium transition-all border ${
-                    isActive
-                      ? "bg-bocra-navy text-white border-bocra-navy shadow-sm"
-                      : "bg-white text-gray-600 border-gray-200 hover:border-bocra-navy/30 hover:text-bocra-navy"
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {meta.label}
-                  {isActive && filtered.length > 0 && (
-                    <span className="bg-white/20 text-white text-xs px-1.5 py-0.5 rounded-full">
-                      {filtered.length}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
+          <AnimatedSection animation="fade-up" delay={100}>
+            <div className="flex gap-2 flex-wrap mb-8">
+              {FILTER_TABS.map((type) => {
+                const meta = TYPE_META[type];
+                const Icon = meta.icon;
+                const isActive = activeType === type;
+                return (
+                  <button
+                    key={type}
+                    onClick={() => setActiveType(type)}
+                    className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-sm font-medium transition-all border ${
+                      isActive
+                        ? "bg-bocra-navy text-white border-bocra-navy shadow-sm"
+                        : "bg-white text-gray-600 border-gray-200 hover:border-bocra-navy/30 hover:text-bocra-navy"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    {meta.label}
+                    {isActive && filtered.length > 0 && (
+                      <span className="bg-white/20 text-white text-xs px-1.5 py-0.5 rounded-full">
+                        {filtered.length}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </AnimatedSection>
 
           {/* Results */}
           {filtered.length === 0 ? (
-            <div className="text-center py-20">
-              <FileText className="w-10 h-10 text-gray-200 mx-auto mb-3" />
-              <p className="text-bocra-navy font-semibold">
-                No publications found
-              </p>
-              <p className="text-gray-400 text-sm mt-1">
-                Try a different search term or category.
-              </p>
-              <button
-                onClick={() => {
-                  setQuery("");
-                  setActiveType("all");
-                }}
-                className="mt-4 text-sm text-bocra-blue hover:text-bocra-navy transition-colors"
-              >
-                Clear filters
-              </button>
-            </div>
+            <AnimatedSection animation="fade-in">
+              <div className="text-center py-20">
+                <FileText className="w-10 h-10 text-gray-200 mx-auto mb-3" />
+                <p className="text-bocra-navy font-semibold">
+                  No publications found
+                </p>
+                <p className="text-gray-400 text-sm mt-1">
+                  Try a different search term or category.
+                </p>
+                <button
+                  onClick={() => {
+                    setQuery("");
+                    setActiveType("all");
+                  }}
+                  className="mt-4 text-sm text-bocra-blue hover:text-bocra-navy transition-colors"
+                >
+                  Clear filters
+                </button>
+              </div>
+            </AnimatedSection>
           ) : (
             <div className="flex flex-col gap-3">
-              {filtered.map((pub) => (
-                <PubCard key={pub.id} pub={pub} />
+              {filtered.map((pub, i) => (
+                <AnimatedSection key={pub.id} animation="fade-up" delay={i * 50}>
+                  <PubCard pub={pub} />
+                </AnimatedSection>
               ))}
             </div>
           )}
 
           {/* Footer note */}
-          <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-gray-400">
-            <p>
-              {filtered.length} document{filtered.length !== 1 ? "s" : ""} shown
-              · For older publications contact{" "}
+          <AnimatedSection animation="fade-in" delay={200}>
+            <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-gray-400">
+              <p>
+                {filtered.length} document{filtered.length !== 1 ? "s" : ""} shown
+                · For older publications contact{" "}
+                <a
+                  href="mailto:info@bocra.org.bw"
+                  className="text-bocra-blue hover:text-bocra-navy transition-colors"
+                >
+                  info@bocra.org.bw
+                </a>
+              </p>
               <a
-                href="mailto:info@bocra.org.bw"
-                className="text-bocra-blue hover:text-bocra-navy transition-colors"
+                href="https://www.bocra.org.bw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-gray-400 hover:text-bocra-blue transition-colors"
               >
-                info@bocra.org.bw
+                bocra.org.bw <ExternalLink className="w-3 h-3" />
               </a>
-            </p>
-            <a
-              href="https://www.bocra.org.bw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-gray-400 hover:text-bocra-blue transition-colors"
-            >
-              bocra.org.bw <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
+            </div>
+          </AnimatedSection>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

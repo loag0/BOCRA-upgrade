@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
   title: "Board & Management - BOCRA",
@@ -163,17 +164,23 @@ export default function BoardPage() {
               </ol>
             </nav>
 
-            <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
-              Leadership
-            </Badge>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
-              Board of Directors & Executive Management
-            </h1>
-            <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
-              The BOCRA Board was appointed effective 1 August 2025, aligned
-              with Botswana&apos;s National Digital Economy Roadmap 2025-2030
-              and the Economic Transformation Programme.
-            </p>
+            <AnimatedSection animation="fade-up" delay={0}>
+              <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
+                Leadership
+              </Badge>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={100}>
+              <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
+                Board of Directors & Executive Management
+              </h1>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={200}>
+              <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
+                The BOCRA Board was appointed effective 1 August 2025, aligned
+                with Botswana&apos;s National Digital Economy Roadmap 2025-2030
+                and the Economic Transformation Programme.
+              </p>
+            </AnimatedSection>
           </div>
         </section>
 
@@ -194,12 +201,12 @@ export default function BoardPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {boardMembers.map((member) => (
+              {boardMembers.map((member, i) => (
+                <AnimatedSection key={member.name} animation="fade-up" delay={i * 80} className={member.role === "Chairperson" ? "md:col-span-2" : ""}>
                 <Card
-                  key={member.name}
-                  className={`border-gray-100 shadow-sm ${
+                  className={`border-gray-100 shadow-sm h-full ${
                     member.role === "Chairperson"
-                      ? "ring-2 ring-bocra-gold/30 md:col-span-2"
+                      ? "ring-2 ring-bocra-gold/30"
                       : ""
                   }`}
                 >
@@ -232,6 +239,7 @@ export default function BoardPage() {
                     </div>
                   </CardContent>
                 </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -254,27 +262,26 @@ export default function BoardPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {executiveManagement.map((member) => (
-                <Card
-                  key={member.name}
-                  className="border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <CardContent className="p-6 text-center">
-                    <div
-                      className={`w-16 h-16 rounded-xl mx-auto flex items-center justify-center font-bold text-white text-xl mb-4 ${
-                        member.title === "Chief Executive"
-                          ? "bg-bocra-gold"
-                          : "bg-bocra-navy"
-                      }`}
-                    >
-                      {member.initials}
-                    </div>
-                    <h3 className="font-semibold text-bocra-navy text-sm">
-                      {member.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1">{member.title}</p>
-                  </CardContent>
-                </Card>
+              {executiveManagement.map((member, i) => (
+                <AnimatedSection key={member.name} animation="fade-up" delay={i * 80}>
+                  <Card className="border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow h-full">
+                    <CardContent className="p-6 text-center">
+                      <div
+                        className={`w-16 h-16 rounded-xl mx-auto flex items-center justify-center font-bold text-white text-xl mb-4 ${
+                          member.title === "Chief Executive"
+                            ? "bg-bocra-gold"
+                            : "bg-bocra-navy"
+                        }`}
+                      >
+                        {member.initials}
+                      </div>
+                      <h3 className="font-semibold text-bocra-navy text-sm">
+                        {member.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1">{member.title}</p>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -299,10 +306,12 @@ export default function BoardPage() {
             {/* Simple org chart */}
             <div className="flex flex-col items-center">
               {/* CE box */}
-              <div className="bg-bocra-navy text-white rounded-xl px-8 py-4 text-center shadow-lg mb-2">
-                <p className="font-bold">Chief Executive</p>
-                <p className="text-white/70 text-sm">Mr. Martin Mokgware</p>
-              </div>
+              <AnimatedSection animation="fade-up">
+                <div className="bg-bocra-navy text-white rounded-xl px-8 py-4 text-center shadow-lg mb-2">
+                  <p className="font-bold">Chief Executive</p>
+                  <p className="text-white/70 text-sm">Mr. Martin Mokgware</p>
+                </div>
+              </AnimatedSection>
 
               {/* Connector line */}
               <div className="w-px h-8 bg-gray-300" />
@@ -312,21 +321,23 @@ export default function BoardPage() {
 
               {/* Department cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-2 w-full">
-                {departments.map((dept) => (
-                  <div key={dept.name} className="relative">
-                    {/* Vertical connector */}
-                    <div className="hidden md:block absolute -top-2 left-1/2 w-px h-2 bg-gray-200 -translate-x-1/2" />
-                    <Card className="border-gray-100 shadow-sm h-full">
-                      <CardContent className="p-4 text-center">
-                        <h3 className="font-semibold text-bocra-navy text-xs mb-1">
-                          {dept.name}
-                        </h3>
-                        <p className="text-[11px] text-gray-400 leading-relaxed">
-                          {dept.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
+                {departments.map((dept, i) => (
+                  <AnimatedSection key={dept.name} animation="fade-up" delay={200 + i * 80}>
+                    <div className="relative">
+                      {/* Vertical connector */}
+                      <div className="hidden md:block absolute -top-2 left-1/2 w-px h-2 bg-gray-200 -translate-x-1/2" />
+                      <Card className="border-gray-100 shadow-sm h-full">
+                        <CardContent className="p-4 text-center">
+                          <h3 className="font-semibold text-bocra-navy text-xs mb-1">
+                            {dept.name}
+                          </h3>
+                          <p className="text-[11px] text-gray-400 leading-relaxed">
+                            {dept.description}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </AnimatedSection>
                 ))}
               </div>
             </div>
@@ -335,6 +346,7 @@ export default function BoardPage() {
 
         {/* Contact CTA */}
         <section className="bg-bocra-blue py-12">
+          <AnimatedSection animation="fade-in">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="font-heading text-xl font-bold text-white">
@@ -352,6 +364,7 @@ export default function BoardPage() {
               About BOCRA
             </Link>
           </div>
+          </AnimatedSection>
         </section>
       </main>
       <Footer />

@@ -131,13 +131,13 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          <div className="rounded-lg px-2 shadow-sm">
+          <div className="rounded-lg px-2">
             <Image
               src="/bocra-logo.png"
               alt="BOCRA"
               width={200}
-              height={67}
-              className="h-32 w-auto"
+              height={40}
+              className="h-12 w-auto"
               priority
             />
           </div>

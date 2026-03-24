@@ -30,6 +30,7 @@ import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
   title: "About BOCRA - Who We Are",
@@ -253,17 +254,23 @@ export default function AboutPage() {
               </ol>
             </nav>
 
-            <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
-              Who We Are
-            </Badge>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
-              Botswana Communications Regulatory Authority
-            </h1>
-            <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
-              An independent statutory body established under the Communications
-              Regulatory Authority Act, 2012, safeguarding Botswana&apos;s
-              communications landscape and protecting consumers.
-            </p>
+            <AnimatedSection animation="fade-up" delay={0}>
+              <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
+                Who We Are
+              </Badge>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={100}>
+              <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
+                Botswana Communications Regulatory Authority
+              </h1>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={200}>
+              <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
+                An independent statutory body established under the Communications
+                Regulatory Authority Act, 2012, safeguarding Botswana&apos;s
+                communications landscape and protecting consumers.
+              </p>
+            </AnimatedSection>
           </div>
         </section>
 
@@ -271,52 +278,58 @@ export default function AboutPage() {
         <section className="bg-white py-16 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="border-gray-100 shadow-sm">
-                <CardContent className="p-8">
-                  <div className="w-12 h-12 rounded-xl bg-bocra-navy/10 flex items-center justify-center mb-5">
-                    <Eye className="w-6 h-6 text-bocra-navy" />
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-bocra-navy mb-3">
-                    Our Vision
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    A connected and Digitally Driven Society.
-                  </p>
-                </CardContent>
-              </Card>
+              <AnimatedSection animation="fade-up" delay={0}>
+                <Card className="border-gray-100 shadow-sm h-full">
+                  <CardContent className="p-8">
+                    <div className="w-12 h-12 rounded-xl bg-bocra-navy/10 flex items-center justify-center mb-5">
+                      <Eye className="w-6 h-6 text-bocra-navy" />
+                    </div>
+                    <h3 className="font-heading text-lg font-bold text-bocra-navy mb-3">
+                      Our Vision
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      A connected and Digitally Driven Society.
+                    </p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
 
-              <Card className="border-gray-100 shadow-sm">
-                <CardContent className="p-8">
-                  <div className="w-12 h-12 rounded-xl bg-bocra-gold/10 flex items-center justify-center mb-5">
-                    <Target className="w-6 h-6 text-bocra-gold" />
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-bocra-navy mb-3">
-                    Our Mission
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    To regulate the Communications sector for the promotion of
-                    competition, innovation, consumer protection and universal
-                    access.
-                  </p>
-                </CardContent>
-              </Card>
+              <AnimatedSection animation="fade-up" delay={150}>
+                <Card className="border-gray-100 shadow-sm h-full">
+                  <CardContent className="p-8">
+                    <div className="w-12 h-12 rounded-xl bg-bocra-gold/10 flex items-center justify-center mb-5">
+                      <Target className="w-6 h-6 text-bocra-gold" />
+                    </div>
+                    <h3 className="font-heading text-lg font-bold text-bocra-navy mb-3">
+                      Our Mission
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      To regulate the Communications sector for the promotion of
+                      competition, innovation, consumer protection and universal
+                      access.
+                    </p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
 
-              <Card className="border-gray-100 shadow-sm">
-                <CardContent className="p-8">
-                  <div className="w-12 h-12 rounded-xl bg-bocra-blue/10 flex items-center justify-center mb-5">
-                    <Scale className="w-6 h-6 text-bocra-blue" />
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-bocra-navy mb-3">
-                    Our Values
-                  </h3>
-                  <ul className="text-gray-600 leading-relaxed space-y-2">
-                    <li><span className="font-semibold text-bocra-navy">Excellence</span> - Striving to be a world-class regulatory services provider</li>
-                    <li><span className="font-semibold text-bocra-navy">Proactiveness</span> - Forward-looking approach to keep pace with industry trends</li>
-                    <li><span className="font-semibold text-bocra-navy">Integrity</span> - Demonstrating openness, honesty, and accountability</li>
-                    <li><span className="font-semibold text-bocra-navy">People</span> - Recognising employees as key to organisational success</li>
-                  </ul>
-                </CardContent>
-              </Card>
+              <AnimatedSection animation="fade-up" delay={300}>
+                <Card className="border-gray-100 shadow-sm h-full">
+                  <CardContent className="p-8">
+                    <div className="w-12 h-12 rounded-xl bg-bocra-blue/10 flex items-center justify-center mb-5">
+                      <Scale className="w-6 h-6 text-bocra-blue" />
+                    </div>
+                    <h3 className="font-heading text-lg font-bold text-bocra-navy mb-3">
+                      Our Values
+                    </h3>
+                    <ul className="text-gray-600 leading-relaxed space-y-2">
+                      <li><span className="font-semibold text-bocra-navy">Excellence</span> - Striving to be a world-class regulatory services provider</li>
+                      <li><span className="font-semibold text-bocra-navy">Proactiveness</span> - Forward-looking approach to keep pace with industry trends</li>
+                      <li><span className="font-semibold text-bocra-navy">Integrity</span> - Demonstrating openness, honesty, and accountability</li>
+                      <li><span className="font-semibold text-bocra-navy">People</span> - Recognising employees as key to organisational success</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -324,23 +337,24 @@ export default function AboutPage() {
         {/* Strategic Pillars */}
         <section className="bg-bocra-surface py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8">
-              <Badge className="mb-3 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
-                Key Success Factors
-              </Badge>
-              <h2 className="font-heading text-2xl font-bold text-bocra-navy">
-                Strategic Pillars
-              </h2>
-            </div>
+            <AnimatedSection animation="fade-up">
+              <div className="text-center mb-8">
+                <Badge className="mb-3 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
+                  Key Success Factors
+                </Badge>
+                <h2 className="font-heading text-2xl font-bold text-bocra-navy">
+                  Strategic Pillars
+                </h2>
+              </div>
+            </AnimatedSection>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {strategicPillars.map(({ title, description }) => (
-                <div
-                  key={title}
-                  className="bg-white rounded-xl border border-gray-100 p-4 text-center shadow-sm"
-                >
-                  <h3 className="font-semibold text-bocra-navy text-sm mb-1">{title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
-                </div>
+              {strategicPillars.map(({ title, description }, i) => (
+                <AnimatedSection key={title} animation="fade-up" delay={i * 80}>
+                  <div className="bg-white rounded-xl border border-gray-100 p-4 text-center shadow-sm h-full">
+                    <h3 className="font-semibold text-bocra-navy text-sm mb-1">{title}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
+                  </div>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -350,7 +364,7 @@ export default function AboutPage() {
         <section className="bg-white py-16 border-t border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-              <div className="lg:col-span-3">
+              <AnimatedSection animation="fade-left" className="lg:col-span-3">
                 <Badge className="mb-4 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
                   Establishment
                 </Badge>
@@ -378,9 +392,9 @@ export default function AboutPage() {
                     and the National Transformation Strategy 2023-2030.
                   </p>
                 </div>
-              </div>
+              </AnimatedSection>
 
-              <div className="lg:col-span-2">
+              <AnimatedSection animation="fade-right" className="lg:col-span-2">
                 <Card className="border-gray-100 bg-white shadow-sm">
                   <CardContent className="p-6">
                     <h3 className="font-heading text-lg font-bold text-bocra-navy mb-4">
@@ -417,38 +431,42 @@ export default function AboutPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </AnimatedSection>
             </div>
           </div>
         </section>
 
         {/* CEO Message */}
         <section className="bg-bocra-blue/5 py-14 border-y border-gray-100">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-bocra-navy/10 flex items-center justify-center mx-auto mb-5">
-              <span className="text-bocra-navy font-bold text-xl">MM</span>
+          <AnimatedSection animation="fade-in">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <div className="w-16 h-16 rounded-full bg-bocra-navy/10 flex items-center justify-center mx-auto mb-5">
+                <span className="text-bocra-navy font-bold text-xl">MM</span>
+              </div>
+              <blockquote className="text-gray-700 text-lg leading-relaxed italic mb-4">
+                &ldquo;I invite you to explore and provide feedback on your user
+                experience. Your insights are crucial in helping us improve this
+                platform in a way that meets your expectations.&rdquo;
+              </blockquote>
+              <p className="font-semibold text-bocra-navy">Martin Mokgware</p>
+              <p className="text-sm text-gray-500">Chief Executive, BOCRA</p>
             </div>
-            <blockquote className="text-gray-700 text-lg leading-relaxed italic mb-4">
-              &ldquo;I invite you to explore and provide feedback on your user
-              experience. Your insights are crucial in helping us improve this
-              platform in a way that meets your expectations.&rdquo;
-            </blockquote>
-            <p className="font-semibold text-bocra-navy">Martin Mokgware</p>
-            <p className="text-sm text-gray-500">Chief Executive, BOCRA</p>
-          </div>
+          </AnimatedSection>
         </section>
 
         {/* Timeline */}
         <section className="bg-white py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <Badge className="mb-3 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
-                Our Journey
-              </Badge>
-              <h2 className="font-heading text-3xl font-bold text-bocra-navy">
-                Key Milestones
-              </h2>
-            </div>
+            <AnimatedSection animation="fade-up">
+              <div className="text-center mb-12">
+                <Badge className="mb-3 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
+                  Our Journey
+                </Badge>
+                <h2 className="font-heading text-3xl font-bold text-bocra-navy">
+                  Key Milestones
+                </h2>
+              </div>
+            </AnimatedSection>
 
             <div className="relative">
               {/* Vertical line */}
@@ -456,31 +474,32 @@ export default function AboutPage() {
 
               <div className="space-y-8">
                 {timeline.map((item, i) => (
-                  <div
-                    key={item.year}
-                    className={`relative flex flex-col md:flex-row items-start gap-4 md:gap-8 ${
-                      i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                    }`}
-                  >
-                    {/* Dot */}
-                    <div className="absolute left-4 md:left-1/2 w-3 h-3 rounded-full bg-bocra-gold border-2 border-white -translate-x-1/2 mt-1.5 z-10 shadow-sm" />
+                  <AnimatedSection key={item.year} animation={i % 2 === 0 ? "fade-left" : "fade-right"} delay={i * 80}>
+                    <div
+                      className={`relative flex flex-col md:flex-row items-start gap-4 md:gap-8 ${
+                        i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                      }`}
+                    >
+                      {/* Dot */}
+                      <div className="absolute left-4 md:left-1/2 w-3 h-3 rounded-full bg-bocra-gold border-2 border-white -translate-x-1/2 mt-1.5 z-10 shadow-sm" />
 
-                    {/* Content */}
-                    <div className={`ml-10 md:ml-0 md:w-[calc(50%-2rem)] ${i % 2 === 0 ? "md:text-right md:pr-4" : "md:text-left md:pl-4"}`}>
-                      <span className="inline-block text-xs font-bold text-bocra-gold bg-bocra-gold/10 px-2.5 py-1 rounded-full mb-2">
-                        {item.year}
-                      </span>
-                      <h3 className="font-heading text-lg font-bold text-bocra-navy mb-1">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        {item.description}
-                      </p>
+                      {/* Content */}
+                      <div className={`ml-10 md:ml-0 md:w-[calc(50%-2rem)] ${i % 2 === 0 ? "md:text-right md:pr-4" : "md:text-left md:pl-4"}`}>
+                        <span className="inline-block text-xs font-bold text-bocra-gold bg-bocra-gold/10 px-2.5 py-1 rounded-full mb-2">
+                          {item.year}
+                        </span>
+                        <h3 className="font-heading text-lg font-bold text-bocra-navy mb-1">
+                          {item.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      {/* Spacer for the other side */}
+                      <div className="hidden md:block md:w-[calc(50%-2rem)]" />
                     </div>
-
-                    {/* Spacer for the other side */}
-                    <div className="hidden md:block md:w-[calc(50%-2rem)]" />
-                  </div>
+                  </AnimatedSection>
                 ))}
               </div>
             </div>
@@ -504,18 +523,20 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {mandate.map(({ icon: Icon, title, description, color }) => (
-                <Card key={title} className="border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow">
-                  <CardContent className="p-6">
-                    <div className={`w-10 h-10 rounded-lg ${color} flex items-center justify-center mb-4`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h3 className="font-semibold text-bocra-navy mb-2">{title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed">
-                      {description}
-                    </p>
-                  </CardContent>
-                </Card>
+              {mandate.map(({ icon: Icon, title, description, color }, i) => (
+                <AnimatedSection key={title} animation="fade-up" delay={i * 75}>
+                  <Card className="border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow h-full">
+                    <CardContent className="p-6">
+                      <div className={`w-10 h-10 rounded-lg ${color} flex items-center justify-center mb-4`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <h3 className="font-semibold text-bocra-navy mb-2">{title}</h3>
+                      <p className="text-sm text-gray-500 leading-relaxed">
+                        {description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -526,7 +547,7 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* UASF */}
-              <div>
+              <AnimatedSection animation="fade-left">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center shrink-0">
                     <Users className="w-5 h-5 text-green-600" />
@@ -542,10 +563,10 @@ export default function AboutPage() {
                   Programme, bringing broadband to primary schools in Ghanzi,
                   Kgalagadi, and Southern districts.
                 </p>
-              </div>
+              </AnimatedSection>
 
               {/* COMM-CIRT */}
-              <div>
+              <AnimatedSection animation="fade-right">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center shrink-0">
                     <Shield className="w-5 h-5 text-red-500" />
@@ -561,7 +582,7 @@ export default function AboutPage() {
                   BWCIRT is established. COMM-CIRT handles incident response,
                   threat intelligence, and cybersecurity awareness.
                 </p>
-              </div>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -583,37 +604,38 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {legislation.map(({ title, description, year, highlight }) => (
-                <Card
-                  key={title}
-                  className={`border-gray-100 bg-white shadow-sm ${
-                    highlight ? "ring-2 ring-bocra-gold/30" : ""
-                  }`}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-bocra-navy/10 flex items-center justify-center shrink-0">
-                        <Landmark className="w-5 h-5 text-bocra-navy" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-bocra-navy text-sm">
-                            {title}
-                          </h3>
-                          {highlight && (
-                            <Badge className="bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-[10px]">
-                              Key
-                            </Badge>
-                          )}
+              {legislation.map(({ title, description, year, highlight }, i) => (
+                <AnimatedSection key={title} animation="fade-up" delay={i * 100}>
+                  <Card
+                    className={`border-gray-100 bg-white shadow-sm h-full ${
+                      highlight ? "ring-2 ring-bocra-gold/30" : ""
+                    }`}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-10 h-10 rounded-lg bg-bocra-navy/10 flex items-center justify-center shrink-0">
+                          <Landmark className="w-5 h-5 text-bocra-navy" />
                         </div>
-                        <p className="text-xs text-gray-400 mb-2">Enacted {year}</p>
-                        <p className="text-sm text-gray-500 leading-relaxed">
-                          {description}
-                        </p>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-semibold text-bocra-navy text-sm">
+                              {title}
+                            </h3>
+                            {highlight && (
+                              <Badge className="bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-[10px]">
+                                Key
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-400 mb-2">Enacted {year}</p>
+                          <p className="text-sm text-gray-500 leading-relaxed">
+                            {description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
           </div>
@@ -629,33 +651,37 @@ export default function AboutPage() {
             }}
           />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <Badge className="mb-3 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
-                Data Protection
-              </Badge>
-              <h2 className="font-heading text-3xl font-bold text-white mb-3">
-                Botswana Data Protection Act, 2024
-              </h2>
-              <p className="text-white/70 max-w-2xl mx-auto leading-relaxed">
-                The BDPA came into effect on 29 October 2024, replacing the 2018
-                Act. As a data controller, BOCRA is fully committed to
-                protecting your personal data in compliance with the Act.
-              </p>
-            </div>
+            <AnimatedSection animation="fade-up">
+              <div className="text-center mb-12">
+                <Badge className="mb-3 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
+                  Data Protection
+                </Badge>
+                <h2 className="font-heading text-3xl font-bold text-white mb-3">
+                  Botswana Data Protection Act, 2024
+                </h2>
+                <p className="text-white/70 max-w-2xl mx-auto leading-relaxed">
+                  The BDPA came into effect on 29 October 2024, replacing the 2018
+                  Act. As a data controller, BOCRA is fully committed to
+                  protecting your personal data in compliance with the Act.
+                </p>
+              </div>
+            </AnimatedSection>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {bdpaRights.map(({ icon: Icon, title, description }) => (
-                <Card key={title} className="bg-white/5 border-white/10 backdrop-blur-sm">
-                  <CardContent className="p-6">
-                    <div className="w-10 h-10 rounded-lg bg-bocra-gold/20 flex items-center justify-center mb-4">
-                      <Icon className="w-5 h-5 text-bocra-gold" />
-                    </div>
-                    <h3 className="font-semibold text-white mb-2">{title}</h3>
-                    <p className="text-sm text-white/70 leading-relaxed">
-                      {description}
-                    </p>
-                  </CardContent>
-                </Card>
+              {bdpaRights.map(({ icon: Icon, title, description }, i) => (
+                <AnimatedSection key={title} animation="fade-up" delay={i * 100}>
+                  <Card className="bg-white/5 border-white/10 backdrop-blur-sm h-full">
+                    <CardContent className="p-6">
+                      <div className="w-10 h-10 rounded-lg bg-bocra-gold/20 flex items-center justify-center mb-4">
+                        <Icon className="w-5 h-5 text-bocra-gold" />
+                      </div>
+                      <h3 className="font-semibold text-white mb-2">{title}</h3>
+                      <p className="text-sm text-white/70 leading-relaxed">
+                        {description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </AnimatedSection>
               ))}
             </div>
 
@@ -745,23 +771,25 @@ export default function AboutPage() {
                   description: "Cybersecurity advisories and incident reporting for the communications sector.",
                   href: "/services/cybersecurity",
                 },
-              ].map(({ icon: Icon, title, description, href }) => (
-                <Link key={href} href={href}>
-                  <Card className="h-full border-gray-100 hover:shadow-md transition-shadow group cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className="w-10 h-10 rounded-lg bg-bocra-navy/10 flex items-center justify-center mb-4">
-                        <Icon className="w-5 h-5 text-bocra-navy" />
-                      </div>
-                      <h3 className="font-semibold text-bocra-navy mb-1.5">{title}</h3>
-                      <p className="text-sm text-gray-500 leading-relaxed mb-3">
-                        {description}
-                      </p>
-                      <span className="flex items-center gap-1 text-bocra-gold text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                        Learn more <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </CardContent>
-                  </Card>
-                </Link>
+              ].map(({ icon: Icon, title, description, href }, i) => (
+                <AnimatedSection key={href} animation="fade-up" delay={i * 100}>
+                  <Link href={href}>
+                    <Card className="h-full border-gray-100 hover:shadow-md transition-shadow group cursor-pointer">
+                      <CardContent className="p-6">
+                        <div className="w-10 h-10 rounded-lg bg-bocra-navy/10 flex items-center justify-center mb-4">
+                          <Icon className="w-5 h-5 text-bocra-navy" />
+                        </div>
+                        <h3 className="font-semibold text-bocra-navy mb-1.5">{title}</h3>
+                        <p className="text-sm text-gray-500 leading-relaxed mb-3">
+                          {description}
+                        </p>
+                        <span className="flex items-center gap-1 text-bocra-gold text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                          Learn more <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </AnimatedSection>
               ))}
             </div>
           </div>

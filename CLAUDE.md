@@ -168,6 +168,13 @@ Every file touched must be evaluated against these criteria. When making tradeof
 
 ---
 
+## Development Rules & Error Prevention
+* **Client/Server Serialization:** Do not pass functions or classes directly from Server Components to Client Components.
+* **Server Actions:** Only pass functions to Client Components if they are explicitly marked with `"use server"`.
+* **Data Transfer:** Ensure only plain objects (POJOs) are passed across the boundary; methods and complex prototypes are not supported.
+
+---
+
 ## Architecture Overrides (supersede PRD where they conflict)
 
 - **Backend:** Spring Boot (Java) replaces Node.js/Express for all microservices: licensing, complaints, domains, notifications, and the API gateway. The PRD references Node.js/Express - ignore those references.

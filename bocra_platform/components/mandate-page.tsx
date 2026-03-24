@@ -1,9 +1,75 @@
+"use client";
+
 import Link from "next/link";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import Image from "next/image";
+import {
+  ChevronRight,
+  Phone,
+  Radio,
+  Mail,
+  Wifi,
+  Activity,
+  Globe,
+  CheckSquare,
+  Shield,
+  Users,
+  FileText,
+  BarChart3,
+  Signal,
+  Landmark,
+  MapPin,
+  Scale,
+  Truck,
+  Music,
+  Tv,
+  Radar,
+  Server,
+  Search,
+  AlertTriangle,
+  Eye,
+  Lock,
+  Cpu,
+  type LucideIcon,
+} from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { AnimatedSection } from "@/components/animated-section";
+
+// Icon registry - maps string names to Lucide components
+// This avoids passing functions across the server/client boundary
+const ICON_MAP: Record<string, LucideIcon> = {
+  Phone,
+  Radio,
+  Mail,
+  Wifi,
+  Activity,
+  Globe,
+  CheckSquare,
+  Shield,
+  Users,
+  FileText,
+  BarChart3,
+  Signal,
+  Landmark,
+  MapPin,
+  Scale,
+  Truck,
+  Music,
+  Tv,
+  Radar,
+  Server,
+  Search,
+  AlertTriangle,
+  Eye,
+  Lock,
+  Cpu,
+};
+
+function resolveIcon(name: string): LucideIcon {
+  return ICON_MAP[name] ?? FileText;
+}
 
 interface KeyFact {
   label: string;
@@ -11,7 +77,7 @@ interface KeyFact {
 }
 
 interface InfoCard {
-  icon: LucideIcon;
+  icon: string;
   title: string;
   description: string;
   color?: string;
@@ -21,8 +87,9 @@ interface MandatePageProps {
   title: string;
   subtitle: string;
   description: string;
-  icon: LucideIcon;
+  icon: string;
   iconColor: string;
+  heroImage?: string;
   overview: string[];
   keyFacts: KeyFact[];
   responsibilities: InfoCard[];
@@ -35,8 +102,9 @@ export function MandatePage({
   title,
   subtitle,
   description,
-  icon: Icon,
+  icon,
   iconColor,
+  heroImage,
   overview,
   keyFacts,
   responsibilities,
@@ -44,12 +112,23 @@ export function MandatePage({
   legislationDetail,
   children,
 }: MandatePageProps) {
+  const Icon = resolveIcon(icon);
+
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-bocra-surface">
         {/* Hero */}
         <section className="bg-bocra-navy pt-24 pb-16 relative overflow-hidden">
+          {heroImage && (
+            <Image
+              src={heroImage}
+              alt=""
+              fill
+              className="object-cover object-center"
+            />
+          )}
+          {heroImage && <div className="absolute inset-0 bg-bocra-navy/85" />}
           <div
             className="absolute inset-0 opacity-[0.03]"
             style={{
@@ -72,20 +151,26 @@ export function MandatePage({
               </ol>
             </nav>
 
-            <div className="flex items-center gap-4 mb-4">
-              <div className={`w-12 h-12 rounded-xl ${iconColor} flex items-center justify-center`}>
-                <Icon className="w-6 h-6" />
+            <AnimatedSection animation="fade-up" delay={0}>
+              <div className="flex items-center gap-4 mb-4">
+                <div className={`w-12 h-12 rounded-xl ${iconColor} flex items-center justify-center`}>
+                  <Icon className="w-6 h-6" />
+                </div>
+                <Badge className="bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
+                  {subtitle}
+                </Badge>
               </div>
-              <Badge className="bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
-                {subtitle}
-              </Badge>
-            </div>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
-              {title}
-            </h1>
-            <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
-              {description}
-            </p>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={150}>
+              <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
+                {title}
+              </h1>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={300}>
+              <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
+                {description}
+              </p>
+            </AnimatedSection>
           </div>
         </section>
 
@@ -93,7 +178,7 @@ export function MandatePage({
         <section className="bg-white py-16 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-              <div className="lg:col-span-3 space-y-4">
+              <AnimatedSection animation="fade-left" className="lg:col-span-3 space-y-4">
                 <h2 className="font-heading text-2xl font-bold text-bocra-navy mb-4">
                   Overview
                 </h2>
@@ -102,8 +187,8 @@ export function MandatePage({
                     {paragraph}
                   </p>
                 ))}
-              </div>
-              <div className="lg:col-span-2">
+              </AnimatedSection>
+              <AnimatedSection animation="fade-right" delay={200} className="lg:col-span-2">
                 <Card className="border-gray-100 shadow-sm">
                   <CardContent className="p-6">
                     <h3 className="font-heading text-lg font-bold text-bocra-navy mb-4">
@@ -118,19 +203,17 @@ export function MandatePage({
                       ))}
                     </dl>
                     {legislation && (
-                      <>
-                        <div className="border-t border-gray-100 mt-4 pt-4">
-                          <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-1">Legal Basis</p>
-                          <p className="text-sm font-semibold text-bocra-navy">{legislation}</p>
-                          {legislationDetail && (
-                            <p className="text-xs text-gray-500 mt-1">{legislationDetail}</p>
-                          )}
-                        </div>
-                      </>
+                      <div className="border-t border-gray-100 mt-4 pt-4">
+                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-1">Legal Basis</p>
+                        <p className="text-sm font-semibold text-bocra-navy">{legislation}</p>
+                        {legislationDetail && (
+                          <p className="text-xs text-gray-500 mt-1">{legislationDetail}</p>
+                        )}
+                      </div>
                     )}
                   </CardContent>
                 </Card>
-              </div>
+              </AnimatedSection>
             </div>
           </div>
         </section>
@@ -138,26 +221,33 @@ export function MandatePage({
         {/* Responsibilities */}
         <section className="bg-bocra-surface py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-10">
-              <Badge className="mb-3 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
-                Responsibilities
-              </Badge>
-              <h2 className="font-heading text-3xl font-bold text-bocra-navy">
-                What BOCRA Does
-              </h2>
-            </div>
+            <AnimatedSection animation="fade-up">
+              <div className="mb-10">
+                <Badge className="mb-3 bg-bocra-gold/10 text-bocra-gold border-bocra-gold/20 text-xs tracking-widest uppercase">
+                  Responsibilities
+                </Badge>
+                <h2 className="font-heading text-3xl font-bold text-bocra-navy">
+                  What BOCRA Does
+                </h2>
+              </div>
+            </AnimatedSection>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {responsibilities.map(({ icon: RIcon, title: rTitle, description: rDesc, color }) => (
-                <Card key={rTitle} className="border-gray-100 bg-white shadow-sm">
-                  <CardContent className="p-6">
-                    <div className={`w-10 h-10 rounded-lg ${color ?? "bg-bocra-navy/10 text-bocra-navy"} flex items-center justify-center mb-4`}>
-                      <RIcon className="w-5 h-5" />
-                    </div>
-                    <h3 className="font-semibold text-bocra-navy mb-2">{rTitle}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed">{rDesc}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              {responsibilities.map(({ icon: rIconName, title: rTitle, description: rDesc, color }, i) => {
+                const RIcon = resolveIcon(rIconName);
+                return (
+                  <AnimatedSection key={rTitle} animation="fade-up" delay={i * 100}>
+                    <Card className="border-gray-100 bg-white shadow-sm h-full">
+                      <CardContent className="p-6">
+                        <div className={`w-10 h-10 rounded-lg ${color ?? "bg-bocra-navy/10 text-bocra-navy"} flex items-center justify-center mb-4`}>
+                          <RIcon className="w-5 h-5" />
+                        </div>
+                        <h3 className="font-semibold text-bocra-navy mb-2">{rTitle}</h3>
+                        <p className="text-sm text-gray-500 leading-relaxed">{rDesc}</p>
+                      </CardContent>
+                    </Card>
+                  </AnimatedSection>
+                );
+              })}
             </div>
           </div>
         </section>

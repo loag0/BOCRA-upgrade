@@ -177,7 +177,7 @@ export default function HomePage() {
             <AnimatedSection animation="fade-up" delay={300}>
               <p className="text-white/70 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl">
                 The unified digital platform for all BOCRA regulatory services
-                -- licence verification, complaint management, .bw domain
+                - licence verification, complaint management, .bw domain
                 registry, and more.
               </p>
             </AnimatedSection>

@@ -15,6 +15,7 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react";
+import { AnimatedSection } from "@/components/animated-section";
 
 // Domain zones
 
@@ -376,29 +377,37 @@ export function DomainsClient() {
       {/* Hero */}
       <div className="bg-bocra-navy pt-24 pb-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-medium px-3 py-1.5 rounded-full mb-4">
-            <Globe className="w-3.5 h-3.5" />
-            Managed by BOCRA under Section 38(1), CRA Act 2012
-          </div>
-          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
-            .bw Domain Registry
-          </h1>
-          <p className="text-white/70 mb-2 max-w-xl mx-auto">
-            Botswana&apos;s country code top-level domain - administered by
-            BOCRA on behalf of the nation. Over 8,800 domains registered.
-          </p>
-          <p className="text-white/40 text-xs mb-10">
-            Registration is handled by BOCRA-accredited registrars.{" "}
-            <a
-              href="https://nic.net.bw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-bocra-gold hover:underline inline-flex items-center gap-0.5"
-            >
-              nic.net.bw <ExternalLink className="w-3 h-3" />
-            </a>
-          </p>
-          <AvailabilityChecker />
+          <AnimatedSection animation="fade-up" delay={0}>
+            <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-medium px-3 py-1.5 rounded-full mb-4">
+              <Globe className="w-3.5 h-3.5" />
+              Managed by BOCRA under Section 38(1), CRA Act 2012
+            </div>
+          </AnimatedSection>
+          <AnimatedSection animation="fade-up" delay={150}>
+            <h1 className="font-heading text-3xl sm:text-4xl font-bold text-white mb-3">
+              .bw Domain Registry
+            </h1>
+          </AnimatedSection>
+          <AnimatedSection animation="fade-up" delay={300}>
+            <p className="text-white/70 mb-2 max-w-xl mx-auto">
+              Botswana&apos;s country code top-level domain - administered by
+              BOCRA on behalf of the nation. Over 8,800 domains registered.
+            </p>
+            <p className="text-white/40 text-xs mb-10">
+              Registration is handled by BOCRA-accredited registrars.{" "}
+              <a
+                href="https://nic.net.bw"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-bocra-gold hover:underline inline-flex items-center gap-0.5"
+              >
+                nic.net.bw <ExternalLink className="w-3 h-3" />
+              </a>
+            </p>
+          </AnimatedSection>
+          <AnimatedSection animation="fade-up" delay={450}>
+            <AvailabilityChecker />
+          </AnimatedSection>
         </div>
       </div>
 
@@ -412,64 +421,68 @@ export function DomainsClient() {
             { icon: Clock, value: "24–48h", label: "Registration turnaround" },
           ]
             .slice(0, 3)
-            .map(({ icon: Icon, value, label }) => (
-              <div
-                key={label}
-                className="bg-white rounded-xl border border-gray-100 p-5 text-center"
-              >
-                <Icon className="w-5 h-5 text-bocra-blue mx-auto mb-2" />
-                <p className="text-2xl font-bold text-bocra-navy">{value}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{label}</p>
-              </div>
+            .map(({ icon: Icon, value, label }, i) => (
+              <AnimatedSection key={label} animation="fade-up" delay={i * 100}>
+                <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+                  <Icon className="w-5 h-5 text-bocra-blue mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-bocra-navy">{value}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">{label}</p>
+                </div>
+              </AnimatedSection>
             ))}
         </div>
 
         {/* Available zones */}
         <div>
-          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">
-            Available Zones
-          </h2>
-          <p className="text-sm text-gray-500 mb-5">
-            Eight .bw domain zones, each serving a different sector.
-          </p>
+          <AnimatedSection animation="fade-up">
+            <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">
+              Available Zones
+            </h2>
+            <p className="text-sm text-gray-500 mb-5">
+              Eight .bw domain zones, each serving a different sector.
+            </p>
+          </AnimatedSection>
           <div className="grid sm:grid-cols-2 gap-3">
-            {ZONES.map(({ zone, desc, open }) => (
-              <div
-                key={zone}
-                className={`flex items-center gap-4 bg-white rounded-xl border px-5 py-4 border-gray-100 ${!open ? "opacity-60" : ""}`}
-              >
+            {ZONES.map(({ zone, desc, open }, i) => (
+              <AnimatedSection key={zone} animation="fade-up" delay={i * 75}>
                 <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${open ? "bg-bocra-blue/10" : "bg-gray-100"}`}
+                  className={`flex items-center gap-4 bg-white rounded-xl border px-5 py-4 border-gray-100 ${!open ? "opacity-60" : ""}`}
                 >
-                  <Globe
-                    className={`w-4 h-4 ${open ? "text-bocra-blue" : "text-gray-400"}`}
-                  />
+                  <div
+                    className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${open ? "bg-bocra-blue/10" : "bg-gray-100"}`}
+                  >
+                    <Globe
+                      className={`w-4 h-4 ${open ? "text-bocra-blue" : "text-gray-400"}`}
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-mono font-semibold text-bocra-navy text-sm">
+                      {zone}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
+                  </div>
+                  <span
+                    className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${open ? "bg-green-50 text-bocra-green" : "bg-gray-100 text-gray-400"}`}
+                  >
+                    {open ? "Open" : "Restricted"}
+                  </span>
                 </div>
-                <div className="min-w-0">
-                  <p className="font-mono font-semibold text-bocra-navy text-sm">
-                    {zone}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
-                </div>
-                <span
-                  className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${open ? "bg-green-50 text-bocra-green" : "bg-gray-100 text-gray-400"}`}
-                >
-                  {open ? "Open" : "Restricted"}
-                </span>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
 
         {/* Registration steps */}
         <div>
-          <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">
-            How to Register
-          </h2>
-          <p className="text-sm text-gray-500 mb-5">
-            .bw domains are registered through BOCRA-accredited registrars - not
-            directly through this portal.
-          </p>
+          <AnimatedSection animation="fade-up">
+            <h2 className="font-heading text-xl font-bold text-bocra-navy mb-1">
+              How to Register
+            </h2>
+            <p className="text-sm text-gray-500 mb-5">
+              .bw domains are registered through BOCRA-accredited registrars - not
+              directly through this portal.
+            </p>
+          </AnimatedSection>
           <div className="grid sm:grid-cols-4 gap-4">
             {[
               {
@@ -492,19 +505,18 @@ export function DomainsClient() {
                 title: "Domain activated",
                 desc: "Your registrar submits to the registry. Domain active within 24–48 hours.",
               },
-            ].map(({ step, title, desc }) => (
-              <div
-                key={step}
-                className="bg-white rounded-xl border border-gray-100 p-5"
-              >
-                <div className="w-7 h-7 rounded-full bg-bocra-navy text-white text-xs font-bold flex items-center justify-center mb-3">
-                  {step}
+            ].map(({ step, title, desc }, i) => (
+              <AnimatedSection key={step} animation="fade-up" delay={i * 120}>
+                <div className="bg-white rounded-xl border border-gray-100 p-5 h-full">
+                  <div className="w-7 h-7 rounded-full bg-bocra-navy text-white text-xs font-bold flex items-center justify-center mb-3">
+                    {step}
+                  </div>
+                  <p className="text-sm font-semibold text-bocra-navy mb-1">
+                    {title}
+                  </p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
                 </div>
-                <p className="text-sm font-semibold text-bocra-navy mb-1">
-                  {title}
-                </p>
-                <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
           <div className="mt-4 flex flex-col sm:flex-row gap-3">
@@ -528,6 +540,7 @@ export function DomainsClient() {
         </div>
 
         {/* WHOIS */}
+        <AnimatedSection animation="fade-up">
         <div className="bg-white rounded-2xl border border-gray-100 p-6">
           <div className="flex items-center gap-2 mb-1">
             <Info className="w-4 h-4 text-bocra-blue" />
@@ -546,8 +559,10 @@ export function DomainsClient() {
           </p>
           <WhoisLookup />
         </div>
+        </AnimatedSection>
 
         {/* FAQ */}
+        <AnimatedSection animation="fade-up">
         <div>
           <h2 className="font-heading text-xl font-bold text-bocra-navy mb-5">
             Frequently Asked Questions
@@ -558,8 +573,10 @@ export function DomainsClient() {
             ))}
           </div>
         </div>
+        </AnimatedSection>
 
         {/* Governance footer */}
+        <AnimatedSection animation="fade-up">
         <div className="bg-bocra-navy rounded-2xl p-6 text-white">
           <h3 className="font-semibold mb-1">Governance &amp; Policy</h3>
           <p className="text-white/70 text-sm mb-4">
@@ -587,6 +604,7 @@ export function DomainsClient() {
             ))}
           </div>
         </div>
+        </AnimatedSection>
       </div>
     </main>
   );

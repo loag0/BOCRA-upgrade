@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ChevronRight,
   Calendar,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { AnimatedSection } from "@/components/animated-section";
 import { Badge } from "@/components/ui/badge";
 import { mockSpeeches } from "@/lib/mock-data";
 
@@ -84,14 +86,15 @@ export default function SpeechesPage() {
       <Navbar />
       <main className="min-h-screen bg-bocra-surface">
         {/* Hero strip */}
-        <section className="bg-bocra-navy pt-24 pb-16 relative overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 40px, white 40px, white 41px),
-                repeating-linear-gradient(90deg, transparent, transparent 40px, white 40px, white 41px)`,
-            }}
+        <section className="relative bg-bocra-navy pt-24 pb-16 overflow-hidden">
+          <Image
+            src="/images/conference-room.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-20"
+            priority
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav aria-label="Breadcrumb" className="mb-6">
@@ -113,35 +116,45 @@ export default function SpeechesPage() {
               </ol>
             </nav>
 
-            <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
-              Media
-            </Badge>
-            <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-              Speeches & Presentations
-            </h1>
-            <p className="text-white/70 text-lg max-w-2xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-              Speeches and presentations by BOCRA leadership at national and
-              international forums on telecommunications regulation, spectrum
-              management, and digital transformation.
-            </p>
+            <AnimatedSection animation="fade-up">
+              <Badge className="mb-4 bg-bocra-gold/20 text-bocra-gold border-bocra-gold/30 text-xs tracking-widest uppercase">
+                Media
+              </Badge>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={100}>
+              <h1 className="font-heading text-4xl sm:text-5xl font-bold text-white mb-4 max-w-3xl">
+                Speeches & Presentations
+              </h1>
+            </AnimatedSection>
+            <AnimatedSection animation="fade-up" delay={200}>
+              <p className="text-white/70 text-lg max-w-2xl leading-relaxed">
+                Speeches and presentations by BOCRA leadership at national and
+                international forums on telecommunications regulation, spectrum
+                management, and digital transformation.
+              </p>
+            </AnimatedSection>
           </div>
         </section>
 
         {/* Speech cards */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Results count */}
-          <p
-            className="text-sm text-gray-400 mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200"
-            aria-live="polite"
-          >
-            Showing {speeches.length}{" "}
-            {speeches.length === 1 ? "speech" : "speeches"}
-          </p>
+          <AnimatedSection animation="fade-up" delay={300}>
+            <p
+              className="text-sm text-gray-400 mb-6"
+              aria-live="polite"
+            >
+              Showing {speeches.length}{" "}
+              {speeches.length === 1 ? "speech" : "speeches"}
+            </p>
+          </AnimatedSection>
 
           {speeches.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
-              {speeches.map((speech) => (
-                <SpeechCard key={speech.id} speech={speech} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {speeches.map((speech, i) => (
+                <AnimatedSection key={speech.id} animation="fade-up" delay={350 + i * 100}>
+                  <SpeechCard speech={speech} />
+                </AnimatedSection>
               ))}
             </div>
           ) : (
