@@ -2,6 +2,7 @@ package com.bocra.backend.operator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -11,6 +12,7 @@ public class OperatorServiceImplementation implements OperatorService {
     private final OperatorRepository operatorRepository;
 
     @Override
+    @Transactional
     public Operator createOperator(OperatorDTO dto) {
         Operator operator = Operator.builder()
                 .operatorName(dto.getOperatorName())
@@ -32,38 +34,45 @@ public class OperatorServiceImplementation implements OperatorService {
     }
 
     @Override
+    @Transactional
     public Operator getOperatorById(String id) {
         return operatorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Operator not found with id: " + id));
     }
 
     @Override
+    @Transactional
     public Operator getOperatorByLicenceNumber(String licenceNumber) {
         return operatorRepository.findByLicenceNumber(licenceNumber)
                 .orElseThrow(() -> new RuntimeException("Operator not found with licence: " + licenceNumber));
     }
 
     @Override
+    @Transactional
     public List<Operator> getAllOperators() {
         return operatorRepository.findAll();
     }
 
     @Override
+    @Transactional
     public List<Operator> getOperatorsByStatus(LicenceStatus status) {
         return operatorRepository.findByStatus(status);
     }
 
     @Override
+    @Transactional
     public List<Operator> getOperatorsByCategory(LicenceCategory category) {
         return operatorRepository.findByCategory(category);
     }
 
     @Override
+    @Transactional
     public List<Operator> searchOperators(String name) {
         return operatorRepository.findByOperatorNameContainingIgnoreCase(name);
     }
 
     @Override
+    @Transactional
     public Operator updateOperator(String id, OperatorDTO dto) {
         Operator operator = getOperatorById(id);
         operator.setOperatorName(dto.getOperatorName());
@@ -82,6 +91,7 @@ public class OperatorServiceImplementation implements OperatorService {
     }
 
     @Override
+    @Transactional
     public void deleteOperator(String id) {
         operatorRepository.deleteById(id);
     }

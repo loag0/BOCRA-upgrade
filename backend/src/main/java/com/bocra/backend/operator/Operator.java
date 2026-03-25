@@ -1,5 +1,6 @@
 package com.bocra.backend.operator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,7 +54,8 @@ public class Operator {
     @Column(nullable = false)
     private ComplianceStatus complianceStatus;
 
-    @ElementCollection
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "operator_services", joinColumns = @JoinColumn(name = "operator_id"))
     @Column(name = "service")
     private List<String> services;
