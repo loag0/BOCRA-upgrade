@@ -86,14 +86,110 @@ const services = [
 ];
 
 const operators = [
-  { name: "BTC", type: "PTO" },
-  { name: "Mascom", type: "PTO" },
-  { name: "Orange", type: "PTO" },
-  { name: "BoFiNet", type: "Wholesale" },
-  { name: "BW Post", type: "Postal" },
-  { name: "Yarona FM", type: "Radio" },
-  { name: "Duma FM", type: "Radio" },
-  { name: "eBotswana", type: "TV" },
+  {
+    name: "BTC",
+    type: "PTO",
+    fullName: "Botswana Telecommunications Corporation",
+    description:
+      "The national fixed-line and broadband operator, providing voice, data, and fibre services across Botswana.",
+    licenceNo: "BOCRA/PTO/001/2013",
+    since: "2013",
+    services: ["Fixed Voice", "ADSL/Fibre", "Leased Lines"],
+    website: "https://www.btc.bw",
+    logo: "/images/operators/btc-logo.png",        // ← update path
+    banner: "/images/operators/btc-banner.png",    // ← update path
+  },
+  {
+    name: "Mascom",
+    type: "PTO",
+    fullName: "Mascom Wireless Botswana",
+    description:
+      "Botswana's largest mobile network operator, offering 4G LTE, mobile money (MyZaka), and enterprise solutions.",
+    licenceNo: "BOCRA/PTO/002/2013",
+    since: "1998",
+    services: ["Mobile Voice", "4G LTE", "MyZaka MFS"],
+    website: "https://www.mascom.bw",
+    logo: "/images/operators/mascom-logo.png",
+    banner: "/images/operators/mascom-banner.png",
+  },
+  {
+    name: "Orange",
+    type: "PTO",
+    fullName: "Orange Botswana",
+    description:
+      "Part of the global Orange Group, providing mobile telecommunications and digital services nationwide.",
+    licenceNo: "BOCRA/PTO/003/2013",
+    since: "1998",
+    services: ["Mobile Voice", "4G Data", "Orange Money"],
+    website: "https://www.orange.co.bw",
+    logo: "/images/operators/orange-logo.png",
+    banner: "/images/operators/orange-banner.png",
+  },
+  {
+    name: "BoFiNet",
+    type: "Wholesale",
+    fullName: "Botswana Fibre Networks",
+    description:
+      "The national wholesale open-access broadband infrastructure provider, operating the national fibre backbone.",
+    licenceNo: "BOCRA/WHL/001/2012",
+    since: "2012",
+    services: ["Wholesale Fibre", "National Backbone", "International Links"],
+    website: "https://www.bofinet.co.bw",
+    logo: "/images/operators/bofinet-logo.png",
+    banner: "/images/operators/bofinet-banner.png",
+  },
+  {
+    name: "BW Post",
+    type: "Postal",
+    fullName: "Botswana Post",
+    description:
+      "The designated universal postal service provider, operating a nationwide network of post offices and courier services.",
+    licenceNo: "BOCRA/PST/001/2013",
+    since: "1989",
+    services: ["Mail Delivery", "Courier", "Financial Services"],
+    website: "https://www.botswanapost.co.bw",
+    logo: "/images/operators/bwpost-logo.png",
+    banner: "/images/operators/bwpost-banner.png",
+  },
+  {
+    name: "Yarona FM",
+    type: "Radio",
+    fullName: "Yarona FM",
+    description:
+      "A leading commercial FM radio broadcaster reaching audiences across Botswana with news, music, and entertainment.",
+    licenceNo: "BOCRA/BCR/010/2015",
+    since: "2000",
+    services: ["FM Broadcasting", "Digital Streaming", "Advertising"],
+    website: "https://www.yaronafm.co.bw",
+    logo: "/images/operators/yaronafm-logo.png",
+    banner: "/images/operators/yaronafm-banner.png",
+  },
+  {
+    name: "Duma FM",
+    type: "Radio",
+    fullName: "Duma FM",
+    description:
+      "Commercial FM station broadcasting popular music, local content, and community-focused programming.",
+    licenceNo: "BOCRA/BCR/011/2015",
+    since: "2007",
+    services: ["FM Broadcasting", "Local Content", "Community Radio"],
+    website: "https://www.dumafm.co.bw",
+    logo: "/images/operators/dumafm-logo.png",
+    banner: "/images/operators/dumafm-banner.png",
+  },
+  {
+    name: "eBotswana",
+    type: "TV",
+    fullName: "eBotswana Television",
+    description:
+      "Commercial free-to-air television broadcaster delivering local news, sports, and entertainment programming.",
+    licenceNo: "BOCRA/BCT/005/2016",
+    since: "2016",
+    services: ["Free-to-Air TV", "Local News", "Sports Coverage"],
+    website: "https://www.ebotswana.co.bw",
+    logo: "/images/operators/ebotswana-logo.png",
+    banner: "/images/operators/ebotswana-banner.png",
+  },
 ];
 
 const news = [
@@ -308,7 +404,8 @@ export default function HomePage() {
                   Licensed Operators
                 </h2>
                 <p className="text-gray-500 text-sm mt-1">
-                  Entities currently holding a valid BOCRA licence
+                  Hover over an operator to view details &mdash; all currently
+                  hold a valid BOCRA licence
                 </p>
               </div>
               <Link
@@ -319,29 +416,155 @@ export default function HomePage() {
               </Link>
             </div>
           </AnimatedSection>
-
+ 
           <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
-            {operators.map(({ name, type }, i) => (
-              <AnimatedSection key={name} animation="fade-up" delay={i * 60}>
-                <div className="bg-white rounded-xl p-4 border border-gray-100 text-center hover:border-bocra-gold/40 hover:shadow-sm transition-all cursor-pointer">
-                  <div className="w-10 h-10 rounded-full bg-bocra-navy/10 flex items-center justify-center mx-auto mb-2">
-                    <span className="text-bocra-navy font-bold text-xs">
-                      {name.slice(0, 2).toUpperCase()}
-                    </span>
+            {operators.map(
+              (
+                {
+                  name,
+                  type,
+                  fullName,
+                  description,
+                  licenceNo,
+                  since,
+                  services,
+                  website,
+                  logo,
+                  banner,
+                },
+                i
+              ) => (
+                <AnimatedSection key={name} animation="fade-up" delay={i * 60}>
+                  {/* Outer wrapper: relative + group for hover targeting */}
+                  <div className="relative group">
+ 
+                    {/* ---- Collapsed card (always visible) ---- */}
+                    <div className="bg-white rounded-xl p-4 border border-gray-100 text-center hover:border-bocra-gold/40 hover:shadow-sm transition-all cursor-pointer">
+                      {/* Small logo — collapsed card */}
+                      <div className="w-10 h-10 rounded-full bg-bocra-navy/10 flex items-center justify-center mx-auto mb-2 overflow-hidden">
+                        <Image
+                          src={logo}
+                          alt={`${name} logo`}
+                          width={40}
+                          height={40}
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="font-semibold text-bocra-navy text-xs">
+                        {name}
+                      </div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">
+                        {type}
+                      </div>
+                      <div className="flex items-center justify-center gap-1 mt-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        <span className="text-[10px] text-green-600 font-medium">
+                          Active
+                        </span>
+                      </div>
+                    </div>
+ 
+                    {/* ---- Expanded card (appears on hover) ---- */}
+                    {/*
+                      Positioned absolutely, centered above/below the collapsed card.
+                      z-50 ensures it floats above adjacent cards.
+                      pointer-events-none on group lets hover work; 
+                      the expanded card itself gets pointer-events-auto.
+                    */}
+                    <div
+                      className="
+                        absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+                        w-64 z-50
+                        opacity-0 scale-95 pointer-events-none
+                        group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto
+                        transition-all duration-200 ease-out
+                      "
+                    >
+                      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+ 
+                        {/* Banner / large logo — expanded card */}
+                        <div className="bg-bocra-navy/5 border-b border-gray-100 h-20 flex items-center justify-center relative overflow-hidden">
+                          <Image
+                            src={banner}
+                            alt={`${name} banner`}
+                            fill
+                            className="object-contain p-4"
+                          />
+                          {/* Active badge */}
+                          <div className="absolute top-2 right-2 flex items-center gap-1 bg-green-50 border border-green-200 rounded-full px-2 py-0.5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                            <span className="text-[10px] text-green-600 font-semibold">
+                              Active
+                            </span>
+                          </div>
+                        </div>
+ 
+                        <div className="p-4">
+                          {/* Name + type */}
+                          <div className="mb-3">
+                            <h4 className="font-bold text-bocra-navy text-sm leading-tight">
+                              {fullName}
+                            </h4>
+                            <span className="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wide text-bocra-gold bg-bocra-gold/10 px-2 py-0.5 rounded-full">
+                              {type}
+                            </span>
+                          </div>
+ 
+                          {/* Description */}
+                          <p className="text-gray-500 text-xs leading-relaxed mb-3">
+                            {description}
+                          </p>
+ 
+                          {/* Services tags */}
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {services.map((s) => (
+                              <span
+                                key={s}
+                                className="text-[10px] bg-bocra-navy/5 text-bocra-navy px-2 py-0.5 rounded-full"
+                              >
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+ 
+                          {/* Licence details */}
+                          <div className="border-t border-gray-100 pt-3 space-y-1.5 text-[11px] text-gray-500">
+                            <div className="flex justify-between">
+                              <span className="font-medium text-bocra-navy">
+                                Licence No.
+                              </span>
+                              <span className="font-mono">{licenceNo}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="font-medium text-bocra-navy">
+                                Licensed Since
+                              </span>
+                              <span>{since}</span>
+                            </div>
+                          </div>
+ 
+                          {/* Website link */}
+                          <a
+                            href={website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-3 flex items-center justify-center gap-1.5 w-full text-xs font-medium text-bocra-blue hover:text-bocra-navy transition-colors"
+                          >
+                            Visit Website{" "}
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </div>
+                      </div>
+ 
+                      {/* Little arrow pointing down to the collapsed card */}
+                      <div className="flex justify-center">
+                        <div className="w-3 h-3 bg-white border-r border-b border-gray-100 rotate-45 -mt-1.5 shadow-sm" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="font-semibold text-bocra-navy text-xs">
-                    {name}
-                  </div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">{type}</div>
-                  <div className="flex items-center justify-center gap-1 mt-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="text-[10px] text-green-600 font-medium">
-                      Active
-                    </span>
-                  </div>
-                </div>
-              </AnimatedSection>
-            ))}
+                </AnimatedSection>
+              )
+            )}
           </div>
         </div>
       </section>
