@@ -28,8 +28,16 @@ import {
   EyeOff,
   Settings,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import {
+  getUserComplaints,
+  getUserDomains,
+  getUserProfileLicences,
+  type UserComplaint,
+  type UserDomain,
+  type UserProfileLicence,
+} from "@/lib/data";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,51 +49,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-// Replace with real Supabase queries once backend is wired.
-// See docs/MOCK_DATA.md for replacement instructions.
-
-const MOCK_COMPLAINTS = [
-  {
-    caseRef: "CMP-2026-104221",
-    operator: "Orange Botswana",
-    category: "Billing dispute",
-    status: "investigating",
-    date: "2026-03-09",
-  },
-  {
-    caseRef: "CMP-2026-098834",
-    operator: "Mascom",
-    category: "Poor network quality",
-    status: "resolved",
-    date: "2026-01-14",
-  },
-  {
-    caseRef: "CMP-2025-087102",
-    operator: "BTC",
-    category: "Unauthorized deductions",
-    status: "closed",
-    date: "2025-11-22",
-  },
-];
-
-const MOCK_DOMAINS = [
-  {
-    domain: "mycompany.co.bw",
-    registered: "2024-06-01",
-    expires: "2027-05-31",
-    status: "active",
-  },
-];
-
-const MOCK_LICENCES = [
-  {
-    ref: "BOC-2024-SAP-019",
-    type: "SAP - Internet Services",
-    issued: "2024-03-01",
-    expires: "2027-02-28",
-    status: "Active",
-  },
-];
+// Data is loaded from lib/data.ts - swap mock for real by uncommenting API calls there.
 
 // Status config
 
@@ -186,6 +150,17 @@ export function ProfileClient() {
   const [copied, setCopied] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
+  // Data from service layer
+  const [complaints, setComplaints] = useState<UserComplaint[]>([]);
+  const [domains, setDomains] = useState<UserDomain[]>([]);
+  const [profileLicences, setProfileLicences] = useState<UserProfileLicence[]>([]);
+
+  useEffect(() => {
+    getUserComplaints().then(setComplaints);
+    getUserDomains().then(setDomains);
+    getUserProfileLicences().then(setProfileLicences);
+  }, []);
+
   // Account settings state
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState("");
@@ -242,13 +217,32 @@ export function ProfileClient() {
     }
   };
 
+  // Password policy checks
+  const passwordChecks = [
+    { label: "At least 8 characters", met: newPassword.length >= 8 },
+    { label: "Contains an uppercase letter", met: /[A-Z]/.test(newPassword) },
+    { label: "Contains a lowercase letter", met: /[a-z]/.test(newPassword) },
+    { label: "Contains a number", met: /\d/.test(newPassword) },
+    { label: "Contains a special character (!@#$%...)", met: /[^A-Za-z0-9]/.test(newPassword) },
+  ];
+  const passedChecks = passwordChecks.filter((c) => c.met).length;
+  const passwordStrength = newPassword.length === 0 ? 0 : passedChecks;
+  const strengthLabel = ["", "Very weak", "Weak", "Fair", "Good", "Strong"][passwordStrength];
+  const strengthColor = ["", "bg-red-500", "bg-red-400", "bg-yellow-400", "bg-blue-400", "bg-green-500"][passwordStrength];
+  const allChecksPassed = passedChecks === passwordChecks.length;
+
   const handleChangePassword = async () => {
-    if (newPassword.length < 8) {
-      toast.error("New password must be at least 8 characters.");
+    if (!allChecksPassed) {
+      const failing = passwordChecks.filter((c) => !c.met).map((c) => c.label);
+      toast.error(`Password needs: ${failing.join(", ")}`);
       return;
     }
     if (newPassword !== confirmNewPassword) {
       toast.error("Passwords do not match.");
+      return;
+    }
+    if (!currentPassword) {
+      toast.error("Enter your current password to continue.");
       return;
     }
     setSavingPassword(true);
@@ -264,18 +258,22 @@ export function ProfileClient() {
       const code = (err as { code?: string }).code ?? "";
       logger.error("Password change failed", { error: code });
       if (code === "auth/wrong-password" || code === "auth/invalid-credential") {
-        toast.error("Current password is incorrect.");
+        toast.error("Current password is incorrect. Please re-enter it.");
       } else if (code === "auth/weak-password") {
-        toast.error("New password is too weak. Use at least 8 characters.");
+        toast.error("Firebase rejected this password. Try adding uppercase letters, numbers, or special characters.");
+      } else if (code === "auth/too-many-requests") {
+        toast.error("Too many attempts. Please wait a few minutes before trying again.");
+      } else if (code === "auth/requires-recent-login") {
+        toast.error("For security, please sign out and sign back in before changing your password.");
       } else {
-        toast.error("Failed to change password. Please try again.");
+        toast.error(`Failed to change password (${code || "unknown error"}). Please try again.`);
       }
     } finally {
       setSavingPassword(false);
     }
   };
 
-  const activeComplaints = MOCK_COMPLAINTS.filter(
+  const activeComplaints = complaints.filter(
     (c) => c.status !== "resolved" && c.status !== "closed",
   );
 
@@ -430,6 +428,38 @@ export function ProfileClient() {
                         {showNewPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </button>
                     </div>
+                    {/* Strength bar + checklist */}
+                    {newPassword.length > 0 && (
+                      <div className="mt-2 space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden flex gap-0.5">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <div
+                                key={i}
+                                className={`flex-1 rounded-full transition-colors ${
+                                  i < passwordStrength ? strengthColor : "bg-gray-100"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className={`text-xs font-medium ${passwordStrength <= 2 ? "text-red-500" : passwordStrength <= 3 ? "text-yellow-600" : "text-green-600"}`}>
+                            {strengthLabel}
+                          </span>
+                        </div>
+                        <ul className="space-y-0.5">
+                          {passwordChecks.map((check) => (
+                            <li key={check.label} className={`flex items-center gap-1.5 text-xs ${check.met ? "text-green-600" : "text-gray-400"}`}>
+                              {check.met ? (
+                                <CheckCircle2 className="w-3 h-3 shrink-0" />
+                              ) : (
+                                <div className="w-3 h-3 rounded-full border border-gray-300 shrink-0" />
+                              )}
+                              {check.label}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="confirm-new-password" className="text-xs text-gray-500 mb-0.5 block">Confirm new password</label>
@@ -521,14 +551,14 @@ export function ProfileClient() {
               </Link>
             }
           />
-          {MOCK_COMPLAINTS.length === 0 ? (
+          {complaints.length === 0 ? (
             <EmptyState
               icon={MessageSquare}
               message="No complaints filed yet."
             />
           ) : (
             <div className="space-y-3">
-              {MOCK_COMPLAINTS.map((c) => {
+              {complaints.map((c) => {
                 const s = COMPLAINT_STATUS[c.status] ?? COMPLAINT_STATUS.closed;
                 const Icon = s.icon;
                 return (
@@ -578,14 +608,14 @@ export function ProfileClient() {
               </Link>
             }
           />
-          {MOCK_LICENCES.length === 0 ? (
+          {profileLicences.length === 0 ? (
             <EmptyState
               icon={FileText}
               message="No licences on your account."
             />
           ) : (
             <div className="space-y-3">
-              {MOCK_LICENCES.map((lic) => {
+              {profileLicences.map((lic) => {
                 const days = daysUntil(lic.expires);
                 const isExpiringSoon = days <= 90;
                 return (
@@ -643,11 +673,11 @@ export function ProfileClient() {
               </Link>
             }
           />
-          {MOCK_DOMAINS.length === 0 ? (
+          {domains.length === 0 ? (
             <EmptyState icon={Globe} message="No .bw domains registered." />
           ) : (
             <div className="space-y-3">
-              {MOCK_DOMAINS.map((d) => {
+              {domains.map((d) => {
                 const days = daysUntil(d.expires);
                 return (
                   <div

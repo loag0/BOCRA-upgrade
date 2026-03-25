@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -59,6 +60,8 @@ export default function VerifyPage() {
             src="/images/telecom-tower.jpg"
             alt=""
             fill
+            priority
+            sizes="100vw"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-bocra-navy/85" />
@@ -106,7 +109,9 @@ export default function VerifyPage() {
             </AnimatedSection>
 
             <AnimatedSection animation="fade-up" delay={400}>
-              <VerifySearch />
+              <Suspense fallback={<div className="h-12" />}>
+                <VerifySearch />
+              </Suspense>
             </AnimatedSection>
           </div>
         </section>
@@ -156,6 +161,8 @@ export default function VerifyPage() {
                   src="/images/elder-technology.jpg"
                   alt="Citizen verifying licence information"
                   fill
+                  loading="lazy"
+                  sizes="(max-width: 1280px) 100vw, 1280px"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-linear-to-r from-bocra-navy/70 via-bocra-navy/40 to-transparent" />

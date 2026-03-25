@@ -1,174 +1,123 @@
-# Mock Data Registry
+# Data Integration Guide
 
-All hardcoded/fake data in the frontend, grouped by feature. When wiring up the real backend,
-replace each entry with the corresponding API call. The PRD API reference is in `docs/PRD.md §12`.
-
----
-
-## 1. Centralised mock data - `lib/mock-data.ts`
-
-These are imported by multiple pages. Replace the file with real API fetches once the backend is live.
-
-| Export                   | What it represents                                                                                                | Real source (PRD §12)                                                                |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `mockOperators`          | 8 BOCRA-licensed operators with licence numbers, categories, services, addresses, expiry dates, compliance status | `GET /licences/verify/:ref` (public, no auth) - also seed `operators` Supabase table |
-| `mockPublications`       | 10 publications - annual reports, QoS reports, legislation, consultations, tenders                                | `publications` Supabase table - staff upload via admin portal                        |
-| `findOperator(query)`    | Single-match lookup by name or licence number                                                                     | Replace with API call to `/licences/verify/:ref`                                     |
-| `searchOperators(query)` | Multi-match search                                                                                                | Replace with Supabase full-text search on `operators` table                          |
-
-**Files that import from `lib/mock-data`:**
-
-- `components/verify-search.tsx` - operator search results
-- `app/(public)/complaints/page.tsx` - operator dropdown in Step 1
-- `app/(public)/publications/page.tsx` - publications list and filtering
+All pages fetch data through `lib/data.ts`. Currently it returns mock data.
+When the Spring Boot backend is ready, switching to real data is a one-file change.
 
 ---
 
-## 2. Homepage - `app/page.tsx`
+## How to switch to real data
 
-All inline constants. None are imported from `lib/mock-data`.
+1. Open `bocra_platform/lib/data.ts`
+2. In each function, **uncomment** the `api.get()` / `api.post()` line
+3. **Delete** the mock fallback below it
+4. Done - every page that calls that function now uses the real backend
 
-| Variable                 | What it represents                                                                                                      | Real source                                                                                  |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `stats` (4 items)        | Hero strip numbers: licensed operators (47+), active licences (234), complaints resolved (1,200+), .bw domains (8,500+) | `GET /analytics/licences/stats` + `GET /analytics/complaints/trends` + domain registry count |
-| `services` (7 items)     | Service cards: Telecoms, Broadcasting, Postal, Internet & ICT, Radio Spectrum, .bw Domains, Type Approval               | Static - content only, no data dependency                                                    |
-| `operators` (8 items)    | "Licensed Operators" strip on homepage showing operator names and types                                                 | `operators` Supabase table (public read)                                                     |
-| `news` (3 items)         | News & Events feed on homepage                                                                                          | `publications` Supabase table filtered by `type = 'news'` or a dedicated `news` table        |
-| `quickActions` (4 items) | Quick action buttons below hero                                                                                         | Static - navigation only                                                                     |
-| `footerLinks`            | Footer navigation structure                                                                                             | Static - navigation only                                                                     |
+Each function looks like this:
 
----
+```ts
+export async function getOperators(): Promise<Operator[]> {
+  // return api.get<Operator[]>("/api/operators");   ← uncomment this
+  return mockOperators;                              // ← delete this
+}
+```
 
-## 3. Complaints form - `app/(public)/complaints/page.tsx`
-
-| Variable                                      | What it represents                                                          | Real source                                                                                                    |
-| --------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `operatorContacts`                            | Phone, email, office hours for each operator - shown in Step 1 contact card | `operators` Supabase table - add `phone`, `email`, `hours` columns                                             |
-| `categories`                                  | Complaint category options in Step 2 dropdown                               | Static enum - matches `complaints.category` column in PRD schema. Keep as-is                                   |
-| `outcomes`                                    | Preferred outcome options in Step 2                                         | Static enum - matches `complaints.preferred_outcome`. Keep as-is                                               |
-| `setTimeout(1200ms)` in form submit           | Simulates `POST /complaints` API call                                       | Replace with `fetch('/api/complaints', { method: 'POST', body: formData })` via Spring Boot complaints service |
-| `setTimeout(2000ms)` for clipboard feedback   | UI only - no data                                                           | Keep as-is (UX feedback)                                                                                       |
-| Case ref generation (`CMP-${year}-${random}`) | Client-side fake case reference                                             | Replace with server-generated ref returned in `POST /complaints` response body                                 |
+The `api` helper (`lib/api.ts`) auto-attaches the Firebase JWT and handles errors.
 
 ---
 
-## 4. Complaint tracker - `app/(public)/complaints/[caseRef]/page.tsx`
+## Data functions and their consumers
 
-The entire page is powered by deterministic seeding from the case reference. **This whole page needs to be replaced with a real API call.**
+### Public pages (no auth required)
 
-| Variable / Function             | What it represents                                                                 | Real source                                                                                                                                         |
-| ------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `buildMockRecord(caseRef)`      | Generates fake operator, category, officer, dates, and timeline from case ref hash | Replace with `GET /complaints/:caseRef` (Spring Boot) - returns `{ status, operator, category, timeline[], assignedOfficer, targetResolutionDate }` |
-| `OPERATORS` (5 names)           | Pool for seeded operator selection                                                 | Remove - comes from real complaint record                                                                                                           |
-| `CATEGORIES` (6 strings)        | Pool for seeded category selection                                                 | Remove - comes from real complaint record                                                                                                           |
-| `OFFICERS` (4 names)            | Pool for seeded officer assignment                                                 | Remove - comes from real complaint record                                                                                                           |
-| `STATUS_ORDER`                  | Complaint status progression                                                       | Keep as enum - matches `complaints.status` PRD schema                                                                                               |
-| `allEvents` (timeline template) | Fake timeline with computed dates                                                  | Replace with `timeline[]` array from API response                                                                                                   |
-| `nextActions` map               | Status → plain-language next step copy                                             | Keep as-is (static UI copy)                                                                                                                         |
+| Function | Endpoint | Consumers |
+|---|---|---|
+| `getOperators()` | `GET /api/operators` | complaints operator dropdown |
+| `searchOperators(query)` | `GET /api/operators/search?name=` | `components/verify-search.tsx` |
+| `findOperator(query)` | `GET /api/operators/search?name=` | operator detail lookups |
+| `getPublications()` | `GET /api/publications` | `app/(public)/publications/page.tsx` |
+| `getNews()` | `GET /api/news` | `app/(public)/news/page.tsx` |
+| `getSpeeches()` | `GET /api/speeches` | `app/(public)/speeches/page.tsx` |
+| `getHomepageStats()` | `GET /api/analytics/homepage-stats` | `app/page.tsx` stats bar |
+| `getHomepageOperators()` | `GET /api/operators/featured` | `app/page.tsx` operator strip |
+| `getHomepageNews()` | `GET /api/news/featured` | `app/page.tsx` news section |
+| `checkDomainAvailability(domain)` | `GET /api/domains/availability/:domain` | `app/(public)/domains/domains-client.tsx` |
+| `getWhoisData(domain)` | `GET /api/domains/whois/:domain` | `app/(public)/domains/domains-client.tsx` |
 
----
+### Authenticated pages (Firebase JWT required)
 
-## 5. .bw Domains - `app/(public)/domains/domains-client.tsx`
+| Function | Endpoint | Consumers |
+|---|---|---|
+| `getUserLicences()` | `GET /api/licences` | `app/(license)/portal/licences/page.tsx` |
+| `getUserApplications()` | `GET /api/applications` | `app/(license)/portal/licences/page.tsx` |
+| `getUserComplaints()` | `GET /api/complaints/mine` | `app/(citizen)/profile/profile-client.tsx` |
+| `getUserDomains()` | `GET /api/domains/mine` | `app/(citizen)/profile/profile-client.tsx` |
+| `getUserProfileLicences()` | `GET /api/licences/mine` | `app/(citizen)/profile/profile-client.tsx` |
 
-| Variable                     | What it represents                                          | Real source                                                                         |
-| ---------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `ZONES` (8 zones)            | Available .bw domain zones with open/restricted status      | Static - matches nic.net.bw. Keep as-is unless BOCRA adds/removes zones             |
-| `TAKEN_DOMAINS` (10 domains) | Fake set of registered domains for availability check       | Replace with `GET /domains/search?q=<domain>` (Spring Boot domain registry service) |
-| `WHOIS_DATA` (3 records)     | Fake WHOIS output for btc.co.bw, mascom.co.bw, bocra.org.bw | Replace with `GET /domains/whois/:domain` - or proxy to nic.net.bw WHOIS API        |
-| `FAQS` (5 items)             | FAQ content                                                 | Static content - keep as-is                                                         |
-| `setTimeout(600ms)`          | Simulates domain availability API                           | Remove when real `GET /domains/search` is wired                                     |
-| `setTimeout(400ms)`          | Simulates WHOIS API                                         | Remove when real `GET /domains/whois` is wired                                      |
+### Staff pages (staff/admin role required)
 
----
-
-## 6. Licensee portal - `app/(license)/portal/licences/page.tsx`
-
-All inline constants. Replace with real Supabase queries scoped to the authenticated user's `org_id`.
-
-| Variable                     | What it represents                                                                   | Real source                                                                                                |
-| ---------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `MOCK_LICENCES` (3 rows)     | Organisation's licence portfolio - refs, categories, issued/expiry dates, conditions | `SELECT * FROM licences WHERE org_id = :orgId` (Supabase, licensee auth)                                   |
-| `MOCK_APPLICATIONS` (2 rows) | In-progress and historical licence applications with status, assigned officer, notes | `SELECT * FROM licence_applications WHERE org_id = :orgId` ordered by `submitted_at DESC`                  |
-| Certificate download button  | Simulated - shows toast                                                              | Replace with `GET /licences/:ref/certificate` (Spring Boot) → returns signed PDF URL from Supabase Storage |
-| Renew button                 | Simulated - shows toast                                                              | Replace with navigation to `/portal/apply?renew=:ref` and pre-populate the form                            |
+| Function | Endpoint | Consumers |
+|---|---|---|
+| `getDashboardStats()` | `GET /api/admin/dashboard/stats` | `app/(staff)/admin/page.tsx` |
+| `getPendingApplications()` | `GET /api/admin/applications?status=pending` | `app/(staff)/admin/page.tsx` |
+| `getOpenComplaints()` | `GET /api/admin/complaints?status=open` | `app/(staff)/admin/page.tsx` |
+| `getExpiringLicences()` | `GET /api/admin/licences?expiresWithin=180` | `app/(staff)/admin/page.tsx` |
 
 ---
 
-## 7. Licence application wizard - `app/(license)/portal/apply/page.tsx`
+## Response shapes Spring Boot must match
 
-All form state is local. No real backend calls made.
+All interfaces are defined in two places:
 
-| Variable / Function                              | What it represents                                                     | Real source                                                                                                                                                                     |
-| ------------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `LICENCE_TYPES` (7 items)                        | Licence categories, descriptions, fees, durations                      | Static content - fees/durations may need updating from BOCRA fee schedule. Keep as-is until fee schedule changes                                                                |
-| `REQUIRED_DOCS` map                              | List of required documents per licence category                        | Static content derived from BOCRA licensing guidelines - keep as-is                                                                                                             |
-| `handleFileAdd()`                                | Simulates a file upload - attaches a fake filename                     | Replace with `<input type="file">` + `POST /api/upload` to Supabase Storage. Return a `storage_path` per file                                                                   |
-| `handleSubmit()` + `setTimeout(1600ms)`          | Simulates `POST /licence-applications` and generates a client-side ref | Replace with `POST /licence-applications` (Spring Boot) - body: `{ licence_type, org_id, org_name, ppra, tax_clearance, contact, document_paths[] }`. Returns `{ ref, status }` |
-| Client-side `APP-${year}-${rand}` ref generation | Fake application reference                                             | Replace with server-generated ref from `POST /licence-applications` response                                                                                                    |
+- **`types/index.ts`** - shared types: `Operator`, `Complaint`, `Publication`, `LicenceApplication`, `NewsArticle`, `Speech`
+- **`lib/data.ts`** - page-specific types: `HomepageStat`, `HomepageOperator`, `HomepageNews`, `DashboardStat`, `PendingApplication`, `OpenComplaint`, `ExpiringLicence`, `UserLicence`, `UserApplication`, `DomainAvailability`, `WhoisRecord`, `UserComplaint`, `UserDomain`, `UserProfileLicence`
 
 ---
 
-## 8. Admin dashboard - `app/(staff)/admin/page.tsx`
+## Write operations (not yet in data.ts)
 
-All inline constants. The entire dashboard is mocked.
+These are still handled inline on their respective pages. Wire them through `api.post()` when ready.
 
-| Variable                       | What it represents                                                                        | Real source                                                                          |
-| ------------------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `stats` (4 KPIs)               | Pending apps (14), open complaints (37), licensed operators (89), expiring in 30 days (6) | `GET /analytics/licences/stats` + `GET /analytics/complaints/trends`                 |
-| `pendingApplications` (5 rows) | Licence application queue with ref, org, type, status, officer                            | `GET /licences` (staff auth) - filter by `status != approved AND status != rejected` |
-| `expiringLicences` (6 rows)    | Licences expiring within 180 days                                                         | `GET /licences` filtered by `expires_at < NOW() + 180 days`                          |
-| `openComplaints` (6 rows)      | Unresolved complaints with case ref, complainant, operator, category, status, age         | `GET /complaints` (staff auth) - filter by `status != resolved AND status != closed` |
-
----
-
-## 7. Async simulations to remove
-
-All `setTimeout` calls that simulate network latency. Remove and replace with real `fetch`/`async` calls.
-
-| File                                      | Delay  | Simulates                    |
-| ----------------------------------------- | ------ | ---------------------------- |
-| `app/(public)/complaints/page.tsx`        | 1200ms | `POST /complaints`           |
-| `app/(public)/domains/domains-client.tsx` | 600ms  | `GET /domains/search`        |
-| `app/(public)/domains/domains-client.tsx` | 400ms  | `GET /domains/whois/:domain` |
-| `app/(license)/portal/apply/page.tsx`     | 1600ms | `POST /licence-applications` |
-
-The 2000ms `setTimeout` in `complaints/page.tsx` is clipboard feedback - keep it.
+| Page | Current behavior | Endpoint needed |
+|---|---|---|
+| `app/(public)/complaints/page.tsx` | `setTimeout` simulates submit, client-generated case ref | `POST /api/complaints` - return `{ caseRef }` |
+| `app/(public)/complaints/[caseRef]/page.tsx` | Deterministic seed from case ref builds fake record | `GET /api/complaints/:caseRef` - return full record with timeline |
+| `app/(license)/portal/apply/page.tsx` | `setTimeout` simulates submit, client-generated ref | `POST /api/licence-applications` - return `{ ref, status }` |
 
 ---
 
-## Spring Boot integration notes
+## Static content (no backend needed)
 
-### Auth token pattern
+These arrays stay inline on their pages - they're navigation or content, not data:
 
-Every authenticated fetch from the frontend sends the Firebase ID token:
+- `services` (homepage) - 7 BOCRA regulatory sectors
+- `quickActions` (homepage) - 4 quick-action buttons
+- `ZONES` (domains page) - 8 .bw domain zones
+- `FAQS` (domains page) - domain FAQ content
+- `LICENCE_TYPES` (apply page) - licence categories, fees, durations
+- `REQUIRED_DOCS` (apply page) - required documents per category
+- `categories` / `outcomes` (complaints page) - form dropdown options
+
+---
+
+## Auth token pattern
 
 ```ts
 const token = await user.getIdToken();
 fetch("/api/...", { headers: { Authorization: `Bearer ${token}` } });
 ```
 
-Spring Boot validates it with Firebase Admin SDK on every request.
-
-### Response shapes
-
-All types Spring Boot must match are in `types/index.ts`: `Operator`, `Complaint`, `Publication`, `LicenceApplication`, `UserRole`.
-
-### Supabase
-
-`lib/supabase.ts` is set up and ready. Use for application data (complaints, licence applications, publications, user records). **Not used for roles** - roles come from Spring Boot `/auth/me`.
+The `api` helper in `lib/api.ts` handles this automatically.
 
 ---
 
-## Priority order for replacing mocks
+## Priority order for backend implementation
 
-When the Spring Boot backend is ready, replace in this order (matches PRD MoSCoW):
-
-1. **`lib/mock-data.ts` → `mockOperators`** - blocks licence verifier, complaints operator dropdown, and admin operator registry
-2. **`app/(public)/complaints/page.tsx`** - `POST /complaints` + server-generated case ref
-3. **`app/(public)/complaints/[caseRef]/page.tsx`** - `GET /complaints/:caseRef`
-4. **`app/(public)/publications/page.tsx`** - `mockPublications` → Supabase `publications` table
-5. **`app/(public)/domains/domains-client.tsx`** - domain search + WHOIS
-6. **`app/page.tsx`** - homepage stats + news feed
-7. **`app/(staff)/admin/page.tsx`** - all KPIs and queues
-8. **`app/(license)/portal/licences/page.tsx`** - `MOCK_LICENCES` + `MOCK_APPLICATIONS`
-9. **`app/(license)/portal/apply/page.tsx`** - `POST /licence-applications` + file upload
+1. **`POST /api/complaints`** - enables real complaint submission with server-generated case refs
+2. **`GET /api/complaints/:caseRef`** - enables complaint tracking with real data
+3. **`POST /api/licence-applications`** - enables real licence applications
+4. **`GET /api/operators`** + **search** - powers verify page and complaint operator dropdown
+5. **`GET /api/admin/*`** - dashboard stats, pending apps, open complaints, expiring licences
+6. **`GET /api/licences`** + **`/api/applications`** - licensee portal
+7. **`GET /api/publications`** + **`/api/news`** + **`/api/speeches`** - content pages
+8. **`GET /api/domains/*`** - domain availability and WHOIS
+9. **Homepage endpoints** - stats, featured operators, featured news

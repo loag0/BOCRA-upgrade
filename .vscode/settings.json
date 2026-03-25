@@ -16,5 +16,6 @@
   },
 
   // Suppress "Unknown at-rule" warnings for @apply, @layer, @theme etc.
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

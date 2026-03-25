@@ -1,5 +1,7 @@
 package com.bocra.backend.publication;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,12 +31,12 @@ public class PublicationController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Publication>> searchPublications(@RequestParam String title) {
+    public ResponseEntity<List<Publication>> searchPublications(@RequestParam @Size(min = 1, max = 200) String title) {
         return ResponseEntity.ok(publicationService.searchPublications(title));
     }
 
     @PostMapping
-    public ResponseEntity<Publication> createPublication(@RequestBody PublicationDTO dto) {
+    public ResponseEntity<Publication> createPublication(@Valid @RequestBody PublicationDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(publicationService.createPublication(dto));
     }
@@ -42,7 +44,7 @@ public class PublicationController {
     @PutMapping("/{id}")
     public ResponseEntity<Publication> updatePublication(
             @PathVariable String id,
-            @RequestBody PublicationDTO dto) {
+            @Valid @RequestBody PublicationDTO dto) {
         return ResponseEntity.ok(publicationService.updatePublication(id, dto));
     }
 

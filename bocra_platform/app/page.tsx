@@ -18,6 +18,7 @@ import {
   MapPin,
   ExternalLink,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Navbar } from "@/components/navbar";
@@ -25,13 +26,18 @@ import { Footer } from "@/components/footer";
 import { HeroSearch } from "@/components/hero-search";
 import { AnimatedSection } from "@/components/animated-section";
 import { AnimatedCounter } from "@/components/animated-counter";
+import {
+  getHomepageStats,
+  getHomepageOperators,
+  getHomepageNews,
+} from "@/lib/data";
 
-const stats = [
-  { label: "Licensed Operators", value: "47+", icon: Building2 },
-  { label: "Active Licences", value: "234", icon: FileText },
-  { label: "Complaints Resolved", value: "1,200+", icon: ShieldCheck },
-  { label: ".bw Domains Registered", value: "8,500+", icon: Globe },
-];
+const STAT_ICONS: Record<string, LucideIcon> = {
+  "Licensed Operators": Building2,
+  "Active Licences": FileText,
+  "Complaints Resolved": ShieldCheck,
+  ".bw Domains Registered": Globe,
+};
 
 const services = [
   {
@@ -85,140 +91,6 @@ const services = [
   },
 ];
 
-const operators = [
-  {
-    name: "BTC",
-    type: "PTO",
-    fullName: "Botswana Telecommunications Corporation",
-    description:
-      "The national fixed-line and broadband operator, providing voice, data, and fibre services across Botswana.",
-    licenceNo: "BOCRA/PTO/001/2013",
-    since: "2013",
-    services: ["Fixed Voice", "ADSL/Fibre", "Leased Lines"],
-    website: "https://www.btc.bw",
-    logo: "/images/operators/btc-logo.png",        // ← update path
-    banner: "/images/operators/btc-banner.png",    // ← update path
-  },
-  {
-    name: "Mascom",
-    type: "PTO",
-    fullName: "Mascom Wireless Botswana",
-    description:
-      "Botswana's largest mobile network operator, offering 4G LTE, mobile money (MyZaka), and enterprise solutions.",
-    licenceNo: "BOCRA/PTO/002/2013",
-    since: "1998",
-    services: ["Mobile Voice", "4G LTE", "MyZaka MFS"],
-    website: "https://www.mascom.bw",
-    logo: "/images/operators/mascom-logo.png",
-    banner: "/images/operators/mascom-banner.png",
-  },
-  {
-    name: "Orange",
-    type: "PTO",
-    fullName: "Orange Botswana",
-    description:
-      "Part of the global Orange Group, providing mobile telecommunications and digital services nationwide.",
-    licenceNo: "BOCRA/PTO/003/2013",
-    since: "1998",
-    services: ["Mobile Voice", "4G Data", "Orange Money"],
-    website: "https://www.orange.co.bw",
-    logo: "/images/operators/orange-logo.png",
-    banner: "/images/operators/orange-banner.png",
-  },
-  {
-    name: "BoFiNet",
-    type: "Wholesale",
-    fullName: "Botswana Fibre Networks",
-    description:
-      "The national wholesale open-access broadband infrastructure provider, operating the national fibre backbone.",
-    licenceNo: "BOCRA/WHL/001/2012",
-    since: "2012",
-    services: ["Wholesale Fibre", "National Backbone", "International Links"],
-    website: "https://www.bofinet.co.bw",
-    logo: "/images/operators/bofinet-logo.png",
-    banner: "/images/operators/bofinet-banner.png",
-  },
-  {
-    name: "BW Post",
-    type: "Postal",
-    fullName: "Botswana Post",
-    description:
-      "The designated universal postal service provider, operating a nationwide network of post offices and courier services.",
-    licenceNo: "BOCRA/PST/001/2013",
-    since: "1989",
-    services: ["Mail Delivery", "Courier", "Financial Services"],
-    website: "https://www.botswanapost.co.bw",
-    logo: "/images/operators/bwpost-logo.png",
-    banner: "/images/operators/bwpost-banner.png",
-  },
-  {
-    name: "Yarona FM",
-    type: "Radio",
-    fullName: "Yarona FM",
-    description:
-      "A leading commercial FM radio broadcaster reaching audiences across Botswana with news, music, and entertainment.",
-    licenceNo: "BOCRA/BCR/010/2015",
-    since: "2000",
-    services: ["FM Broadcasting", "Digital Streaming", "Advertising"],
-    website: "https://www.yaronafm.co.bw",
-    logo: "/images/operators/yaronafm-logo.png",
-    banner: "/images/operators/yaronafm-banner.png",
-  },
-  {
-    name: "Duma FM",
-    type: "Radio",
-    fullName: "Duma FM",
-    description:
-      "Commercial FM station broadcasting popular music, local content, and community-focused programming.",
-    licenceNo: "BOCRA/BCR/011/2015",
-    since: "2007",
-    services: ["FM Broadcasting", "Local Content", "Community Radio"],
-    website: "https://www.dumafm.co.bw",
-    logo: "/images/operators/dumafm-logo.png",
-    banner: "/images/operators/dumafm-banner.png",
-  },
-  {
-    name: "eBotswana",
-    type: "TV",
-    fullName: "eBotswana Television",
-    description:
-      "Commercial free-to-air television broadcaster delivering local news, sports, and entertainment programming.",
-    licenceNo: "BOCRA/BCT/005/2016",
-    since: "2016",
-    services: ["Free-to-Air TV", "Local News", "Sports Coverage"],
-    website: "https://www.ebotswana.co.bw",
-    logo: "/images/operators/ebotswana-logo.png",
-    banner: "/images/operators/ebotswana-banner.png",
-  },
-];
-
-const news = [
-  {
-    category: "Public Notice",
-    title: "BOCRA Publishes Draft Spectrum Policy 2026 for Public Comment",
-    date: "15 March 2026",
-    excerpt:
-      "BOCRA invites public comment on the revised National Frequency Allocation Plan ahead of the IMT 2030 spectrum review.",
-    highlight: true,
-  },
-  {
-    category: "Announcement",
-    title: "Updated QoS Guidelines for Mobile Broadband Now in Effect",
-    date: "10 March 2026",
-    excerpt:
-      "Updated Quality of Service guidelines for mobile broadband services are now in effect. Operators must comply by 1 June 2026.",
-    highlight: false,
-  },
-  {
-    category: "Tender",
-    title: "BOCRA Issues Tender for Website Redevelopment",
-    date: "5 March 2026",
-    excerpt:
-      "BOCRA has issued a tender for the design, development, deployment and maintenance of the official BOCRA website.",
-    highlight: false,
-  },
-];
-
 const quickActions = [
   { icon: ShieldCheck, label: "Verify a Licence", href: "/verify", accent: "text-bocra-gold" },
   { icon: FileWarning, label: "File a Complaint", href: "/complaints", accent: "text-bocra-red" },
@@ -226,7 +98,17 @@ const quickActions = [
   { icon: BookOpen, label: "Publications", href: "/publications", accent: "text-bocra-gold" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [homepageStats, operators, news] = await Promise.all([
+    getHomepageStats(),
+    getHomepageOperators(),
+    getHomepageNews(),
+  ]);
+  const stats = homepageStats.map((s) => ({
+    ...s,
+    icon: STAT_ICONS[s.label] ?? FileText,
+  }));
+
   return (
     <>
       <Navbar />
@@ -239,6 +121,7 @@ export default function HomePage() {
           alt=""
           fill
           priority
+          sizes="100vw"
           className="object-cover object-center"
         />
         {/* Dark overlay for readability */}
@@ -358,6 +241,8 @@ export default function HomePage() {
                   src="/images/elder-technology.jpg"
                   alt="Citizen accessing digital services on a laptop"
                   fill
+                  loading="lazy"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-bocra-navy/30 to-transparent" />
@@ -598,6 +483,8 @@ export default function HomePage() {
                 src="/images/telecom-tower.jpg"
                 alt="Telecommunications infrastructure in Botswana"
                 fill
+                loading="lazy"
+                sizes="100vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-linear-to-r from-bocra-navy/70 via-bocra-navy/40 to-transparent" />
@@ -658,6 +545,8 @@ export default function HomePage() {
             src="/images/community-meeting.jpg"
             alt=""
             fill
+            loading="lazy"
+            sizes="100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-bocra-blue/85" />

@@ -1,5 +1,7 @@
 package com.bocra.backend.operator;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,7 @@ public class OperatorController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Operator>> searchOperators(@RequestParam String name) {
+    public ResponseEntity<List<Operator>> searchOperators(@RequestParam @Size(min = 1, max = 200) String name) {
         return ResponseEntity.ok(operatorService.searchOperators(name));
     }
 
@@ -39,7 +41,7 @@ public class OperatorController {
     }
 
     @PostMapping
-    public ResponseEntity<Operator> createOperator(@RequestBody OperatorDTO dto) {
+    public ResponseEntity<Operator> createOperator(@Valid @RequestBody OperatorDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(operatorService.createOperator(dto));
     }
@@ -47,7 +49,7 @@ public class OperatorController {
     @PutMapping("/{id}")
     public ResponseEntity<Operator> updateOperator(
             @PathVariable String id,
-            @RequestBody OperatorDTO dto) {
+            @Valid @RequestBody OperatorDTO dto) {
         return ResponseEntity.ok(operatorService.updateOperator(id, dto));
     }
 

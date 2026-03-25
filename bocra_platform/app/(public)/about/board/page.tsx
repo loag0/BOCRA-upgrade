@@ -1,11 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, Linkedin, Mail } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
@@ -143,10 +142,11 @@ export default function BoardPage() {
             src="/images/conference-room.jpg"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
+          <div className="absolute inset-0 bg-linear-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center gap-1.5 text-sm text-white/40">

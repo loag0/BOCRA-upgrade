@@ -4,6 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { sanitizeText } from "@/lib/sanitize";
 import {
+  checkDomainAvailability,
+  getWhoisData,
+  type DomainAvailability,
+  type WhoisRecord,
+} from "@/lib/data";
+import {
   Search,
   CheckCircle2,
   XCircle,
@@ -32,84 +38,7 @@ const ZONES = [
   { zone: ".gov.bw", desc: "Government bodies only", open: false },
 ];
 
-// Mock availability
-
-const TAKEN_DOMAINS = new Set([
-  "btc.co.bw",
-  "mascom.co.bw",
-  "orange.co.bw",
-  "bofinet.co.bw",
-  "bocra.org.bw",
-  "gov.co.bw",
-  "abc.co.bw",
-  "test.co.bw",
-  "botswana.co.bw",
-  "gaborone.co.bw",
-]);
-
-type AvailabilityResult = {
-  domain: string;
-  available: boolean;
-  suggestions?: string[];
-};
-
-function checkAvailability(input: string): AvailabilityResult {
-  const domain = input
-    .toLowerCase()
-    .trim()
-    .replace(/^https?:\/\//, "");
-  const available = !TAKEN_DOMAINS.has(domain);
-
-  if (!available) {
-    const base = domain.split(".")[0];
-    const suggestions = ZONES.filter((z) => z.open)
-      .map((z) => `${base}${z.zone}`)
-      .filter((d) => !TAKEN_DOMAINS.has(d))
-      .slice(0, 4);
-    return { domain, available: false, suggestions };
-  }
-
-  return { domain, available: true };
-}
-
-// WHOIS mock
-
-const WHOIS_DATA: Record<
-  string,
-  {
-    registrant: string;
-    org: string;
-    email: string;
-    registered: string;
-    expires: string;
-    nameservers: string[];
-  }
-> = {
-  "btc.co.bw": {
-    registrant: "Botswana Telecommunications Corporation Limited",
-    org: "BTC",
-    email: "domains@btc.bw",
-    registered: "1999-04-01",
-    expires: "2027-03-31",
-    nameservers: ["ns1.btc.bw", "ns2.btc.bw"],
-  },
-  "mascom.co.bw": {
-    registrant: "Mascom Wireless Botswana (Pty) Ltd",
-    org: "Mascom",
-    email: "it@mascom.bw",
-    registered: "2000-06-15",
-    expires: "2027-06-14",
-    nameservers: ["ns1.mascom.co.bw", "ns2.mascom.co.bw"],
-  },
-  "bocra.org.bw": {
-    registrant: "Botswana Communications Regulatory Authority",
-    org: "BOCRA",
-    email: "info@bocra.org.bw",
-    registered: "2013-04-01",
-    expires: "2028-03-31",
-    nameservers: ["ns1.bocra.org.bw", "ns2.bocra.org.bw"],
-  },
-};
+// Domain availability and WHOIS data are loaded from lib/data.ts
 
 // FAQ
 
@@ -140,18 +69,20 @@ const FAQS = [
 
 function AvailabilityChecker() {
   const [input, setInput] = useState("");
-  const [result, setResult] = useState<AvailabilityResult | null>(null);
+  const [result, setResult] = useState<DomainAvailability | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const cleanInput = sanitizeText(input);
     if (!cleanInput) return;
     setLoading(true);
-    setTimeout(() => {
-      setResult(checkAvailability(cleanInput));
+    try {
+      const data = await checkDomainAvailability(cleanInput);
+      setResult(data);
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   return (
@@ -222,9 +153,10 @@ function AvailabilityChecker() {
                   {result.suggestions.map((s) => (
                     <button
                       key={s}
-                      onClick={() => {
+                      onClick={async () => {
                         setInput(s);
-                        setResult(checkAvailability(s));
+                        const data = await checkDomainAvailability(s);
+                        setResult(data);
                       }}
                       className="font-mono text-xs border border-gray-200 hover:border-bocra-blue hover:text-bocra-blue px-3 py-1.5 rounded-lg text-bocra-navy transition-colors"
                     >
@@ -245,19 +177,19 @@ function AvailabilityChecker() {
 
 function WhoisLookup() {
   const [input, setInput] = useState("");
-  const [result, setResult] = useState<
-    (typeof WHOIS_DATA)[string] | null | "not_found"
-  >(null);
+  const [result, setResult] = useState<WhoisRecord | null | "not_found">(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     const domain = input.toLowerCase().trim();
     setLoading(true);
-    setTimeout(() => {
-      setResult(WHOIS_DATA[domain] ?? "not_found");
+    try {
+      const data = await getWhoisData(domain);
+      setResult(data === null ? "not_found" : data);
+    } finally {
       setLoading(false);
-    }, 400);
+    }
   };
 
   const fmt = (iso: string) =>
@@ -306,14 +238,12 @@ function WhoisLookup() {
             <span className="text-bocra-navy">{result.registrant}</span>
           </p>
           <p>
-            <span className="text-gray-400 w-28 inline-block">
-              Organisation:
-            </span>{" "}
-            <span className="text-bocra-navy">{result.org}</span>
+            <span className="text-gray-400 w-28 inline-block">Registrar:</span>{" "}
+            <span className="text-bocra-navy">{result.registrar}</span>
           </p>
           <p>
-            <span className="text-gray-400 w-28 inline-block">Email:</span>{" "}
-            <span className="text-bocra-navy">{result.email}</span>
+            <span className="text-gray-400 w-28 inline-block">Status:</span>{" "}
+            <span className="text-bocra-navy">{result.status}</span>
           </p>
           <p>
             <span className="text-gray-400 w-28 inline-block">Registered:</span>{" "}
@@ -383,6 +313,8 @@ export function DomainsClient() {
           src="/images/hero-cityscape.jpg"
           alt=""
           fill
+          priority
+          sizes="100vw"
           className="object-cover object-center opacity-20"
         />
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -538,7 +470,7 @@ export function DomainsClient() {
               Register at nic.net.bw <ExternalLink className="w-4 h-4" />
             </a>
             <a
-              href="https://nic.net.bw/registrars"
+              href="https://nic.net.bw"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 h-10 px-5 border border-gray-200 bg-white hover:bg-gray-50 text-bocra-navy text-sm font-medium rounded-lg transition-colors"

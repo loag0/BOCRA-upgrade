@@ -1,5 +1,6 @@
 package com.bocra.backend.news;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class NewsArticleController {
     }
 
     @PostMapping
-    public ResponseEntity<NewsArticle> createArticle(@RequestBody NewsArticleDTO dto) {
+    public ResponseEntity<NewsArticle> createArticle(@Valid @RequestBody NewsArticleDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newsArticleService.createArticle(dto));
     }
@@ -42,7 +43,7 @@ public class NewsArticleController {
     @PutMapping("/{id}")
     public ResponseEntity<NewsArticle> updateArticle(
             @PathVariable String id,
-            @RequestBody NewsArticleDTO dto) {
+            @Valid @RequestBody NewsArticleDTO dto) {
         return ResponseEntity.ok(newsArticleService.updateArticle(id, dto));
     }
 

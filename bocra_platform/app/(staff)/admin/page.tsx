@@ -13,231 +13,30 @@ import {
 import Link from "next/link";
 import { ErrorLogPanel } from "./error-log-panel";
 import { SystemHealthPanel } from "./system-health-panel";
+import {
+  getDashboardStats,
+  getPendingApplications,
+  getOpenComplaints,
+  getExpiringLicences,
+  type DashboardStat,
+  type PendingApplication,
+  type OpenComplaint,
+  type ExpiringLicence,
+} from "@/lib/data";
+import type { LucideIcon } from "lucide-react";
 
 export const metadata = { title: "Staff Dashboard" };
 
-// Mock data
+// Display config for stat cards (icons, colors, links are UI concerns)
+const STAT_DISPLAY: Record<string, { icon: LucideIcon; color: string; bg: string; href: string }> = {
+  "Pending Applications": { icon: FileText, color: "text-bocra-blue", bg: "bg-bocra-blue/10", href: "/admin/applications" },
+  "Open Complaints": { icon: MessageSquare, color: "text-amber-600", bg: "bg-amber-50", href: "/admin/complaints" },
+  "Licensed Operators": { icon: Users, color: "text-bocra-green", bg: "bg-green-50", href: "/admin/operators" },
+  "Expiring in 30 Days": { icon: AlertTriangle, color: "text-bocra-red", bg: "bg-red-50", href: "/admin/operators" },
+};
 
-const stats = [
-  {
-    label: "Pending Applications",
-    value: "14",
-    delta: "+3 this week",
-    trend: "up",
-    icon: FileText,
-    color: "text-bocra-blue",
-    bg: "bg-bocra-blue/10",
-    href: "/admin/applications",
-  },
-  {
-    label: "Open Complaints",
-    value: "37",
-    delta: "-5 from last week",
-    trend: "down",
-    icon: MessageSquare,
-    color: "text-amber-600",
-    bg: "bg-amber-50",
-    href: "/admin/complaints",
-  },
-  {
-    label: "Licensed Operators",
-    value: "89",
-    delta: "2 pending renewal",
-    trend: "neutral",
-    icon: Users,
-    color: "text-bocra-green",
-    bg: "bg-green-50",
-    href: "/admin/operators",
-  },
-  {
-    label: "Expiring in 30 Days",
-    value: "6",
-    delta: "Action required",
-    trend: "warn",
-    icon: AlertTriangle,
-    color: "text-bocra-red",
-    bg: "bg-red-50",
-    href: "/admin/operators",
-  },
-];
-
-type AppStatus =
-  | "submitted"
-  | "under_review"
-  | "pending_docs"
-  | "approved"
-  | "rejected";
-
-const pendingApplications: {
-  id: string;
-  ref: string;
-  org: string;
-  type: string;
-  submitted: string;
-  status: AppStatus;
-  assignedTo: string;
-}[] = [
-  {
-    id: "1",
-    ref: "APP-2026-001847",
-    org: "Kalahari Connect (Pty) Ltd",
-    type: "SAP - Internet Services",
-    submitted: "2026-03-18",
-    status: "under_review",
-    assignedTo: "K. Setshogo",
-  },
-  {
-    id: "2",
-    ref: "APP-2026-001831",
-    org: "SkyLink Botswana",
-    type: "NFP-I - Fixed Wireless",
-    submitted: "2026-03-15",
-    status: "pending_docs",
-    assignedTo: "T. Mokoena",
-  },
-  {
-    id: "3",
-    ref: "APP-2026-001820",
-    org: "Delta Radio (Pty) Ltd",
-    type: "Broadcasting - Commercial Radio",
-    submitted: "2026-03-14",
-    status: "submitted",
-    assignedTo: "Unassigned",
-  },
-  {
-    id: "4",
-    ref: "APP-2026-001798",
-    org: "NetPulse ISP",
-    type: "SAP - VANS Provider",
-    submitted: "2026-03-10",
-    status: "under_review",
-    assignedTo: "P. Ditshebo",
-  },
-  {
-    id: "5",
-    ref: "APP-2026-001775",
-    org: "Gaborone Broadband (Pty) Ltd",
-    type: "SAP - Internet Services",
-    submitted: "2026-03-08",
-    status: "pending_docs",
-    assignedTo: "L. Gaobuse",
-  },
-];
-
-type ComplaintStatus =
-  | "received"
-  | "acknowledged"
-  | "investigating"
-  | "awaiting_operator";
-
-const openComplaints: {
-  caseRef: string;
-  complainant: string;
-  operator: string;
-  category: string;
-  status: ComplaintStatus;
-  daysOpen: number;
-}[] = [
-  {
-    caseRef: "CMP-2026-104221",
-    complainant: "K. Modise",
-    operator: "Orange Botswana",
-    category: "Billing dispute",
-    status: "investigating",
-    daysOpen: 12,
-  },
-  {
-    caseRef: "CMP-2026-104185",
-    complainant: "T. Garekwe",
-    operator: "Mascom",
-    category: "Poor network quality",
-    status: "awaiting_operator",
-    daysOpen: 9,
-  },
-  {
-    caseRef: "CMP-2026-104177",
-    complainant: "S. Baloyi",
-    operator: "BTC",
-    category: "Unauthorized deductions",
-    status: "acknowledged",
-    daysOpen: 3,
-  },
-  {
-    caseRef: "CMP-2026-104155",
-    complainant: "L. Tshekiso",
-    operator: "Botswana Post",
-    category: "Postal service delay",
-    status: "investigating",
-    daysOpen: 18,
-  },
-  {
-    caseRef: "CMP-2026-104140",
-    complainant: "P. Nkwe",
-    operator: "Orange Botswana",
-    category: "Unsolicited messages",
-    status: "received",
-    daysOpen: 1,
-  },
-  {
-    caseRef: "CMP-2026-104088",
-    complainant: "R. Seretse",
-    operator: "Mascom",
-    category: "Internet speed issues",
-    status: "awaiting_operator",
-    daysOpen: 22,
-  },
-];
-
-const expiringLicences: {
-  operator: string;
-  licenceNo: string;
-  category: string;
-  expiresAt: string;
-  daysLeft: number;
-}[] = [
-  {
-    operator: "BTC",
-    licenceNo: "BOC-2013-NFP-001",
-    category: "NFP-N (National)",
-    expiresAt: "2026-03-31",
-    daysLeft: 10,
-  },
-  {
-    operator: "Mascom",
-    licenceNo: "BOC-2013-NFP-002",
-    category: "NFP-N (National)",
-    expiresAt: "2026-03-31",
-    daysLeft: 10,
-  },
-  {
-    operator: "Orange Botswana",
-    licenceNo: "BOC-2013-NFP-003",
-    category: "NFP-N (National)",
-    expiresAt: "2026-03-31",
-    daysLeft: 10,
-  },
-  {
-    operator: "Botswana Post",
-    licenceNo: "BOC-2013-POST-001",
-    category: "Postal Service",
-    expiresAt: "2026-03-31",
-    daysLeft: 10,
-  },
-  {
-    operator: "BoFiNet",
-    licenceNo: "BOC-2013-NFP-004",
-    category: "NFP-N (Wholesale)",
-    expiresAt: "2026-08-31",
-    daysLeft: 163,
-  },
-  {
-    operator: "Delta Connect ISP",
-    licenceNo: "BOC-2024-SAP-018",
-    category: "SAP - Internet",
-    expiresAt: "2026-04-15",
-    daysLeft: 25,
-  },
-];
+type AppStatus = PendingApplication["status"];
+type ComplaintStatus = OpenComplaint["status"];
 
 // Status badges
 
@@ -328,7 +127,21 @@ function DaysLeftBadge({ days }: { days: number }) {
 
 // Page
 
-export default function AdminPage() {
+export default async function AdminPage() {
+  const [dashboardStats, pendingApplications, openComplaints, expiringLicences] =
+    await Promise.all([
+      getDashboardStats(),
+      getPendingApplications(),
+      getOpenComplaints(),
+      getExpiringLicences(),
+    ]);
+
+  // Merge data with display config
+  const stats = dashboardStats.map((s) => ({
+    ...s,
+    ...STAT_DISPLAY[s.label] ?? { icon: FileText, color: "text-gray-500", bg: "bg-gray-100", href: "/admin" },
+  }));
+
   const today = new Date().toLocaleDateString("en-BW", {
     weekday: "long",
     day: "numeric",

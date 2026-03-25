@@ -723,6 +723,8 @@ export default function ComplaintsPage() {
             src="/images/community-meeting.jpg"
             alt=""
             fill
+            priority
+            sizes="100vw"
             className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-bocra-navy/85" />

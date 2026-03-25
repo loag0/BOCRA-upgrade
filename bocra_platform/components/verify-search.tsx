@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Search,
   CheckCircle2,
@@ -8,7 +9,7 @@ import {
   AlertCircle,
   ExternalLink,
 } from "lucide-react";
-import { searchOperators } from "@/lib/mock-data";
+import { searchOperators } from "@/lib/data";
 import type { Operator } from "@/types";
 import { Badge } from "@/components/ui/badge";
 
@@ -158,10 +159,31 @@ function OperatorCard({ operator }: { operator: Operator }) {
 }
 
 export function VerifySearch() {
-  const [query, setQuery] = useState("");
-  const [submitted, setSubmitted] = useState("");
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q") ?? "";
 
-  const results = searchOperators(submitted);
+  const [query, setQuery] = useState(initialQuery);
+  const [submitted, setSubmitted] = useState(initialQuery);
+  const [results, setResults] = useState<Operator[]>([]);
+
+  // Auto-search when arriving with a ?q= parameter
+  useEffect(() => {
+    const q = searchParams.get("q") ?? "";
+    if (q.trim().length >= 2) {
+      setQuery(q);
+      setSubmitted(q.trim());
+    }
+  }, [searchParams]);
+
+  // Fetch results when submitted query changes
+  useEffect(() => {
+    if (submitted.length >= 2) {
+      searchOperators(submitted).then(setResults);
+    } else {
+      setResults([]);
+    }
+  }, [submitted]);
+
   const hasSearched = submitted.length >= 2;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -177,7 +199,7 @@ export function VerifySearch() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Operator name or licence number…"
+          placeholder="Operator name or licence number..."
           className="flex-1 px-4 py-3.5 bg-white rounded-l-xl text-bocra-navy placeholder:text-gray-400 focus:outline-none text-sm border border-white"
         />
         <button

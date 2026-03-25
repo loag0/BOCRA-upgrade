@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimatedSection } from "@/components/animated-section";
-import { mockPublications } from "@/lib/mock-data";
+import { getPublications } from "@/lib/data";
+import type { Publication } from "@/types";
 import {
   Search,
   FileText,
@@ -112,7 +113,7 @@ const FILTER_TABS: PubType[] = [
 
 // ── Publication card ───────────────────────────────────────────────────────
 
-function PubCard({ pub }: { pub: (typeof mockPublications)[number] }) {
+function PubCard({ pub }: { pub: Publication }) {
   const type = pub.type as PubType;
   const meta = TYPE_META[type] ?? TYPE_META.notice;
   const Icon = meta.icon;
@@ -178,11 +179,17 @@ export default function PublicationsPage() {
   const urlType = searchParams.get("type") ?? "all";
   const initialType: PubType = URL_TO_TYPE[urlType] ?? "all";
 
+  const initialQuery = searchParams.get("q") ?? "";
   const [activeType, setActiveType] = useState<PubType>(initialType);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
+  const [publications, setPublications] = useState<Publication[]>([]);
+
+  useEffect(() => {
+    getPublications().then(setPublications);
+  }, []);
 
   const filtered = useMemo(() => {
-    let list = mockPublications;
+    let list = publications;
     if (activeType !== "all") list = list.filter((p) => p.type === activeType);
     if (query.trim().length >= 2) {
       const q = query.toLowerCase();
@@ -196,7 +203,7 @@ export default function PublicationsPage() {
       (a, b) =>
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
     );
-  }, [activeType, query]);
+  }, [activeType, query, publications]);
 
   return (
     <>
@@ -208,10 +215,11 @@ export default function PublicationsPage() {
             src="/images/documents-library.jpg"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
+          <div className="absolute inset-0 bg-linear-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-6">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   FileText,
@@ -14,65 +15,12 @@ import {
   Building2,
 } from "lucide-react";
 import { toast } from "sonner";
-
-// Mock data
-// Replace with real Supabase query: SELECT * FROM licences WHERE org_id = auth.org_id
-// See docs/MOCK_DATA.md for full replacement instructions.
-
-const MOCK_LICENCES = [
-  {
-    ref: "BOC-2024-SAP-019",
-    category: "SAP - Internet Services",
-    org: "MyCompany (Pty) Ltd",
-    status: "active",
-    issued: "2024-03-01",
-    expires: "2027-02-28",
-    conditions: [
-      "Must not exceed 500 subscribers without upgrading to NFP",
-      "Annual QoS report due 31 March",
-    ],
-  },
-  {
-    ref: "BOC-2023-BSS-007",
-    category: "Broadcasting Service",
-    org: "MyCompany (Pty) Ltd",
-    status: "active",
-    issued: "2023-08-15",
-    expires: "2026-08-14",
-    conditions: [
-      "30% local content quota - monitored quarterly",
-      "Retransmission licence required for relay signals",
-    ],
-  },
-  {
-    ref: "BOC-2022-NFP-002",
-    category: "NFP - Network Facilities",
-    org: "MyCompany (Pty) Ltd",
-    status: "expired",
-    issued: "2019-01-10",
-    expires: "2022-01-09",
-    conditions: [],
-  },
-];
-
-const MOCK_APPLICATIONS = [
-  {
-    ref: "APP-2026-0041",
-    type: "Type Approval",
-    status: "under_review",
-    submitted: "2026-02-14",
-    officer: "T. Moitoi",
-    notes: "Documents received. Technical review in progress.",
-  },
-  {
-    ref: "APP-2025-0089",
-    type: "SAP - Postal Services",
-    status: "approved",
-    submitted: "2025-09-03",
-    officer: "K. Sekwati",
-    notes: "Approved. Licence issued as BOC-2025-POS-011.",
-  },
-];
+import {
+  getUserLicences,
+  getUserApplications,
+  type UserLicence,
+  type UserApplication,
+} from "@/lib/data";
 
 // Status config
 
@@ -141,9 +89,9 @@ function daysUntil(iso: string) {
   return Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000);
 }
 
-function getLicenceStatus(lic: (typeof MOCK_LICENCES)[0]) {
-  if (lic.status === "expired" || lic.status === "suspended") return lic.status;
-  const days = daysUntil(lic.expires);
+function getLicenceStatus(lic: UserLicence) {
+  if (lic.status === "Expired" || lic.status === "Suspended") return lic.status.toLowerCase();
+  const days = daysUntil(lic.expiresAt);
   if (days <= 90) return "expiring_soon";
   return "active";
 }
@@ -151,8 +99,16 @@ function getLicenceStatus(lic: (typeof MOCK_LICENCES)[0]) {
 // Page
 
 export default function LicencesPage() {
-  const activeLicences = MOCK_LICENCES.filter((l) => l.status !== "expired");
-  const expiredLicences = MOCK_LICENCES.filter((l) => l.status === "expired");
+  const [licences, setLicences] = useState<UserLicence[]>([]);
+  const [applications, setApplications] = useState<UserApplication[]>([]);
+
+  useEffect(() => {
+    getUserLicences().then(setLicences);
+    getUserApplications().then(setApplications);
+  }, []);
+
+  const activeLicences = licences.filter((l) => l.status !== "Expired");
+  const expiredLicences = licences.filter((l) => l.status === "Expired");
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -200,7 +156,7 @@ export default function LicencesPage() {
               const statusKey = getLicenceStatus(lic);
               const s = LICENCE_STATUS[statusKey] ?? LICENCE_STATUS.active;
               const Icon = s.icon;
-              const days = daysUntil(lic.expires);
+              const days = daysUntil(lic.expiresAt);
 
               return (
                 <div
@@ -240,8 +196,8 @@ export default function LicencesPage() {
                           {lic.category}
                         </p>
                         <p className="text-xs text-gray-400 mt-0.5">
-                          {lic.org} · Issued {formatDate(lic.issued)} · Expires{" "}
-                          {formatDate(lic.expires)}
+                          {lic.org} · Issued {formatDate(lic.issuedAt)} · Expires{" "}
+                          {formatDate(lic.expiresAt)}
                         </p>
 
                         {lic.conditions.length > 0 && (
@@ -302,10 +258,10 @@ export default function LicencesPage() {
       {/* Applications in progress */}
       <section>
         <h2 className="text-xs font-semibold text-bocra-navy uppercase tracking-wider mb-3">
-          Applications ({MOCK_APPLICATIONS.length})
+          Applications ({applications.length})
         </h2>
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm divide-y divide-gray-50">
-          {MOCK_APPLICATIONS.map((app) => {
+          {applications.map((app) => {
             const s = APP_STATUS[app.status] ?? APP_STATUS.submitted;
             return (
               <div
@@ -326,7 +282,7 @@ export default function LicencesPage() {
                   </p>
                   <p className="text-xs text-gray-400 mt-0.5">
                     Submitted {formatDate(app.submitted)} · Officer:{" "}
-                    {app.officer}
+                    {app.assignedTo}
                   </p>
                   {app.notes && (
                     <p className="text-xs text-gray-500 mt-1.5 bg-gray-50 rounded-lg px-3 py-1.5">
@@ -357,7 +313,7 @@ export default function LicencesPage() {
                   <p className="font-mono text-xs text-gray-400">{lic.ref}</p>
                   <p className="text-sm text-gray-500">{lic.category}</p>
                   <p className="text-xs text-gray-400">
-                    Expired {formatDate(lic.expires)}
+                    Expired {formatDate(lic.expiresAt)}
                   </p>
                 </div>
                 <span className="text-xs bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full">

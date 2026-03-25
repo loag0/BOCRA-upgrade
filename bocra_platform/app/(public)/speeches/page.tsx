@@ -13,7 +13,8 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimatedSection } from "@/components/animated-section";
 import { Badge } from "@/components/ui/badge";
-import { mockSpeeches } from "@/lib/mock-data";
+import { getSpeeches } from "@/lib/data";
+import type { Speech } from "@/types";
 
 export const metadata = {
   title: "Speeches & Presentations",
@@ -24,7 +25,7 @@ export const metadata = {
 function SpeechCard({
   speech,
 }: {
-  speech: (typeof mockSpeeches)[number];
+  speech: Speech;
 }) {
   const formattedDate = new Date(speech.date).toLocaleDateString("en-BW", {
     day: "numeric",
@@ -78,8 +79,8 @@ function SpeechCard({
   );
 }
 
-export default function SpeechesPage() {
-  const speeches = mockSpeeches;
+export default async function SpeechesPage() {
+  const speeches = await getSpeeches();
 
   return (
     <>
@@ -91,10 +92,11 @@ export default function SpeechesPage() {
             src="/images/conference-room.jpg"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
+          <div className="absolute inset-0 bg-linear-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav aria-label="Breadcrumb" className="mb-6">

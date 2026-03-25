@@ -5,7 +5,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AnimatedSection } from "@/components/animated-section";
 import { Badge } from "@/components/ui/badge";
-import { mockNews } from "@/lib/mock-data";
+import { getNews } from "@/lib/data";
 import { NewsFilters } from "./news-filters";
 
 export const metadata = {
@@ -14,7 +14,8 @@ export const metadata = {
     "Latest news, public notices, announcements, tenders, and events from the Botswana Communications Regulatory Authority.",
 };
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  const articles = await getNews();
   return (
     <>
       <Navbar />
@@ -25,10 +26,11 @@ export default function NewsPage() {
             src="/images/conference-room.jpg"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
+          <div className="absolute inset-0 bg-linear-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center gap-1.5 text-sm text-white/40">
@@ -64,7 +66,7 @@ export default function NewsPage() {
         {/* Filters + Grid */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <AnimatedSection animation="fade-up" delay={300}>
-            <NewsFilters articles={mockNews} />
+            <NewsFilters articles={articles} />
           </AnimatedSection>
         </section>
       </main>

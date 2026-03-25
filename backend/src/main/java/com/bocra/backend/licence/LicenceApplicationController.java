@@ -1,5 +1,6 @@
 package com.bocra.backend.licence;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class LicenceApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<LicenceApplication> createApplication(@RequestBody LicenceApplicationDTO dto) {
+    public ResponseEntity<LicenceApplication> createApplication(@Valid @RequestBody LicenceApplicationDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(licenceApplicationService.createApplication(dto));
     }

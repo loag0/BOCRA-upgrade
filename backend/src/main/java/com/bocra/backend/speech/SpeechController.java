@@ -1,5 +1,6 @@
 package com.bocra.backend.speech;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class SpeechController {
     }
 
     @PostMapping
-    public ResponseEntity<Speech> createSpeech(@RequestBody SpeechDTO dto) {
+    public ResponseEntity<Speech> createSpeech(@Valid @RequestBody SpeechDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(speechService.createSpeech(dto));
     }
@@ -42,7 +43,7 @@ public class SpeechController {
     @PutMapping("/{id}")
     public ResponseEntity<Speech> updateSpeech(
             @PathVariable String id,
-            @RequestBody SpeechDTO dto) {
+            @Valid @RequestBody SpeechDTO dto) {
         return ResponseEntity.ok(speechService.updateSpeech(id, dto));
     }
 

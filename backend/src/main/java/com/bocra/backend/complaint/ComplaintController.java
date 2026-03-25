@@ -1,5 +1,6 @@
 package com.bocra.backend.complaint;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class ComplaintController {
     }
 
     @PostMapping
-    public ResponseEntity<Complaint> createComplaint(@RequestBody ComplaintDTO dto) {
+    public ResponseEntity<Complaint> createComplaint(@Valid @RequestBody ComplaintDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(complaintService.createComplaint(dto));
     }

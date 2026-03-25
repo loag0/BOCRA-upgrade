@@ -71,10 +71,11 @@ export default function CareersPage() {
             src="/images/office-workspace.jpg"
             alt=""
             fill
+            sizes="100vw"
             className="object-cover opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-bocra-navy/60 to-bocra-navy" />
+          <div className="absolute inset-0 bg-linear-to-b from-bocra-navy/60 to-bocra-navy" />
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center gap-1.5 text-sm text-white/40">

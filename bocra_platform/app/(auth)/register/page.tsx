@@ -72,7 +72,13 @@ const schema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Enter a valid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must contain an uppercase letter")
+      .regex(/[a-z]/, "Password must contain a lowercase letter")
+      .regex(/\d/, "Password must contain a number")
+      .regex(/[^A-Za-z0-9]/, "Password must contain a special character (!@#$%...)"),
     confirmPassword: z.string(),
     consent: z.boolean().refine((v) => v, "You must agree to proceed"),
   })
@@ -86,7 +92,7 @@ type FormData = z.infer<typeof schema>;
 function getAuthError(code: string): string {
   const map: Record<string, string> = {
     "auth/email-already-in-use": "An account with this email already exists.",
-    "auth/weak-password": "Password must be at least 8 characters.",
+    "auth/weak-password": "Password is too weak. Use at least 8 characters with a mix of uppercase, lowercase, numbers, and special characters.",
     "auth/invalid-email": "Enter a valid email address.",
     "auth/popup-closed-by-user": "Google sign-in was cancelled.",
     "auth/network-request-failed": "Network error. Check your connection.",
