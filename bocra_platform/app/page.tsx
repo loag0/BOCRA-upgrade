@@ -156,7 +156,7 @@ export default function HomePage() {
           }}
         />
         {/* Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-bocra-navy/60 via-transparent to-bocra-blue/40" />
+        <div className="absolute inset-0 bg-linear-to-br from-bocra-navy/60 via-transparent to-bocra-blue/40" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
           <div className="max-w-3xl">
@@ -211,7 +211,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-bocra-surface to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-bocra-surface to-transparent" />
       </section>
 
       {/* -- Stats Bar -- */}
@@ -264,7 +264,7 @@ export default function HomePage() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bocra-navy/30 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-bocra-navy/30 to-transparent" />
               </div>
             </AnimatedSection>
           </div>
@@ -313,7 +313,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/verify"
-                className="hidden sm:flex items-center gap-1 text-sm text-bocra-blue font-medium hover:text-bocra-gold transition-colors"
+                className="hidden sm:flex items-center gap-1 text-sm text-bocra-blue font-medium hover:text-bocra-navy transition-colors"
               >
                 Verify any operator <ArrowRight className="w-4 h-4" />
               </Link>
@@ -361,7 +361,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/publications"
-                className="hidden sm:flex items-center gap-1 text-sm text-bocra-blue font-medium hover:text-bocra-gold transition-colors"
+                className="hidden sm:flex items-center gap-1 text-sm text-bocra-blue font-medium hover:text-bocra-navy transition-colors"
               >
                 All publications <ArrowRight className="w-4 h-4" />
               </Link>
@@ -377,7 +377,7 @@ export default function HomePage() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-bocra-navy/70 via-bocra-navy/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-r from-bocra-navy/70 via-bocra-navy/40 to-transparent" />
               <div className="absolute inset-0 flex items-center p-8">
                 <div>
                   <p className="text-bocra-gold text-xs font-semibold uppercase tracking-widest mb-2">
@@ -483,7 +483,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Map */}
             <AnimatedSection animation="fade-left" className="lg:col-span-2">
-              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm h-[400px]">
+              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm h-100">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.3326960246245!2d25.91678387536435!3d-24.654996378063966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ebb5ba1128f935d%3A0xa164d400c9b368f5!2sBOCRA%20-%20Botswana%20Communication%20Regulatory%20Authority!5e1!3m2!1sen!2sbw!4v1774310861088!5m2!1sen!2sbw"
                   width="100%"
@@ -542,7 +542,7 @@ export default function HomePage() {
                         </div>
                         <a
                           href="mailto:info@bocra.org.bw"
-                          className="text-bocra-blue hover:text-bocra-gold transition-colors"
+                          className="text-bocra-blue hover:text-bocra-navy transition-colors"
                         >
                           info@bocra.org.bw
                         </a>
@@ -564,7 +564,7 @@ export default function HomePage() {
                     href="https://www.google.com/maps/search/BOCRA+Gaborone+Botswana"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-bocra-blue hover:text-bocra-gold transition-colors"
+                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-bocra-blue hover:text-bocra-navy transition-colors"
                   >
                     Get Directions <ExternalLink className="w-3.5 h-3.5" />
                   </a>

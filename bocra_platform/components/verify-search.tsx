@@ -141,7 +141,7 @@ function OperatorCard({ operator }: { operator: Operator }) {
             href={`https://${operator.website}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-bocra-blue text-sm hover:text-bocra-gold transition-colors flex items-center gap-1"
+            className="text-bocra-blue text-sm hover:text-bocra-navy transition-colors flex items-center gap-1"
           >
             {operator.website}
             <ExternalLink className="w-3 h-3" />

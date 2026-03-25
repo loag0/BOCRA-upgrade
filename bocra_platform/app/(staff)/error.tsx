@@ -6,7 +6,7 @@ import { AlertCircle } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { reportError } from "@/lib/report-error";
 
-export default function RootError({
+export default function StaffError({
   error,
   reset,
 }: {
@@ -14,12 +14,8 @@ export default function RootError({
   reset: () => void;
 }) {
   useEffect(() => {
-    logger.error("Unhandled error caught by root boundary", {
-      message: error.message,
-      digest: error.digest,
-      stack: error.stack?.slice(0, 500),
-    });
-    reportError(error, "/");
+    logger.error("Error in staff/admin route", { message: error.message, digest: error.digest });
+    reportError(error, "(staff)");
   }, [error]);
   return (
     <div className="min-h-screen bg-bocra-surface flex items-center justify-center">
@@ -28,10 +24,10 @@ export default function RootError({
           <AlertCircle className="w-7 h-7 text-red-500" />
         </div>
         <h2 className="font-heading text-xl font-bold text-bocra-navy mb-2">
-          Something went wrong
+          Admin panel error
         </h2>
         <p className="text-gray-500 text-sm mb-6">
-          An unexpected error occurred. Please try again.
+          Something went wrong loading the admin dashboard. Please try again.
         </p>
         <Button onClick={reset} className="bg-bocra-navy hover:bg-bocra-navy/90">
           Try again

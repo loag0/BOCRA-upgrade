@@ -31,11 +31,18 @@ export function AnimatedCounter({ value, className = "" }: AnimatedCounterProps)
     const el = ref.current;
     if (!el) return;
 
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated.current) {
           hasAnimated.current = true;
           observer.unobserve(el);
+
+          if (prefersReducedMotion) {
+            setDisplay(num);
+            return;
+          }
 
           const duration = 1800;
           const steps = 60;
@@ -45,7 +52,6 @@ export function AnimatedCounter({ value, className = "" }: AnimatedCounterProps)
           const timer = setInterval(() => {
             current++;
             const progress = current / steps;
-            // Ease-out cubic
             const eased = 1 - Math.pow(1 - progress, 3);
             setDisplay(Math.round(eased * num));
 

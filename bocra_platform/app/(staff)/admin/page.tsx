@@ -11,6 +11,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
+import { ErrorLogPanel } from "./error-log-panel";
+import { SystemHealthPanel } from "./system-health-panel";
 
 export const metadata = { title: "Admin Dashboard - BOCRA Staff Portal" };
 
@@ -635,6 +637,14 @@ export default function AdminPage() {
             Show all 37 open complaints →
           </Link>
         </div>
+      </div>
+
+      {/* System health + Error log */}
+      <div className="grid lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2">
+          <ErrorLogPanel />
+        </div>
+        <SystemHealthPanel />
       </div>
 
       {/* Quick links strip */}

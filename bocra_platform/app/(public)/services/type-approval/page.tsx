@@ -14,6 +14,7 @@ export default function TypeApprovalPage() {
       description="All radio and telecommunications equipment used in Botswana must be BOCRA type-approved before it can be connected, used, or sold. Equipment must comply with ITU Region 1 standards."
       icon="CheckSquare"
       iconColor="bg-rose-500/20 text-rose-400"
+      heroImage="/images/telecom-tower.jpg"
       overview={[
         "Under Section 84 of the CRA Act, BOCRA operates a mandatory type approval regime for all radio and telecommunications equipment. No device may be connected to a network, used, or sold in Botswana without BOCRA type approval certification.",
         "Equipment must comply with ITU Region 1 standards and BOCRA's Telecommunications Technical Specifications, which were developed in 2008. The type approval process ensures that devices operate within their assigned frequencies and do not cause harmful interference.",

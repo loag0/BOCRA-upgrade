@@ -213,14 +213,19 @@ export default function ApplyPage() {
 
   async function handleSubmit() {
     setSubmitting(true);
-    // Replace with: POST /api/licence-applications  (Spring Boot licensing service)
-    await new Promise((r) => setTimeout(r, 1600));
-    const year = new Date().getFullYear();
-    const rand = String(Math.floor(Math.random() * 9000 + 1000));
-    const ref = `APP-${year}-${rand}`;
-    setCaseRef(ref);
-    setSubmitted(true);
-    setSubmitting(false);
+    try {
+      // Replace with: POST /api/licence-applications  (Spring Boot licensing service)
+      await new Promise((r) => setTimeout(r, 1600));
+      const year = new Date().getFullYear();
+      const rand = String(Math.floor(Math.random() * 9000 + 1000));
+      const ref = `APP-${year}-${rand}`;
+      setCaseRef(ref);
+      setSubmitted(true);
+    } catch {
+      toast.error("Failed to submit your application. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   // Success screen
@@ -245,9 +250,13 @@ export default function ApplyPage() {
               {caseRef}
             </p>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(caseRef);
-                toast.success("Copied!");
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(caseRef);
+                  toast.success("Copied!");
+                } catch {
+                  toast.error("Failed to copy to clipboard.");
+                }
               }}
               className="text-gray-400 hover:text-bocra-blue transition-colors"
             >

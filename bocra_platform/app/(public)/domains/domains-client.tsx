@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+import { sanitizeText } from "@/lib/sanitize";
 import {
   Search,
   CheckCircle2,
@@ -143,10 +145,11 @@ function AvailabilityChecker() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    const cleanInput = sanitizeText(input);
+    if (!cleanInput) return;
     setLoading(true);
     setTimeout(() => {
-      setResult(checkAvailability(input));
+      setResult(checkAvailability(cleanInput));
       setLoading(false);
     }, 600);
   };
@@ -375,8 +378,14 @@ export function DomainsClient() {
   return (
     <main className="min-h-screen bg-bocra-surface">
       {/* Hero */}
-      <div className="bg-bocra-navy pt-24 pb-14">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <div className="bg-bocra-navy pt-24 pb-14 relative overflow-hidden">
+        <Image
+          src="/images/hero-cityscape.jpg"
+          alt=""
+          fill
+          className="object-cover object-center opacity-20"
+        />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <AnimatedSection animation="fade-up" delay={0}>
             <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-medium px-3 py-1.5 rounded-full mb-4">
               <Globe className="w-3.5 h-3.5" />

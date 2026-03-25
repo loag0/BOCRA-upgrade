@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-bocra-navy flex flex-col items-center justify-center px-0">
-      <Link href="/" className="mb-8">
+      <Link href="/" className="mb-8 py-10">
         <Image
           src="/bocra-logo.png"
           alt="BOCRA"

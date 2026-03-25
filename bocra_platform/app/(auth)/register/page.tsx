@@ -7,13 +7,65 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { updateProfile } from "firebase/auth";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, ScrollText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { signUpWithEmail, signInWithGoogle } from "@/lib/firebase";
 import { GuestGuard } from "@/components/guest-guard";
+import { sanitizeText } from "@/lib/sanitize";
+
+const privacySections = [
+  {
+    title: "1. Introduction",
+    content:
+      "The Botswana Communications Regulatory Authority (BOCRA) is committed to protecting the privacy and personal data of all users of this digital platform. This Privacy Policy explains how we collect, use, store, and protect your information in compliance with the Botswana Data Protection Act (BDPA) 2024 and the Communications Regulatory Authority Act 2012.",
+  },
+  {
+    title: "2. Data Controller",
+    content:
+      "BOCRA is the data controller for personal data collected through this platform. Our offices are located at Plot 50671, Independence Avenue, P/Bag 00495, Gaborone, Botswana. For privacy enquiries, contact us at info@bocra.org.bw or +267 395 7755.",
+  },
+  {
+    title: "3. Data We Collect",
+    content:
+      "We collect: (a) Account information including your full name, email address, and password; (b) Licence application data including business registration details and supporting documents; (c) Complaint data including your name, contact details, and complaint details; (d) Usage data including IP address, browser type, and session duration; (e) Communication data sent through this platform.",
+  },
+  {
+    title: "4. How We Use Your Data",
+    content:
+      "We process your data to: (a) Provide and administer BOCRA services; (b) Communicate about your applications, complaints, or account; (c) Comply with our regulatory obligations under the CRA Act 2012; (d) Improve our platform through anonymised analytics; (e) Ensure system security and prevent fraud.",
+  },
+  {
+    title: "5. Legal Basis for Processing",
+    content:
+      "Under the BDPA 2024, we process data based on: (a) Your consent; (b) Performance of a contract related to licence applications; (c) Compliance with legal obligations; (d) Legitimate interests in maintaining platform security.",
+  },
+  {
+    title: "6. Data Sharing",
+    content:
+      "BOCRA does not sell your personal data. We may share data with government bodies where required by law, service providers bound by data processing agreements, and law enforcement when legally compelled.",
+  },
+  {
+    title: "7. Your Rights",
+    content:
+      "Under the BDPA 2024, you have the right to: access, rectify, erase, restrict processing, data portability, object to processing, and withdraw consent at any time. Contact info@bocra.org.bw to exercise these rights.",
+  },
+  {
+    title: "8. Security & Retention",
+    content:
+      "BOCRA implements encryption, access controls, and regular security audits. Account data is retained for 12 months following deletion. Regulatory records are retained per the CRA Act 2012.",
+  },
+];
 
 const schema = z
   .object({
@@ -52,6 +104,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   const {
     register,
@@ -61,8 +114,9 @@ export default function RegisterPage() {
 
   async function onSubmit(data: FormData) {
     try {
-      const { user } = await signUpWithEmail(data.email, data.password);
-      await updateProfile(user, { displayName: data.name });
+      const cleanName = sanitizeText(data.name);
+      const { user } = await signUpWithEmail(data.email.trim(), data.password);
+      await updateProfile(user, { displayName: cleanName });
       toast.success("Account created! Welcome to BOCRA.");
       router.push("/");
     } catch (err: unknown) {
@@ -111,9 +165,10 @@ export default function RegisterPage() {
               autoComplete="name"
               {...register("name")}
               aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "name-error" : undefined}
             />
             {errors.name && (
-              <p className="text-xs text-red-500">{errors.name.message}</p>
+              <p id="name-error" className="text-xs text-red-500" role="alert">{errors.name.message}</p>
             )}
           </div>
 
@@ -129,9 +184,10 @@ export default function RegisterPage() {
               autoComplete="email"
               {...register("email")}
               aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "email-error" : undefined}
             />
             {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
+              <p id="email-error" className="text-xs text-red-500" role="alert">{errors.email.message}</p>
             )}
           </div>
 
@@ -148,20 +204,20 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 {...register("password")}
                 aria-invalid={!!errors.password}
+                aria-describedby={errors.password ? "password-error" : undefined}
                 className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                tabIndex={-1}
+                className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
             {errors.password && (
-              <p className="text-xs text-red-500">{errors.password.message}</p>
+              <p id="password-error" className="text-xs text-red-500" role="alert">{errors.password.message}</p>
             )}
           </div>
 
@@ -178,20 +234,20 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 {...register("confirmPassword")}
                 aria-invalid={!!errors.confirmPassword}
+                aria-describedby={errors.confirmPassword ? "confirm-error" : undefined}
                 className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirm((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                tabIndex={-1}
+                className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
                 aria-label={showConfirm ? "Hide password" : "Show password"}
               >
                 {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>
+              <p id="confirm-error" className="text-xs text-red-500" role="alert">{errors.confirmPassword.message}</p>
             )}
           </div>
 
@@ -203,23 +259,25 @@ export default function RegisterPage() {
                 type="checkbox"
                 {...register("consent")}
                 className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy cursor-pointer shrink-0"
+                aria-describedby={errors.consent ? "consent-error" : undefined}
               />
               <label
                 htmlFor="consent"
                 className="text-xs text-gray-500 leading-relaxed cursor-pointer"
               >
                 I consent to BOCRA processing my personal data in accordance with the{" "}
-                <Link
-                  href="/privacy"
-                  className="text-bocra-blue hover:text-bocra-gold underline transition-colors"
+                <button
+                  type="button"
+                  onClick={() => setPrivacyOpen(true)}
+                  className="text-bocra-blue hover:text-bocra-navy underline transition-colors inline"
                 >
                   Privacy Policy
-                </Link>{" "}
+                </button>{" "}
                 and the Botswana Data Protection Act 2024.
               </label>
             </div>
             {errors.consent && (
-              <p className="text-xs text-red-500 pl-6">{String(errors.consent.message)}</p>
+              <p id="consent-error" className="text-xs text-red-500 pl-6" role="alert">{String(errors.consent.message)}</p>
             )}
           </div>
 
@@ -263,12 +321,59 @@ export default function RegisterPage() {
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-bocra-blue font-medium hover:text-bocra-gold transition-colors"
+            className="text-bocra-blue font-medium hover:text-bocra-navy transition-colors"
           >
             Sign in
           </Link>
         </p>
       </div>
+
+      {/* Privacy Policy Popup */}
+      <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
+        <DialogContent className="sm:max-w-lg max-h-[80vh] flex flex-col">
+          <DialogHeader>
+            <div className="flex items-center gap-2">
+              <ScrollText className="w-5 h-5 text-bocra-navy shrink-0" />
+              <DialogTitle className="text-bocra-navy">Privacy Policy</DialogTitle>
+            </div>
+            <DialogDescription>
+              How BOCRA collects, uses, and protects your personal data under the
+              Botswana Data Protection Act 2024.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="overflow-y-auto flex-1 -mx-4 px-4 space-y-4 py-2">
+            {privacySections.map((section) => (
+              <div key={section.title}>
+                <h3 className="text-sm font-semibold text-bocra-navy mb-1">
+                  {section.title}
+                </h3>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  {section.content}
+                </p>
+              </div>
+            ))}
+            <p className="text-xs text-gray-400 pt-2 border-t border-gray-100">
+              Effective date: 1 January 2026. Full policy available at{" "}
+              <Link
+                href="/privacy"
+                className="text-bocra-blue hover:text-bocra-navy underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                bocra.org.bw/privacy
+              </Link>
+            </p>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => setPrivacyOpen(false)}
+              className="bg-bocra-navy hover:bg-bocra-blue text-white"
+            >
+              I understand
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
     </GuestGuard>
   );

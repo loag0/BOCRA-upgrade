@@ -161,3 +161,16 @@
   0% { transform: translateY(0); }
   100% { transform: translateY(-10px); }
 }
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .loading-dots .dot {
+    animation: none;
+  }
+  .transition-all,
+  .transition-colors,
+  .transition-transform,
+  .transition-opacity {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -7,7 +7,7 @@ import { AlertCircle } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { reportError } from "@/lib/report-error";
 
-export default function PublicError({
+export default function LicenceError({
   error,
   reset,
 }: {
@@ -15,13 +15,9 @@ export default function PublicError({
   reset: () => void;
 }) {
   useEffect(() => {
-    logger.error("Error in public route", {
-      message: error.message,
-      digest: error.digest,
-    });
-    reportError(error, "(public)");
+    logger.error("Error in licence route", { message: error.message, digest: error.digest });
+    reportError(error, "(license)");
   }, [error]);
-
   return (
     <>
       <Navbar />
@@ -34,7 +30,7 @@ export default function PublicError({
             Something went wrong
           </h2>
           <p className="text-gray-500 text-sm mb-6">
-            We could not load this page. Please try again.
+            We could not load the licensing portal. Please try again.
           </p>
           <Button onClick={reset} className="bg-bocra-navy hover:bg-bocra-navy/90">
             Try again

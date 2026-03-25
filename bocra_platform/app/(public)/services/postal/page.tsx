@@ -14,6 +14,7 @@ export default function PostalPage() {
       description="Licensing and regulation of all postal service providers across Botswana, ensuring safe, reliable, and affordable postal services nationwide."
       icon="Mail"
       iconColor="bg-green-500/20 text-green-400"
+      heroImage="/images/community-meeting.jpg"
       overview={[
         "BOCRA assumed postal regulation under the CRA Act 2012. No entity may provide postal services in Botswana without a valid BOCRA licence. Botswana Post is the primary licensed postal operator, with courier operators also operating under the licensing framework.",
         "The Postal Sector Licensing Framework governs market entry and operational requirements. BOCRA ensures postal operators maintain service quality standards, including delivery times, coverage obligations, and handling of postal items.",

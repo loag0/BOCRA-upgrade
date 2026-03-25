@@ -16,6 +16,7 @@ import {
   Save,
   Loader2,
 } from "lucide-react";
+import { sanitizeFormData } from "@/lib/sanitize";
 
 const CATEGORIES = [
   { value: "NFP", label: "NFP — Network Facilities Provider" },
@@ -90,10 +91,11 @@ export default function AddOperatorPage() {
 
     setLoading(true);
     try {
+      const sanitizedForm = sanitizeFormData(form);
       const res = await fetch("/api/operators", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(sanitizedForm),
       });
 
       if (!res.ok) {

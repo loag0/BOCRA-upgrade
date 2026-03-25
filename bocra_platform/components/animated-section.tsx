@@ -17,8 +17,22 @@ export function AnimatedSection({
 }: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsVisible(true);
+      return;
+    }
+
     const el = ref.current;
     if (!el) return;
 
@@ -34,10 +48,10 @@ export function AnimatedSection({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [prefersReducedMotion]);
 
   const baseStyle = {
-    transitionDelay: `${delay}ms`,
+    transitionDelay: prefersReducedMotion ? "0ms" : `${delay}ms`,
   };
 
   const animationClasses: Record<string, string> = {
@@ -53,11 +67,15 @@ export function AnimatedSection({
       : "opacity-0 translate-x-8",
   };
 
+  const transitionClass = prefersReducedMotion
+    ? ""
+    : "transition-all duration-700 ease-out";
+
   return (
     <div
       ref={ref}
       style={baseStyle}
-      className={`transition-all duration-700 ease-out ${animationClasses[animation]} ${className}`}
+      className={`${transitionClass} ${animationClasses[animation]} ${className}`}
     >
       {children}
     </div>

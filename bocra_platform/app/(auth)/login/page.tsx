@@ -102,9 +102,10 @@ export default function LoginPage() {
                 autoComplete="email"
                 {...register("email")}
                 aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
               {errors.email && (
-                <p className="text-xs text-red-500">{errors.email.message}</p>
+                <p id="email-error" className="text-xs text-red-500" role="alert">{errors.email.message}</p>
               )}
             </div>
 
@@ -118,7 +119,7 @@ export default function LoginPage() {
                 </Label>
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-bocra-blue hover:text-bocra-gold transition-colors"
+                  className="text-xs text-bocra-blue hover:text-bocra-navy transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -131,13 +132,13 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   {...register("password")}
                   aria-invalid={!!errors.password}
+                  aria-describedby={errors.password ? "password-error" : undefined}
                   className="pr-10"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                  tabIndex={-1}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
@@ -148,7 +149,7 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-red-500">
+                <p id="password-error" className="text-xs text-red-500" role="alert">
                   {errors.password.message}
                 </p>
               )}
@@ -196,7 +197,7 @@ export default function LoginPage() {
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="text-bocra-blue font-medium hover:text-bocra-gold transition-colors"
+              className="text-bocra-blue font-medium hover:text-bocra-navy transition-colors"
             >
               Create one
             </Link>

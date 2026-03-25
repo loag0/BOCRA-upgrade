@@ -26,6 +26,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { AnimatedSection } from "@/components/animated-section";
+import { toast } from "sonner";
+import { sanitizeFormData } from "@/lib/sanitize";
 import { mockOperators } from "@/lib/mock-data";
 
 // ─── Operator contact data ────────────────────────────────────────────────────
@@ -327,10 +329,16 @@ function Step2({
   }
 
   async function processForm(_data: FormData) {
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1200));
-    const ref = `CMP-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
-    onSubmit(ref);
+    try {
+      const _sanitized = sanitizeFormData(_data);
+      // Replace with: POST /api/complaints  (Spring Boot complaints service)
+      // Send _sanitized instead of _data
+      await new Promise((r) => setTimeout(r, 1200));
+      const ref = `CMP-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
+      onSubmit(ref);
+    } catch {
+      toast.error("Failed to submit your complaint. Please try again.");
+    }
   }
 
   return (
@@ -507,7 +515,7 @@ function Step2({
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
           Evidence of prior operator contact
         </p>
-        <label className="block border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-bocra-blue/30 hover:bg-bocra-blue/[0.02] transition-colors">
+        <label className="block border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-bocra-blue/30 hover:bg-bocra-blue/2 transition-colors">
           <input
             type="file"
             className="sr-only"
@@ -534,7 +542,7 @@ function Step2({
                 key={f.name}
                 className="flex items-center justify-between bg-bocra-surface border border-gray-100 rounded-lg px-3 py-2 text-sm"
               >
-                <span className="text-bocra-navy truncate max-w-[300px]">
+                <span className="text-bocra-navy truncate max-w-75">
                   {f.name}
                 </span>
                 <button
@@ -605,6 +613,8 @@ function Step3({ caseRef }: { caseRef: string }) {
     navigator.clipboard.writeText(caseRef).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {
+      toast.error("Failed to copy to clipboard.");
     });
   }
 

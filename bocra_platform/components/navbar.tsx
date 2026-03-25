@@ -7,9 +7,21 @@ import Image from "next/image";
 import { Menu, ChevronDown, LogOut, UserCircle } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth-context";
 import { signOut } from "@/lib/firebase";
+import { logger } from "@/lib/logger";
+import { toast } from "sonner";
 
 type NavChild = { label: string; href: string };
 type NavItem = { label: string; href?: string; children?: NavChild[] };
@@ -105,9 +117,19 @@ export function Navbar() {
     setOpenDropdown(null);
   }, [pathname]);
 
+  const [signOutOpen, setSignOutOpen] = useState(false);
+
   async function handleSignOut() {
-    await signOut();
-    router.replace("/");
+    try {
+      logger.info("User initiated sign out");
+      await signOut();
+      setSignOutOpen(false);
+      router.replace("/");
+    } catch (err) {
+      logger.error("Sign out failed", { error: String(err) });
+      setSignOutOpen(false);
+      toast.error("Failed to sign out. Please try again.");
+    }
   }
 
   const initial =
@@ -166,7 +188,7 @@ export function Navbar() {
                   </button>
 
                   {openDropdown === item.label && (
-                    <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 min-w-[200px] z-50">
+                    <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 min-w-50 z-50">
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
@@ -209,12 +231,12 @@ export function Navbar() {
                   <div className="w-7 h-7 rounded-full bg-bocra-gold flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {initial}
                   </div>
-                  <span className="text-white/80 group-hover:text-white text-sm font-medium max-w-[110px] truncate transition-colors">
+                  <span className="text-white/80 group-hover:text-white text-sm font-medium max-w-27.5 truncate transition-colors">
                     {displayName}
                   </span>
                 </Link>
                 <button
-                  onClick={handleSignOut}
+                  onClick={() => setSignOutOpen(true)}
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "sm" }),
                     "text-white/70 hover:text-white hover:bg-white/10 gap-1.5"
@@ -338,14 +360,14 @@ export function Navbar() {
                         href="/profile"
                         className={cn(
                           buttonVariants({ variant: "outline" }),
-                          "border-white/20 text-white hover:bg-white/10 w-full justify-start gap-2"
+                          "bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white w-full justify-start gap-2"
                         )}
                       >
                         <UserCircle className="w-4 h-4" />
                         {displayName}
                       </Link>
                       <button
-                        onClick={handleSignOut}
+                        onClick={() => setSignOutOpen(true)}
                         className={cn(
                           buttonVariants({ variant: "ghost" }),
                           "text-white/70 hover:text-white hover:bg-white/10 w-full justify-start gap-2"
@@ -361,7 +383,7 @@ export function Navbar() {
                         href="/login"
                         className={cn(
                           buttonVariants({ variant: "outline" }),
-                          "border-white/20 text-white hover:bg-white/10 w-full justify-center"
+                          "bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white w-full justify-center"
                         )}
                       >
                         Log in
@@ -383,6 +405,29 @@ export function Navbar() {
           </SheetContent>
         </Sheet>
       </nav>
+
+      {/* Sign-out confirmation dialog */}
+      <AlertDialog open={signOutOpen} onOpenChange={setSignOutOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sign out?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to sign out of your BOCRA account? You will
+              need to log in again to access your profile and services.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleSignOut}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              <LogOut className="w-4 h-4 mr-1.5" />
+              Sign out
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </header>
   );
 }

@@ -6,7 +6,7 @@ import { AlertCircle } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { reportError } from "@/lib/report-error";
 
-export default function RootError({
+export default function AuthError({
   error,
   reset,
 }: {
@@ -14,16 +14,12 @@ export default function RootError({
   reset: () => void;
 }) {
   useEffect(() => {
-    logger.error("Unhandled error caught by root boundary", {
-      message: error.message,
-      digest: error.digest,
-      stack: error.stack?.slice(0, 500),
-    });
-    reportError(error, "/");
+    logger.error("Error in auth route", { message: error.message, digest: error.digest });
+    reportError(error, "(auth)");
   }, [error]);
   return (
-    <div className="min-h-screen bg-bocra-surface flex items-center justify-center">
-      <div className="text-center max-w-md px-4">
+    <div className="w-full max-w-sm">
+      <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
         <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
           <AlertCircle className="w-7 h-7 text-red-500" />
         </div>
@@ -31,9 +27,12 @@ export default function RootError({
           Something went wrong
         </h2>
         <p className="text-gray-500 text-sm mb-6">
-          An unexpected error occurred. Please try again.
+          We could not load this page. Please try again.
         </p>
-        <Button onClick={reset} className="bg-bocra-navy hover:bg-bocra-navy/90">
+        <Button
+          onClick={reset}
+          className="w-full bg-bocra-navy hover:bg-bocra-blue text-white"
+        >
           Try again
         </Button>
       </div>

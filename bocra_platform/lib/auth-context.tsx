@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { type User, onAuthStateChanged } from "firebase/auth";
 import { auth, signOut } from "@/lib/firebase";
+import { logger } from "@/lib/logger";
 import type { UserRole } from "@/types";
 
 export type { UserRole };
@@ -30,7 +31,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const handleIdleLogout = useCallback(async () => {
     if (auth.currentUser) {
-      await signOut();
+      try {
+        logger.info("Idle timeout reached, signing out user", {
+          uid: auth.currentUser.uid,
+        });
+        await signOut();
+      } catch (err) {
+        logger.error("Idle logout failed", {
+          error: String(err),
+          uid: auth.currentUser?.uid,
+        });
+      }
     }
   }, []);
 
@@ -59,6 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return onAuthStateChanged(auth, async (u) => {
       setUser(u);
       if (u) {
+        logger.info("Auth state changed: user signed in", { uid: u.uid });
         try {
           const token = await u.getIdToken();
           const res = await fetch("http://localhost:8080/api/auth/me", {
@@ -67,7 +79,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           });
           const data = await res.json();
           setRole(data.role ?? null);
-        } catch {
+          logger.info("Role resolved", { uid: u.uid, role: data.role ?? "none" });
+        } catch (err) {
+          logger.warn("Role resolution failed, defaulting to null", {
+            uid: u.uid,
+            error: String(err),
+          });
           setRole(null);
         }
       } else {

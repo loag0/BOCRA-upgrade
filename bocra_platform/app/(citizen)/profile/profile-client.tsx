@@ -1,6 +1,9 @@
 "use client";
 
 import { useAuth } from "@/lib/auth-context";
+import { changePassword, updateDisplayName } from "@/lib/firebase";
+import { sanitizeText } from "@/lib/sanitize";
+import { logger } from "@/lib/logger";
 import Link from "next/link";
 import {
   UserCircle,
@@ -18,9 +21,25 @@ import {
   ChevronRight,
   Copy,
   ExternalLink,
+  Key,
+  Pencil,
+  Loader2,
+  Eye,
+  EyeOff,
+  Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 // Replace with real Supabase queries once backend is wired.
 // See docs/MOCK_DATA.md for replacement instructions.
@@ -165,6 +184,22 @@ function EmptyState({
 export function ProfileClient() {
   const { user } = useAuth();
   const [copied, setCopied] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  // Account settings state
+  const [editingName, setEditingName] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [savingName, setSavingName] = useState(false);
+
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [savingPassword, setSavingPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
+  const isGoogleUser = user?.providerData?.[0]?.providerId === "google.com";
 
   const displayName = user?.displayName ?? user?.email?.split("@")[0] ?? "User";
   const email = user?.email ?? "";
@@ -176,10 +211,68 @@ export function ProfileClient() {
       })
     : "March 2026";
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Failed to copy to clipboard.");
+    }
+  };
+
+  const handleUpdateName = async () => {
+    const clean = sanitizeText(newName);
+    if (clean.length < 2) {
+      toast.error("Name must be at least 2 characters.");
+      return;
+    }
+    setSavingName(true);
+    try {
+      await updateDisplayName(clean);
+      logger.info("Display name updated", { newName: clean });
+      toast.success("Display name updated.");
+      setEditingName(false);
+      setNewName("");
+    } catch (err) {
+      logger.error("Failed to update display name", { error: String(err) });
+      toast.error("Failed to update name. Please try again.");
+    } finally {
+      setSavingName(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (newPassword.length < 8) {
+      toast.error("New password must be at least 8 characters.");
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+    setSavingPassword(true);
+    try {
+      await changePassword(currentPassword, newPassword);
+      logger.info("Password changed successfully");
+      toast.success("Password changed successfully.");
+      setChangingPassword(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+    } catch (err) {
+      const code = (err as { code?: string }).code ?? "";
+      logger.error("Password change failed", { error: code });
+      if (code === "auth/wrong-password" || code === "auth/invalid-credential") {
+        toast.error("Current password is incorrect.");
+      } else if (code === "auth/weak-password") {
+        toast.error("New password is too weak. Use at least 8 characters.");
+      } else {
+        toast.error("Failed to change password. Please try again.");
+      }
+    } finally {
+      setSavingPassword(false);
+    }
   };
 
   const activeComplaints = MOCK_COMPLAINTS.filter(
@@ -191,7 +284,7 @@ export function ProfileClient() {
       {/* ── Account card ── */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {/* Red accent strip */}
-        <div className="h-1.5 bg-gradient-to-r from-bocra-red via-bocra-blue to-bocra-green" />
+        <div className="h-1.5 bg-linear-to-r from-bocra-red via-bocra-blue to-bocra-green" />
 
         <div className="p-6 flex flex-col sm:flex-row sm:items-center gap-5">
           {/* Avatar */}
@@ -223,14 +316,170 @@ export function ProfileClient() {
               </span>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="shrink-0">
-            <div className="text-right">
-              <p className="text-xs text-gray-400 mb-0.5">Firebase UID</p>
-              <p className="font-mono text-xs text-gray-500 max-w-[140px] truncate">
-                {user?.uid ?? "-"}
-              </p>
+      {/* ── Account Settings ── */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <SectionHeader
+          title="Account Settings"
+          action={
+            <Settings className="w-4 h-4 text-gray-400" />
+          }
+        />
+
+        <div className="space-y-4">
+          {/* Display name */}
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs text-gray-400 mb-0.5">Display Name</p>
+              {editingName ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder={displayName}
+                    className="flex-1 h-8 px-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-bocra-blue focus:border-transparent outline-none"
+                    autoFocus
+                    aria-label="New display name"
+                  />
+                  <button
+                    onClick={handleUpdateName}
+                    disabled={savingName}
+                    className="h-8 px-3 bg-bocra-navy text-white text-xs font-medium rounded-lg hover:bg-bocra-blue transition-colors disabled:opacity-50"
+                  >
+                    {savingName ? <Loader2 className="w-3 h-3 animate-spin" /> : "Save"}
+                  </button>
+                  <button
+                    onClick={() => { setEditingName(false); setNewName(""); }}
+                    className="h-8 px-3 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-medium text-bocra-navy">{displayName}</p>
+                  <button
+                    onClick={() => { setEditingName(true); setNewName(displayName); }}
+                    className="p-1 text-gray-400 hover:text-bocra-blue transition-colors rounded"
+                    aria-label="Edit display name"
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
+          </div>
+
+          {/* Email (read-only) */}
+          <div>
+            <p className="text-xs text-gray-400 mb-0.5">Email Address</p>
+            <p className="text-sm text-gray-600">{email}</p>
+            {isGoogleUser && (
+              <p className="text-xs text-gray-400 mt-0.5">Managed by Google</p>
+            )}
+          </div>
+
+          {/* Change password */}
+          {!isGoogleUser && (
+            <div>
+              <p className="text-xs text-gray-400 mb-1.5">Password</p>
+              {changingPassword ? (
+                <div className="space-y-3 max-w-sm">
+                  <div>
+                    <label htmlFor="current-password" className="text-xs text-gray-500 mb-0.5 block">Current password</label>
+                    <div className="relative">
+                      <input
+                        id="current-password"
+                        type={showCurrentPassword ? "text" : "password"}
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        className="w-full h-8 px-3 pr-9 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-bocra-blue focus:border-transparent outline-none"
+                        autoComplete="current-password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrentPassword((v) => !v)}
+                        className="absolute right-1 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 rounded focus-visible:ring-2 focus-visible:ring-bocra-blue outline-none"
+                        aria-label={showCurrentPassword ? "Hide current password" : "Show current password"}
+                      >
+                        {showCurrentPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="new-password" className="text-xs text-gray-500 mb-0.5 block">New password</label>
+                    <div className="relative">
+                      <input
+                        id="new-password"
+                        type={showNewPassword ? "text" : "password"}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="At least 8 characters"
+                        className="w-full h-8 px-3 pr-9 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-bocra-blue focus:border-transparent outline-none"
+                        autoComplete="new-password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword((v) => !v)}
+                        className="absolute right-1 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 rounded focus-visible:ring-2 focus-visible:ring-bocra-blue outline-none"
+                        aria-label={showNewPassword ? "Hide new password" : "Show new password"}
+                      >
+                        {showNewPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="confirm-new-password" className="text-xs text-gray-500 mb-0.5 block">Confirm new password</label>
+                    <input
+                      id="confirm-new-password"
+                      type="password"
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      className="w-full h-8 px-3 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-bocra-blue focus:border-transparent outline-none"
+                      autoComplete="new-password"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleChangePassword}
+                      disabled={savingPassword}
+                      className="h-8 px-4 bg-bocra-navy text-white text-xs font-medium rounded-lg hover:bg-bocra-blue transition-colors disabled:opacity-50"
+                    >
+                      {savingPassword ? <Loader2 className="w-3 h-3 animate-spin" /> : "Update password"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setChangingPassword(false);
+                        setCurrentPassword("");
+                        setNewPassword("");
+                        setConfirmNewPassword("");
+                      }}
+                      className="h-8 px-3 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setChangingPassword(true)}
+                  className="inline-flex items-center gap-1.5 h-8 px-3 text-xs text-gray-600 border border-gray-200 rounded-lg hover:border-bocra-blue hover:text-bocra-blue transition-colors"
+                >
+                  <Key className="w-3.5 h-3.5" />
+                  Change password
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Auth provider info */}
+          <div className="pt-3 border-t border-gray-100">
+            <p className="text-xs text-gray-400">
+              Sign-in method: {isGoogleUser ? "Google" : "Email & password"}
+            </p>
           </div>
         </div>
       </div>
@@ -493,11 +742,7 @@ export function ProfileClient() {
             Correct my data
           </button>
           <button
-            onClick={() =>
-              toast.error(
-                "Account deletion requires verification. A confirmation email has been sent.",
-              )
-            }
+            onClick={() => setDeleteOpen(true)}
             className="flex items-center gap-2 h-9 px-4 border border-bocra-red/20 hover:border-bocra-red hover:bg-bocra-red/5 text-bocra-red text-sm rounded-lg transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -505,6 +750,36 @@ export function ProfileClient() {
           </button>
         </div>
       </div>
+
+      {/* Account deletion confirmation */}
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. Your account, personal data, and all
+              associated records will be permanently deleted in accordance with
+              the Botswana Data Protection Act 2024. A confirmation email will be
+              sent to verify this request.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setDeleteOpen(false);
+                toast.error(
+                  "Account deletion requires verification. A confirmation email has been sent.",
+                );
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              <Trash2 className="w-4 h-4 mr-1.5" />
+              Delete account
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
