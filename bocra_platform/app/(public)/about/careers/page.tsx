@@ -16,7 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
-  title: "Careers - BOCRA",
+  title: "Careers",
   description:
     "Explore career opportunities at BOCRA. Join a team of talented professionals driving Botswana's digital transformation.",
 };

@@ -14,7 +14,7 @@ import Link from "next/link";
 import { ErrorLogPanel } from "./error-log-panel";
 import { SystemHealthPanel } from "./system-health-panel";
 
-export const metadata = { title: "Admin Dashboard - BOCRA Staff Portal" };
+export const metadata = { title: "Staff Dashboard" };
 
 // Mock data
 

@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "Internet & ICT - BOCRA",
+  title: "Internet & ICT",
   description:
     "BOCRA oversees ISPs and the broader ICT sector in Botswana. The internet telephony market is fully liberalised under the SAP framework.",
 };

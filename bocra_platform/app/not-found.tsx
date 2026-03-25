@@ -3,6 +3,8 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { FileQuestion } from "lucide-react";
 
+export const metadata = { title: "Page Not Found" };
+
 export default function NotFound() {
   return (
     <>

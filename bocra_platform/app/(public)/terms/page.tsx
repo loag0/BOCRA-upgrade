@@ -6,7 +6,7 @@ import { AnimatedSection } from "@/components/animated-section";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
-  title: "Terms of Use - BOCRA",
+  title: "Terms of Use",
   description:
     "Terms and conditions governing the use of the BOCRA digital platform for licence verification, complaints, domain services, and publications.",
 };

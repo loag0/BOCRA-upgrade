@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "COMM-CIRT - BOCRA",
+  title: "COMM-CIRT",
   description:
     "BOCRA operates the Communications Sector Computer Incident Response Team (COMM-CIRT), acting as the national cybersecurity focal point.",
 };

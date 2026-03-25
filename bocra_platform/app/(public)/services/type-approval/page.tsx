@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "Type Approval - BOCRA",
+  title: "Type Approval",
   description:
     "All radio and telecommunications equipment used in Botswana must be BOCRA type-approved before it can be connected, used, or sold.",
 };

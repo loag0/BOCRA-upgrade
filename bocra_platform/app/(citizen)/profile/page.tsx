@@ -1,6 +1,6 @@
 import { ProfileClient } from "./profile-client";
 
-export const metadata = { title: "My Profile - BOCRA" };
+export const metadata = { title: "My Profile" };
 
 export default function ProfilePage() {
   return <ProfileClient />;

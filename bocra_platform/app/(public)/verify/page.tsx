@@ -16,7 +16,7 @@ import { VerifySearch } from "@/components/verify-search";
 import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
-  title: "Verify Licence - BOCRA",
+  title: "Verify Licence",
   description:
     "Verify any BOCRA-licensed operator's licence status, category, and compliance.",
 };

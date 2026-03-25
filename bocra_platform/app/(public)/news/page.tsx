@@ -9,7 +9,7 @@ import { mockNews } from "@/lib/mock-data";
 import { NewsFilters } from "./news-filters";
 
 export const metadata = {
-  title: "News & Events - BOCRA",
+  title: "News & Events",
   description:
     "Latest news, public notices, announcements, tenders, and events from the Botswana Communications Regulatory Authority.",
 };

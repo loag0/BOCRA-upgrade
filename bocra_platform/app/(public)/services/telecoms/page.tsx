@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "Telecommunications - BOCRA",
+  title: "Telecommunications",
   description:
     "BOCRA regulates Public Telecommunications Operators, VANS, and VoIP providers under the converged NFP/SAP licensing framework.",
 };

@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { mockSpeeches } from "@/lib/mock-data";
 
 export const metadata = {
-  title: "Speeches & Presentations - BOCRA",
+  title: "Speeches & Presentations",
   description:
     "Speeches and presentations by BOCRA leadership including the Chief Executive, at national and international events on telecommunications regulation, spectrum management, and digital transformation.",
 };

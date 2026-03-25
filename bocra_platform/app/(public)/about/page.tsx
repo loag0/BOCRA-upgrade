@@ -34,7 +34,7 @@ import { Separator } from "@/components/ui/separator";
 import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
-  title: "About BOCRA - Who We Are",
+  title: "About BOCRA",
   description:
     "Learn about the Botswana Communications Regulatory Authority (BOCRA), established under the CRA Act 2012 to regulate telecommunications, broadcasting, postal, internet, spectrum, and .bw domains.",
 };

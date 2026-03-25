@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { AnimatedSection } from "@/components/animated-section";
 
 export const metadata = {
-  title: "Board & Management - BOCRA",
+  title: "Board & Management",
   description:
     "Meet the BOCRA Board of Directors and Executive Management team, appointed to guide Botswana's communications regulation.",
 };

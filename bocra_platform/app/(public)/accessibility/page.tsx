@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Accessibility - BOCRA",
+  title: "Accessibility",
   description:
     "BOCRA's commitment to digital accessibility, ensuring the platform is usable by all Batswana, including persons with disabilities.",
 };

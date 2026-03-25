@@ -6,7 +6,7 @@ import { AnimatedSection } from "@/components/animated-section";
 import { Badge } from "@/components/ui/badge";
 
 export const metadata = {
-  title: "Privacy Policy - BOCRA",
+  title: "Privacy Policy",
   description:
     "How the Botswana Communications Regulatory Authority collects, uses, and protects your personal data under the Botswana Data Protection Act 2024.",
 };

@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "Radio Spectrum - BOCRA",
+  title: "Radio Spectrum",
   description:
     "BOCRA administers the National Radio Frequency Plan, spectrum allocation, and the Automated Spectrum Management System (ASMS).",
 };

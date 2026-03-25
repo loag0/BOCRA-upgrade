@@ -18,7 +18,10 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Welcome! | BOCRA",
+  title: {
+    default: "BOCRA - Botswana Communications Regulatory Authority",
+    template: "%s | BOCRA",
+  },
   description:
     "The unified digital platform for BOCRA regulatory services. Verify licences, file complaints, register .bw domains, and access publications.",
 };

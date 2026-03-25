@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "Postal Services - BOCRA",
+  title: "Postal Services",
   description:
     "BOCRA regulates all postal service providers in Botswana, ensuring safe, reliable, and affordable postal services nationwide.",
 };

@@ -1,7 +1,7 @@
 import { MandatePage } from "@/components/mandate-page";
 
 export const metadata = {
-  title: "Broadcasting - BOCRA",
+  title: "Broadcasting",
   description:
     "BOCRA regulates all commercial broadcasting in Botswana, including radio and television, with local content compliance monitoring.",
 };

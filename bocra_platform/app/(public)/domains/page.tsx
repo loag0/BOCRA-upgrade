@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { DomainsClient } from "./domains-client";
 
 export const metadata = {
-  title: ".bw Domain Registry - BOCRA",
+  title: ".bw Domain Registry",
   description:
     "Search, register and manage .bw country code top-level domains administered by BOCRA.",
 };
