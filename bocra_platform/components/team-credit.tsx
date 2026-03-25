@@ -11,10 +11,26 @@ import {
 } from "@/components/ui/dialog";
 
 const teamMembers = [
-  { name: "Loago Moremi", role: "Team Lead / Frontend Developer", link: "https://www.linkedin.com/in/loago-moremi" },
-  { name: "Phemelo Gaborone", role: "Frontend Developer / DevOps", link: "" },
-  { name: "Ineeleng Bagalatia", role: "Backend Developer", link: "" },
-  { name: "Kaone Tidimalo", role: "Backend Developer", link: "" },
+  {
+    name: "Loago Moremi",
+    role: "Team Lead / Frontend Developer",
+    link: "https://www.linkedin.com/in/loago-moremi",
+  },
+  {
+    name: "Phemelo Gaborone",
+    role: "Frontend Developer / DevOps",
+    link: "https://www.linkedin.com/in/phemelo-gaborone-8098a828a/",
+  },
+  {
+    name: "Ineeleng Bagalatia",
+    role: "Backend Developer",
+    link: "https://www.linkedin.com/in/ineeleng-bagalatia-b86725303/",
+  },
+  {
+    name: "Kaone Tidimalo",
+    role: "Backend Developer",
+    link: "https://www.linkedin.com/in/kaone-arnold-tidimalo/",
+  },
   { name: "Candy Dibobo", role: "Project Manager / UI/UX Design", link: "" },
   { name: "Omogolo Matema", role: "Business Analyst", link: "" },
 ];

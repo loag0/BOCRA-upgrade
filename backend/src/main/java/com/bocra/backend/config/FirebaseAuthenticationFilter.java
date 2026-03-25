@@ -35,7 +35,7 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
                 FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
                 String uid = decodedToken.getUid();
                 Object roleClaim = decodedToken.getClaims().get("role");
-                String role = roleClaim != null ? roleClaim.toString() : "citizen";
+                String role = roleClaim != null ? roleClaim.toString() : "user";
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(

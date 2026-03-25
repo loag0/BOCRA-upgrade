@@ -1,4 +1,4 @@
-export type UserRole = "citizen" | "licensee" | "staff" | "admin";
+export type UserRole = "user" | "licensee" | "staff" | "admin";
 
 export type LicenceCategory =
   | "NFP"

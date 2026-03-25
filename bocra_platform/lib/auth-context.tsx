@@ -6,6 +6,16 @@ import { auth, signOut } from "@/lib/firebase";
 import { logger } from "@/lib/logger";
 import type { UserRole } from "@/types";
 
+/**
+ * Admin accounts loaded from NEXT_PUBLIC_ADMIN_EMAILS env var.
+ * These emails get the "admin" role regardless of backend response.
+ * Once Spring Boot role management is fully live, this can be removed.
+ */
+const ADMIN_EMAILS: string[] = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? "")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
 export type { UserRole };
 
 /** Idle timeout in milliseconds (30 minutes) */
@@ -15,18 +25,32 @@ interface AuthContextValue {
   user: User | null;
   role: UserRole | null;
   loading: boolean;
+  /** True while the role is still being resolved (user is signed in but role fetch is in-flight). */
+  roleLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
   role: null,
   loading: true,
+  roleLoading: false,
 });
+
+/**
+ * Returns the post-login destination for a given role.
+ * staff/admin -> /admin, licensee -> /portal/licences, user/null -> /profile
+ */
+export function getPostLoginRoute(role: UserRole | null): string {
+  if (role === "admin" || role === "staff") return "/admin";
+  if (role === "licensee") return "/portal/licences";
+  return "/profile";
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleIdleLogout = useCallback(async () => {
@@ -71,21 +95,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(u);
       if (u) {
         logger.info("Auth state changed: user signed in", { uid: u.uid });
+        setRoleLoading(true);
+
+        // Check hardcoded admin list first (fallback until Spring Boot is fully live)
+        const isHardcodedAdmin =
+          u.email != null && ADMIN_EMAILS.includes(u.email.toLowerCase());
+
         try {
           const token = await u.getIdToken();
-          const res = await fetch("http://localhost:8080/api/auth/me", {
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+          const res = await fetch(`${baseUrl}/api/auth/me`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
           });
+          if (!res.ok) throw new Error(`Backend returned ${res.status}`);
           const data = await res.json();
-          setRole(data.role ?? null);
-          logger.info("Role resolved", { uid: u.uid, role: data.role ?? "none" });
+          // Hardcoded admin list overrides backend role (admin accounts are
+          // managed here until a proper admin UI exists)
+          const resolvedRole: UserRole =
+            isHardcodedAdmin ? "admin" : (data.role ?? "user");
+          setRole(resolvedRole);
+          logger.info("Role resolved", { uid: u.uid, role: resolvedRole });
         } catch (err) {
-          logger.warn("Role resolution failed, defaulting to null", {
+          // Backend unreachable - use hardcoded admin list as fallback
+          const fallbackRole: UserRole = isHardcodedAdmin ? "admin" : "user";
+          setRole(fallbackRole);
+          logger.warn("Role resolution failed, using fallback", {
             uid: u.uid,
+            fallbackRole,
             error: String(err),
           });
-          setRole(null);
+        } finally {
+          setRoleLoading(false);
         }
       } else {
         setRole(null);
@@ -95,7 +136,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, role, loading }}>
+    <AuthContext.Provider value={{ user, role, loading, roleLoading }}>
       {children}
     </AuthContext.Provider>
   );

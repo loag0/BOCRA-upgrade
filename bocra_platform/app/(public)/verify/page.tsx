@@ -158,7 +158,7 @@ export default function VerifyPage() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-bocra-navy/70 via-bocra-navy/40 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-r from-bocra-navy/70 via-bocra-navy/40 to-transparent" />
                 <div className="absolute inset-0 flex items-center p-8">
                   <div>
                     <p className="text-bocra-gold text-xs font-semibold uppercase tracking-widest mb-2">

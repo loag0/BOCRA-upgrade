@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GuestGuard } from "@/components/guest-guard";
+import { useAuth, getPostLoginRoute } from "@/lib/auth-context";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -41,9 +42,11 @@ function getAuthError(code: string): string {
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") ?? "/";
+  const redirect = searchParams.get("redirect");
+  const { role, roleLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [awaitingRole, setAwaitingRole] = useState(false);
 
   const {
     register,
@@ -51,10 +54,20 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  // Once sign-in succeeds, wait for role to resolve, then redirect based on role
+  useEffect(() => {
+    if (awaitingRole && !roleLoading) {
+      // If there was an explicit redirect query param (e.g. from AuthGuard), honour it
+      // Otherwise route by role: admin/staff -> /admin, licensee -> /portal/licences, else -> /profile
+      const dest = redirect ?? getPostLoginRoute(role);
+      router.replace(dest);
+    }
+  }, [awaitingRole, roleLoading, role, redirect, router]);
+
   async function onSubmit(data: FormData) {
     try {
       await signInWithEmail(data.email, data.password);
-      router.replace(redirect);
+      setAwaitingRole(true);
     } catch (err: unknown) {
       console.error("Login error:", err);
       const code = (err as { code?: string }).code ?? "";
@@ -66,7 +79,7 @@ export default function LoginPage() {
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
-      router.replace(redirect);
+      setAwaitingRole(true);
     } catch (err: unknown) {
       console.error("Google sign-in error:", err);
       const code = (err as { code?: string }).code ?? "";
@@ -77,7 +90,7 @@ export default function LoginPage() {
   }
 
   return (
-    <GuestGuard redirectTo={redirect}>
+    <GuestGuard redirectTo={redirect ?? undefined}>
       <div className="w-full max-w-sm">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h1 className="font-heading text-2xl font-bold text-bocra-navy mb-1">

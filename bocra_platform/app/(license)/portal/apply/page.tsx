@@ -18,6 +18,18 @@ import {
   Copy,
 } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
+
+/** Maps frontend licence type ids to backend LicenceType enum */
+const LICENCE_TYPE_TO_ENUM: Record<string, string> = {
+  nfp: "NFP",
+  sap: "SAP",
+  broadcasting: "BROADCASTING",
+  postal: "POSTAL",
+  type_approval: "TYPE_APPROVAL",
+  radio: "RADIO",
+  domain: "DOMAIN",
+};
 
 // Licence categories
 
@@ -214,12 +226,12 @@ export default function ApplyPage() {
   async function handleSubmit() {
     setSubmitting(true);
     try {
-      // Replace with: POST /api/licence-applications  (Spring Boot licensing service)
-      await new Promise((r) => setTimeout(r, 1600));
-      const year = new Date().getFullYear();
-      const rand = String(Math.floor(Math.random() * 9000 + 1000));
-      const ref = `APP-${year}-${rand}`;
-      setCaseRef(ref);
+      const result = await api.post<{ id: string }>("/api/licences", {
+        orgId: orgName,
+        licenceType: LICENCE_TYPE_TO_ENUM[selectedType ?? ""] ?? "SAP",
+        documents: files.map((f) => f.name),
+      });
+      setCaseRef(result.id);
       setSubmitted(true);
     } catch {
       toast.error("Failed to submit your application. Please try again.");

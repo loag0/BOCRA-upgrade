@@ -6,34 +6,31 @@ import { useAuth } from "@/lib/auth-context";
 
 /**
  * Protects routes that require staff or admin access.
+ * - Still loading auth/role → loading dots
  * - Unauthenticated users → /login
- * - Authenticated but no staff role → /unauthorized
- *
- * Role is set by Spring Boot after token verification.
- * Until that's wired up, `role` is always null and /admin is inaccessible
- * to everyone - which is the correct pre-launch behaviour.
+ * - Authenticated but no staff/admin role → /unauthorized
  */
 export function RoleGuard({ children }: { children: React.ReactNode }) {
-  const { user, role, loading } = useAuth();
+  const { user, role, loading, roleLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
+  const isReady = !loading && !roleLoading;
   const isAuthorized =
-    !loading && user !== null && (role === "staff" || role === "admin");
+    isReady && user !== null && (role === "staff" || role === "admin");
 
   useEffect(() => {
-    if (loading) return;
+    if (!isReady) return;
     if (!user) {
       router.replace(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
-    // null = Spring Boot hasn't confirmed a role, treat as unauthorized
     if (role !== "staff" && role !== "admin") {
       router.replace("/unauthorized");
     }
-  }, [loading, user, role, router, pathname]);
+  }, [isReady, user, role, router, pathname]);
 
-  if (loading || !isAuthorized) {
+  if (!isAuthorized) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="loading-dots">

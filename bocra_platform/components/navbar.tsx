@@ -18,7 +18,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth, getPostLoginRoute } from "@/lib/auth-context";
 import { signOut } from "@/lib/firebase";
 import { logger } from "@/lib/logger";
 import { toast } from "sonner";
@@ -72,7 +72,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const { user, loading } = useAuth();
+  const { user, role, loading } = useAuth();
+  const profileHref = getPostLoginRoute(role);
   const router = useRouter();
   const pathname = usePathname();
   const navRef = useRef<HTMLDivElement>(null);
@@ -225,7 +226,7 @@ export function Navbar() {
           ) : user ? (
               <>
                 <Link
-                  href="/profile"
+                  href={profileHref}
                   className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors group"
                 >
                   <div className="w-7 h-7 rounded-full bg-bocra-gold flex items-center justify-center text-white text-xs font-bold shrink-0">
@@ -260,7 +261,7 @@ export function Navbar() {
                 <Link
                   href="/register"
                   className={cn(
-                    buttonVariants({ size: "sm" }),
+                    buttonVariants({ size: "sm", variant: "ghost" }),
                     "bg-bocra-gold hover:bg-bocra-gold/90 text-bocra-navy font-semibold"
                   )}
                 >
@@ -357,7 +358,7 @@ export function Navbar() {
                   {user ? (
                     <>
                       <Link
-                        href="/profile"
+                        href={profileHref}
                         className={cn(
                           buttonVariants({ variant: "outline" }),
                           "bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white w-full justify-start gap-2"

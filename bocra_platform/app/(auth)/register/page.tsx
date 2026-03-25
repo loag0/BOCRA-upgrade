@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { signUpWithEmail, signInWithGoogle } from "@/lib/firebase";
 import { GuestGuard } from "@/components/guest-guard";
+import { useAuth, getPostLoginRoute } from "@/lib/auth-context";
 import { sanitizeText } from "@/lib/sanitize";
 
 const privacySections = [
@@ -101,10 +102,12 @@ function getAuthError(code: string): string {
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { role, roleLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [awaitingRole, setAwaitingRole] = useState(false);
 
   const {
     register,
@@ -112,13 +115,23 @@ export default function RegisterPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  // After registration + role resolution, redirect based on role
+  useEffect(() => {
+    if (awaitingRole && !roleLoading) {
+      router.replace(getPostLoginRoute(role));
+    }
+  }, [awaitingRole, roleLoading, role, router]);
+
   async function onSubmit(data: FormData) {
     try {
       const cleanName = sanitizeText(data.name);
       const { user } = await signUpWithEmail(data.email.trim(), data.password);
       await updateProfile(user, { displayName: cleanName });
+
+      // User row in Supabase is created by auth-context's onAuthStateChanged
+      // callback which calls POST /api/auth/me with the Firebase JWT.
       toast.success("Account created! Welcome to BOCRA.");
-      router.push("/");
+      setAwaitingRole(true);
     } catch (err: unknown) {
       console.error("Registration error:", err);
       const code = (err as { code?: string }).code ?? "";
@@ -130,8 +143,11 @@ export default function RegisterPage() {
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
+
+      // User row in Supabase is created by auth-context's onAuthStateChanged
+      // callback which calls POST /api/auth/me with the Firebase JWT.
       toast.success("Signed in with Google. Welcome to BOCRA.");
-      router.push("/");
+      setAwaitingRole(true);
     } catch (err: unknown) {
       console.error("Google sign-in error:", err);
       const code = (err as { code?: string }).code ?? "";

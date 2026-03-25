@@ -28,6 +28,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { AnimatedSection } from "@/components/animated-section";
 import { toast } from "sonner";
 import { sanitizeFormData } from "@/lib/sanitize";
+import { api } from "@/lib/api";
+
+/** Maps frontend category values to backend ComplaintCategory enum */
+const CATEGORY_TO_ENUM: Record<string, string> = {
+  poor_network: "POOR_NETWORK_QUALITY",
+  billing: "BILLING_DISPUTE",
+  spam: "UNSOLICITED_MESSAGES",
+  unlicensed: "UNLICENSED_OPERATOR",
+  unfair_terms: "UNFAIR_TERMS",
+  type_approval: "TYPE_APPROVAL_VIOLATION",
+  other: "OTHER",
+};
 import { mockOperators } from "@/lib/mock-data";
 
 // ─── Operator contact data ────────────────────────────────────────────────────
@@ -330,12 +342,15 @@ function Step2({
 
   async function processForm(_data: FormData) {
     try {
-      const _sanitized = sanitizeFormData(_data);
-      // Replace with: POST /api/complaints  (Spring Boot complaints service)
-      // Send _sanitized instead of _data
-      await new Promise((r) => setTimeout(r, 1200));
-      const ref = `CMP-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
-      onSubmit(ref);
+      const sanitized = sanitizeFormData(_data);
+      const complaint = await api.post<{ caseRef: string }>("/api/complaints", {
+        complainantName: sanitized.fullName,
+        complainantEmail: sanitized.email,
+        operator: sanitized.operator,
+        category: CATEGORY_TO_ENUM[sanitized.category] ?? "OTHER",
+        description: sanitized.description,
+      });
+      onSubmit(complaint.caseRef);
     } catch {
       toast.error("Failed to submit your complaint. Please try again.");
     }
