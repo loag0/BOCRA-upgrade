@@ -31,8 +31,16 @@ const teamMembers = [
     role: "Backend Developer",
     link: "https://www.linkedin.com/in/kaone-arnold-tidimalo/",
   },
-  { name: "Candy Dibobo", role: "Project Manager / UI/UX Design", link: "" },
-  { name: "Omogolo Matema", role: "Business Analyst", link: "" },
+  {
+    name: "Candy Dibobo",
+    role: "Project Manager / UI/UX Design",
+    link: "https://www.linkedin.com/in/candy-dibobo-68206a3a4/",
+  },
+  {
+    name: "Omogolo Matema",
+    role: "Business Analyst",
+    link: "https://www.linkedin.com/in/omogolo-matema-811666336/",
+  },
 ];
 
 export function TeamCredit() {
