@@ -69,7 +69,7 @@ const FILTER_TABS: { value: NewsCategory | "all"; label: string }[] = [
 ];
 
 function NewsCard({ article }: { article: NewsArticle }) {
-  const meta = CATEGORY_META[article.category];
+const meta = CATEGORY_META[article.category?.toLowerCase() as NewsCategory] ?? CATEGORY_META["announcement"];
   const Icon = meta.icon;
 
   const formattedDate = new Date(article.publishedAt).toLocaleDateString(

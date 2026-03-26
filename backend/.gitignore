@@ -1,5 +1,6 @@
 HELP.md
 target/
+.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -33,8 +34,3 @@ build/
 
 src/main/resources/application.yml
 src/main/resources/firebase-service-account.json
-
-# Environment variables (IMPORTANT)
-.env
-.env.*
-!.env.example
