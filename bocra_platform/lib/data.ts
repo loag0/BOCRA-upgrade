@@ -10,7 +10,7 @@
  *   3. That's it - all pages will start using real data
  */
 
-//import { api } from "@/lib/api";
+import { api } from "@/lib/api";
 import {
   mockOperators,
   mockPublications,
@@ -31,20 +31,18 @@ import type {
 // ────────────────────────────────────────────────────────────────
 
 export async function getOperators(): Promise<Operator[]> {
-  // return api.get<Operator[]>("/api/operators");
-  return mockOperators;
+  return api.get<Operator[]>("/api/operators");
 }
 
 export async function searchOperators(query: string): Promise<Operator[]> {
   if (query.length < 2) return [];
-  // return api.get<Operator[]>(`/api/operators/search?name=${encodeURIComponent(query)}`);
-  return mockSearchOperators(query);
+  return api.get<Operator[]>(`/api/operators/search?name=${encodeURIComponent(query)}`);
+  
 }
 
 export async function findOperator(query: string): Promise<Operator | undefined> {
-  // const results = await api.get<Operator[]>(`/api/operators/search?name=${encodeURIComponent(query)}`);
-  // return results[0];
-  return mockFindOperator(query);
+  const results = await api.get<Operator[]>(`/api/operators/search?name=${encodeURIComponent(query)}`);
+  return results[0];
 }
 
 // ────────────────────────────────────────────────────────────────
@@ -52,8 +50,7 @@ export async function findOperator(query: string): Promise<Operator | undefined>
 // ────────────────────────────────────────────────────────────────
 
 export async function getPublications(): Promise<Publication[]> {
-  // return api.get<Publication[]>("/api/publications");
-  return mockPublications;
+  return api.get<Publication[]>("/api/publications");
 }
 
 // ────────────────────────────────────────────────────────────────
@@ -61,8 +58,7 @@ export async function getPublications(): Promise<Publication[]> {
 // ────────────────────────────────────────────────────────────────
 
 export async function getNews(): Promise<NewsArticle[]> {
-  // return api.get<NewsArticle[]>("/api/news");
-  return mockNews;
+  return api.get<NewsArticle[]>("/api/news");
 }
 
 // ────────────────────────────────────────────────────────────────
@@ -70,8 +66,7 @@ export async function getNews(): Promise<NewsArticle[]> {
 // ────────────────────────────────────────────────────────────────
 
 export async function getSpeeches(): Promise<Speech[]> {
-  // return api.get<Speech[]>("/api/speeches");
-  return mockSpeeches;
+  return api.get<Speech[]>("/api/speeches");
 }
 
 // ────────────────────────────────────────────────────────────────

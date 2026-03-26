@@ -14,36 +14,36 @@ import type { Operator } from "@/types";
 import { Badge } from "@/components/ui/badge";
 
 const statusConfig = {
-  Active: {
+  ACTIVE: {
     color: "bg-green-50 text-green-700 border-green-200",
     icon: CheckCircle2,
     iconColor: "text-green-500",
   },
-  Suspended: {
+  SUSPENDED: {
     color: "bg-red-50 text-red-700 border-red-200",
     icon: XCircle,
     iconColor: "text-red-500",
   },
-  Expired: {
+  EXPIRED: {
     color: "bg-gray-100 text-gray-600 border-gray-200",
     icon: XCircle,
     iconColor: "text-gray-400",
   },
-  Pending: {
+  PENDING: {
     color: "bg-yellow-50 text-yellow-700 border-yellow-200",
     icon: AlertCircle,
     iconColor: "text-yellow-500",
   },
 };
 
-const complianceConfig = {
-  Compliant: "bg-green-50 text-green-700 border-green-200",
-  "Under Review": "bg-yellow-50 text-yellow-700 border-yellow-200",
-  "Non-Compliant": "bg-red-50 text-red-700 border-red-200",
+const complianceConfig: Record<string, string> = {
+  COMPLIANT: "bg-green-50 text-green-700 border-green-200",
+  UNDER_REVIEW: "bg-yellow-50 text-yellow-700 border-yellow-200",
+  NON_COMPLIANT: "bg-red-50 text-red-700 border-red-200",
 };
 
 function OperatorCard({ operator }: { operator: Operator }) {
-  const status = statusConfig[operator.status];
+const status = statusConfig[operator.status as keyof typeof statusConfig] ?? statusConfig.ACTIVE;
   const StatusIcon = status.icon;
 
   return (
@@ -83,11 +83,9 @@ function OperatorCard({ operator }: { operator: Operator }) {
           <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
             Compliance
           </p>
-          <Badge
-            className={`text-xs ${complianceConfig[operator.complianceStatus]}`}
-          >
-            {operator.complianceStatus}
-          </Badge>
+        <Badge className={`text-xs ${complianceConfig[operator.complianceStatus] ?? complianceConfig.COMPLIANT}`}>
+         {operator.complianceStatus}
+        </Badge>
         </div>
         <div>
           <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
