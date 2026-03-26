@@ -1,5 +1,6 @@
 docs/*
 !docs/MOCK_DATA.md
+!docs/FEATURES.md
 .claude/settings.local.json
 
 .vscode/*
