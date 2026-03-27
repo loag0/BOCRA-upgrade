@@ -103,7 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         try {
           const token = await u.getIdToken();
-          const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+          const baseUrl = process.env.NEXT_PUBLIC_API_URL;
           const res = await fetch(`${baseUrl}/api/auth/me`, {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
