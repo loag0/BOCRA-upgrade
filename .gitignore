@@ -14,3 +14,7 @@ backend/target/
 backend/.idea/
 backend/*.iml
 backend/.mvn/
+
+*.claude
+*.github/workflows
+CLAUDE.md
