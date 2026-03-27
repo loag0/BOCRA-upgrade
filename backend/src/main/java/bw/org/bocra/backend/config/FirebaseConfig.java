@@ -1,12 +1,17 @@
 package bw.org.bocra.backend.config;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import org.springframework.context.annotation.Configuration;
+
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import org.springframework.context.annotation.Configuration;
+
 import jakarta.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
 
 @Configuration
 public class FirebaseConfig {
@@ -14,9 +19,11 @@ public class FirebaseConfig {
     @PostConstruct
     public void initializeFirebase() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) {
-            InputStream serviceAccount = getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("firebase-service-account.json");
+            String json = System.getenv("FIREBASE_CONFIG_JSON");
+            if (json == null) {
+                throw new IllegalStateException("FIREBASE_SERVICE_ACCOUNT_JSON env var not set");
+            }
+            InputStream serviceAccount = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
