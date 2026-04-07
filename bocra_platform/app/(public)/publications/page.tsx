@@ -135,7 +135,7 @@ function PubCard({ pub }: { pub: Publication }) {
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <span
               className={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full ${meta.bg} ${meta.color} mb-2`}
@@ -274,7 +274,7 @@ export default function PublicationsPage() {
                   <button
                     key={type}
                     onClick={() => setActiveType(type)}
-                    className={`inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-sm font-medium transition-all border ${
+                    className={`inline-flex items-center gap-1.5 h-8 px-3 text-xs sm:h-9 sm:px-4 sm:text-sm rounded-full font-medium transition-all border ${
                       isActive
                         ? "bg-bocra-navy text-white border-bocra-navy shadow-sm"
                         : "bg-white text-gray-600 border-gray-200 hover:border-bocra-navy/30 hover:text-bocra-navy"

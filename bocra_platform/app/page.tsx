@@ -196,7 +196,7 @@ export default async function HomePage() {
       {/* -- Stats Bar -- */}
       <section className="bg-bocra-surface border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {stats.map(({ label, value, icon: Icon }, i) => (
               <AnimatedSection key={label} animation="fade-up" delay={i * 100}>
                 <div className="flex items-center gap-4">
@@ -250,7 +250,7 @@ export default async function HomePage() {
             </AnimatedSection>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {services.map(({ icon: Icon, title, desc, href, color }, i) => (
               <AnimatedSection key={href} animation="fade-up" delay={i * 75}>
                 <Link href={href}>
@@ -302,7 +302,7 @@ export default async function HomePage() {
             </div>
           </AnimatedSection>
  
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
             {operators.map(
               (
                 {
@@ -493,7 +493,7 @@ export default async function HomePage() {
                   <p className="text-bocra-gold text-xs font-semibold uppercase tracking-widest mb-2">
                     Connecting Botswana
                   </p>
-                  <p className="text-white text-lg sm:text-xl font-heading font-bold max-w-md">
+                  <p className="text-white text-sm sm:text-lg md:text-xl font-heading font-bold max-w-md">
                     Building the infrastructure for a digitally inclusive nation
                   </p>
                 </div>
@@ -595,7 +595,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Map */}
             <AnimatedSection animation="fade-left" className="lg:col-span-2">
-              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm h-100">
+              <div className="rounded-xl overflow-hidden border border-gray-200 shadow-sm h-48 sm:h-64 md:h-80 lg:h-100">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.3326960246245!2d25.91678387536435!3d-24.654996378063966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ebb5ba1128f935d%3A0xa164d400c9b368f5!2sBOCRA%20-%20Botswana%20Communication%20Regulatory%20Authority!5e1!3m2!1sen!2sbw!4v1774310861088!5m2!1sen!2sbw"
                   width="100%"

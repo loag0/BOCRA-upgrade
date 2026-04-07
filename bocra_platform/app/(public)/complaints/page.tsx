@@ -148,7 +148,7 @@ function StepIndicator({ current }: { current: 1 | 2 | 3 }) {
               {current > s.n ? <Check className="w-3.5 h-3.5" /> : s.n}
             </div>
             <span
-              className={`text-xs font-medium hidden sm:block ${
+              className={`text-xs font-medium hidden md:block ${
                 current === s.n ? "text-bocra-navy" : "text-gray-400"
               }`}
             >
@@ -230,7 +230,7 @@ function Step1({ onContinue }: { onContinue: (operatorName: string) => void }) {
               {operator.categoryFull}
             </p>
           </div>
-          <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white">
+          <div className="p-5 grid grid-cols-1 md:grid-cols-3 gap-4 bg-white">
             <div className="flex items-start gap-3">
               <Phone className="w-4 h-4 text-bocra-blue mt-0.5 shrink-0" />
               <div>
@@ -542,7 +542,7 @@ function Step2({
           <p className="text-sm text-gray-600 font-medium">
             Click to upload or drag files here
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-400 mt-1 line-clamp-2 sm:line-clamp-none">
             PDF, JPG, PNG · max 10 MB per file · correspondence, bills,
             screenshots
           </p>
