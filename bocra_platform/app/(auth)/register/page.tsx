@@ -165,238 +165,307 @@ export default function RegisterPage() {
 
   return (
     <GuestGuard>
-    <div className="w-full max-w-sm">
-      <div className="bg-white rounded-2xl shadow-xl p-8">
-        <h1 className="font-heading text-2xl font-bold text-bocra-navy mb-1">
-          Create an account
-        </h1>
-        <p className="text-gray-500 text-sm mb-6">
-          Register to access BOCRA services
-        </p>
+      <div className="w-full max-w-sm">
+        <div className="mb-4 rounded-lg border border-bocra-red/25 bg-bocra-red/10 px-4 py-3 text-center">
+          <p className="text-xs font-semibold text-bocra-red">
+            HACKATHON PROTOTYPE
+          </p>
+          <p className="mt-1 text-xs text-gray-600">
+            This is a student-developed prototype created for a hackathon. It is
+            not an official BOCRA website or service. Please do not use real or
+            sensitive information when creating an account.
+          </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <h1 className="font-heading text-2xl font-bold text-bocra-navy mb-1">
+            Create an account
+          </h1>
+          <p className="text-gray-500 text-sm mb-6">
+            Register to access BOCRA services
+          </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Full name */}
-          <div className="space-y-1.5">
-            <Label htmlFor="name" className="text-gray-700 text-sm font-medium">
-              Full name
-            </Label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="Kagiso Modise"
-              autoComplete="name"
-              {...register("name")}
-              aria-invalid={!!errors.name}
-              aria-describedby={errors.name ? "name-error" : undefined}
-            />
-            {errors.name && (
-              <p id="name-error" className="text-xs text-red-500" role="alert">{errors.name.message}</p>
-            )}
-          </div>
-
-          {/* Email */}
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-gray-700 text-sm font-medium">
-              Email address
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              autoComplete="email"
-              {...register("email")}
-              aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? "email-error" : undefined}
-            />
-            {errors.email && (
-              <p id="email-error" className="text-xs text-red-500" role="alert">{errors.email.message}</p>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="space-y-1.5">
-            <Label htmlFor="password" className="text-gray-700 text-sm font-medium">
-              Password
-            </Label>
-            <div className="relative">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Full name */}
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="name"
+                className="text-gray-700 text-sm font-medium"
+              >
+                Full name
+              </Label>
               <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="At least 8 characters"
-                autoComplete="new-password"
-                {...register("password")}
-                aria-invalid={!!errors.password}
-                aria-describedby={errors.password ? "password-error" : undefined}
-                className="pr-10"
+                id="name"
+                type="text"
+                placeholder="Kagiso Modise"
+                autoComplete="name"
+                {...register("name")}
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+              {errors.name && (
+                <p
+                  id="name-error"
+                  className="text-xs text-red-500"
+                  role="alert"
+                >
+                  {errors.name.message}
+                </p>
+              )}
             </div>
-            {errors.password && (
-              <p id="password-error" className="text-xs text-red-500" role="alert">{errors.password.message}</p>
-            )}
-          </div>
 
-          {/* Confirm password */}
-          <div className="space-y-1.5">
-            <Label htmlFor="confirmPassword" className="text-gray-700 text-sm font-medium">
-              Confirm password
-            </Label>
-            <div className="relative">
+            {/* Email */}
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="email"
+                className="text-gray-700 text-sm font-medium"
+              >
+                Email address
+              </Label>
               <Input
-                id="confirmPassword"
-                type={showConfirm ? "text" : "password"}
-                placeholder="Repeat your password"
-                autoComplete="new-password"
-                {...register("confirmPassword")}
-                aria-invalid={!!errors.confirmPassword}
-                aria-describedby={errors.confirmPassword ? "confirm-error" : undefined}
-                className="pr-10"
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                {...register("email")}
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
-              <button
-                type="button"
-                onClick={() => setShowConfirm((v) => !v)}
-                className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
-                aria-label={showConfirm ? "Hide password" : "Show password"}
-              >
-                {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+              {errors.email && (
+                <p
+                  id="email-error"
+                  className="text-xs text-red-500"
+                  role="alert"
+                >
+                  {errors.email.message}
+                </p>
+              )}
             </div>
-            {errors.confirmPassword && (
-              <p id="confirm-error" className="text-xs text-red-500" role="alert">{errors.confirmPassword.message}</p>
-            )}
-          </div>
 
-          {/* BDPA consent */}
-          <div className="space-y-1">
-            <div className="flex items-start gap-2.5">
-              <input
-                id="consent"
-                type="checkbox"
-                {...register("consent")}
-                className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy cursor-pointer shrink-0"
-                aria-describedby={errors.consent ? "consent-error" : undefined}
-              />
-              <label
-                htmlFor="consent"
-                className="text-xs text-gray-500 leading-relaxed cursor-pointer"
+            {/* Password */}
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="password"
+                className="text-gray-700 text-sm font-medium"
               >
-                I consent to BOCRA processing my personal data in accordance with the{" "}
+                Password
+              </Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="At least 8 characters"
+                  autoComplete="new-password"
+                  {...register("password")}
+                  aria-invalid={!!errors.password}
+                  aria-describedby={
+                    errors.password ? "password-error" : undefined
+                  }
+                  className="pr-10"
+                />
                 <button
                   type="button"
-                  onClick={() => setPrivacyOpen(true)}
-                  className="text-bocra-blue hover:text-bocra-navy underline transition-colors inline"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  Privacy Policy
-                </button>{" "}
-                and the Botswana Data Protection Act 2024.
-              </label>
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              {errors.password && (
+                <p
+                  id="password-error"
+                  className="text-xs text-red-500"
+                  role="alert"
+                >
+                  {errors.password.message}
+                </p>
+              )}
             </div>
-            {errors.consent && (
-              <p id="consent-error" className="text-xs text-red-500 pl-6" role="alert">{String(errors.consent.message)}</p>
-            )}
+
+            {/* Confirm password */}
+            <div className="space-y-1.5">
+              <Label
+                htmlFor="confirmPassword"
+                className="text-gray-700 text-sm font-medium"
+              >
+                Confirm password
+              </Label>
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirm ? "text" : "password"}
+                  placeholder="Repeat your password"
+                  autoComplete="new-password"
+                  {...register("confirmPassword")}
+                  aria-invalid={!!errors.confirmPassword}
+                  aria-describedby={
+                    errors.confirmPassword ? "confirm-error" : undefined
+                  }
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm((v) => !v)}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-bocra-blue rounded p-1.5 transition-colors"
+                  aria-label={showConfirm ? "Hide password" : "Show password"}
+                >
+                  {showConfirm ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+              {errors.confirmPassword && (
+                <p
+                  id="confirm-error"
+                  className="text-xs text-red-500"
+                  role="alert"
+                >
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            {/* BDPA consent */}
+            <div className="space-y-1">
+              <div className="flex items-start gap-2.5">
+                <input
+                  id="consent"
+                  type="checkbox"
+                  {...register("consent")}
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 accent-bocra-navy cursor-pointer shrink-0"
+                  aria-describedby={
+                    errors.consent ? "consent-error" : undefined
+                  }
+                />
+                <label
+                  htmlFor="consent"
+                  className="text-xs text-gray-500 leading-relaxed cursor-pointer"
+                >
+                  I consent to BOCRA processing my personal data in accordance
+                  with the{" "}
+                  <button
+                    type="button"
+                    onClick={() => setPrivacyOpen(true)}
+                    className="text-bocra-blue hover:text-bocra-navy underline transition-colors inline"
+                  >
+                    Privacy Policy
+                  </button>{" "}
+                  and the Botswana Data Protection Act 2024.
+                </label>
+              </div>
+              {errors.consent && (
+                <p
+                  id="consent-error"
+                  className="text-xs text-red-500 pl-6"
+                  role="alert"
+                >
+                  {String(errors.consent.message)}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full h-10 bg-bocra-navy hover:bg-bocra-blue text-white font-semibold rounded-lg transition-colors"
+            >
+              {isSubmitting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Create account"
+              )}
+            </Button>
+          </form>
+
+          <div className="flex items-center gap-3 my-5">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400 font-medium">or</span>
+            <div className="flex-1 h-px bg-gray-200" />
           </div>
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full h-10 bg-bocra-navy hover:bg-bocra-blue text-white font-semibold rounded-lg transition-colors"
-          >
-            {isSubmitting ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              "Create account"
-            )}
-          </Button>
-        </form>
 
-        <div className="flex items-center gap-3 my-5">
-          <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-xs text-gray-400 font-medium">or</span>
-          <div className="flex-1 h-px bg-gray-200" />
-        </div>
+          <div className="space-y-2">
+            <p className="text-center text-xs font-medium text-gray-400">
+              Google sign-in is unavailable in this prototype
+            </p>
 
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleGoogle}
-          disabled={googleLoading}
-          className="w-full h-10 border-gray-200 hover:border-gray-300 hover:bg-gray-50 font-medium text-gray-700 rounded-lg transition-colors"
-        >
-          {googleLoading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <>
+            <Button
+              type="button"
+              variant="outline"
+              disabled
+              className="w-full h-10 border-gray-100 bg-gray-50 text-gray-600 cursor-not-allowed font-medium rounded-lg"
+            >
               <GoogleIcon />
               Continue with Google
-            </>
-          )}
-        </Button>
-
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-bocra-blue font-medium hover:text-bocra-navy transition-colors"
-          >
-            Sign in
-          </Link>
-        </p>
-      </div>
-
-      {/* Privacy Policy Popup */}
-      <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
-        <DialogContent className="sm:max-w-lg max-h-[80vh] flex flex-col">
-          <DialogHeader>
-            <div className="flex items-center gap-2">
-              <ScrollText className="w-5 h-5 text-bocra-navy shrink-0" />
-              <DialogTitle className="text-bocra-navy">Privacy Policy</DialogTitle>
-            </div>
-            <DialogDescription>
-              How BOCRA collects, uses, and protects your personal data under the
-              Botswana Data Protection Act 2024.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="overflow-y-auto flex-1 -mx-4 px-4 space-y-4 py-2">
-            {privacySections.map((section) => (
-              <div key={section.title}>
-                <h3 className="text-sm font-semibold text-bocra-navy mb-1">
-                  {section.title}
-                </h3>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  {section.content}
-                </p>
-              </div>
-            ))}
-            <p className="text-xs text-gray-400 pt-2 border-t border-gray-100">
-              Effective date: 1 January 2026. Full policy available at{" "}
-              <Link
-                href="/privacy"
-                className="text-bocra-blue hover:text-bocra-navy underline transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                bocra.org.bw/privacy
-              </Link>
-            </p>
-          </div>
-          <DialogFooter>
-            <Button
-              onClick={() => setPrivacyOpen(false)}
-              className="bg-bocra-navy hover:bg-bocra-blue text-white"
-            >
-              I understand
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+          </div>
+
+          <p className="text-center text-sm text-gray-500 mt-6">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="text-bocra-blue font-medium hover:text-bocra-navy transition-colors"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+
+        {/* Privacy Policy Popup */}
+        <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
+          <DialogContent className="sm:max-w-lg max-h-[80vh] flex flex-col">
+            <DialogHeader>
+              <div className="flex items-center gap-2">
+                <ScrollText className="w-5 h-5 text-bocra-navy shrink-0" />
+                <DialogTitle className="text-bocra-navy">
+                  Privacy Policy
+                </DialogTitle>
+              </div>
+              <DialogDescription>
+                How BOCRA collects, uses, and protects your personal data under
+                the Botswana Data Protection Act 2024.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="overflow-y-auto flex-1 -mx-4 px-4 space-y-4 py-2">
+              {privacySections.map((section) => (
+                <div key={section.title}>
+                  <h3 className="text-sm font-semibold text-bocra-navy mb-1">
+                    {section.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {section.content}
+                  </p>
+                </div>
+              ))}
+              <p className="text-xs text-gray-400 pt-2 border-t border-gray-100">
+                Effective date: 1 January 2026. Full policy available at{" "}
+                <Link
+                  href="/privacy"
+                  className="text-bocra-blue hover:text-bocra-navy underline transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  bocra.org.bw/privacy
+                </Link>
+              </p>
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={() => setPrivacyOpen(false)}
+                className="bg-bocra-navy hover:bg-bocra-blue text-white"
+              >
+                I understand
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </GuestGuard>
   );
 }

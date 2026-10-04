@@ -118,7 +118,13 @@ export default function LoginPage() {
                 aria-describedby={errors.email ? "email-error" : undefined}
               />
               {errors.email && (
-                <p id="email-error" className="text-xs text-red-500" role="alert">{errors.email.message}</p>
+                <p
+                  id="email-error"
+                  className="text-xs text-red-500"
+                  role="alert"
+                >
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -145,7 +151,9 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   {...register("password")}
                   aria-invalid={!!errors.password}
-                  aria-describedby={errors.password ? "password-error" : undefined}
+                  aria-describedby={
+                    errors.password ? "password-error" : undefined
+                  }
                   className="pr-10"
                 />
                 <button
@@ -162,7 +170,11 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p id="password-error" className="text-xs text-red-500" role="alert">
+                <p
+                  id="password-error"
+                  className="text-xs text-red-500"
+                  role="alert"
+                >
                   {errors.password.message}
                 </p>
               )}
@@ -189,22 +201,21 @@ export default function LoginPage() {
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGoogle}
-            disabled={googleLoading}
-            className="w-full h-10 border-gray-200 hover:border-gray-300 hover:bg-gray-50 font-medium text-gray-700 rounded-lg transition-colors"
-          >
-            {googleLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <>
-                <GoogleIcon />
-                Sign in with Google
-              </>
-            )}
-          </Button>
+          <div className="space-y-2">
+            <p className="text-center text-xs font-medium text-gray-400">
+              Google sign-in is unavailable in this prototype
+            </p>
+
+            <Button
+              type="button"
+              variant="outline"
+              disabled
+              className="w-full h-10 border-gray-100 bg-gray-50 text-gray-600 cursor-not-allowed font-medium rounded-lg"
+            >
+              <GoogleIcon />
+              Sign in with Google
+            </Button>
+          </div>
 
           <p className="text-center text-sm text-gray-500 mt-6">
             Don&apos;t have an account?{" "}
@@ -221,7 +232,7 @@ export default function LoginPage() {
   );
 }
 
-function GoogleIcon() {
+export function GoogleIcon() {
   return (
     <svg
       className="w-4 h-4 mr-2 shrink-0"

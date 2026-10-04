@@ -173,4 +173,20 @@
   .transition-opacity {
     transition-duration: 0.01ms !important;
   }
+  .prototype-marquee {
+    animation: none;
+  }
+}
+
+.prototype-marquee {
+  animation: prototype-marquee 28s linear infinite;
+}
+
+@keyframes prototype-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
