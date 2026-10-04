@@ -92,6 +92,16 @@ export default function LoginPage() {
   return (
     <GuestGuard redirectTo={redirect ?? undefined}>
       <div className="w-full max-w-sm">
+        <div className="mb-4 rounded-lg border border-bocra-red/25 bg-bocra-red/10 px-4 py-3 text-center">
+          <p className="text-xs font-semibold text-bocra-red">
+            HACKATHON PROTOTYPE
+          </p>
+          <p className="mt-1 text-xs text-gray-600">
+            This is a student-developed prototype created for a hackathon. It is
+            not an official BOCRA website or service. Please do not use real or
+            sensitive information.
+          </p>
+        </div>
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <h1 className="font-heading text-2xl font-bold text-bocra-navy mb-1">
             Welcome back
@@ -113,6 +123,7 @@ export default function LoginPage() {
                 type="email"
                 placeholder="you@example.com"
                 autoComplete="email"
+                defaultValue="demo@hackathon.com"
                 {...register("email")}
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
@@ -149,6 +160,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   autoComplete="current-password"
+                  defaultValue="demopassword"
                   {...register("password")}
                   aria-invalid={!!errors.password}
                   aria-describedby={

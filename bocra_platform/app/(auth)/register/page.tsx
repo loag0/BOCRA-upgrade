@@ -198,6 +198,7 @@ export default function RegisterPage() {
                 type="text"
                 placeholder="Kagiso Modise"
                 autoComplete="name"
+                defaultValue="John Doe"
                 {...register("name")}
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "name-error" : undefined}
@@ -226,6 +227,7 @@ export default function RegisterPage() {
                 type="email"
                 placeholder="you@example.com"
                 autoComplete="email"
+                defaultValue="demo@hackathon.com"
                 {...register("email")}
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
@@ -255,6 +257,7 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="At least 8 characters"
                   autoComplete="new-password"
+                  defaultValue="demopassword"
                   {...register("password")}
                   aria-invalid={!!errors.password}
                   aria-describedby={
@@ -300,6 +303,7 @@ export default function RegisterPage() {
                   type={showConfirm ? "text" : "password"}
                   placeholder="Repeat your password"
                   autoComplete="new-password"
+                  defaultValue="demopassword"
                   {...register("confirmPassword")}
                   aria-invalid={!!errors.confirmPassword}
                   aria-describedby={

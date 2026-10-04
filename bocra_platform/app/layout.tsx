@@ -18,12 +18,15 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
+  verification: {
+    google: "ZyD8dbT423ld21NLN42KrNVthBBGl1V4uJ6XQdd1Vis"
+  },
   title: {
-    default: "BOCRA - Botswana Communications Regulatory Authority",
-    template: "%s | BOCRA",
+    default: "BOCRA Connect  Hackathon Prototype",
+    template: "%s | BOCRA Connect",
   },
   description:
-    "The unified digital platform for BOCRA regulatory services. Verify licences, file complaints, register .bw domains, and access publications.",
+    "A student-developed hackathon prototype exploring a redesigned digital services experience for the Botswana Communications Regulatory Authority (BOCRA). All data shown is for demonstration purposes.",
 };
 
 export default function RootLayout({
